@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.5.1)
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)
 
 project(hello_world LANGUAGES CXX)
 
@@ -9,10 +8,14 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp		
 )
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)
+
 set(CMAKE_MODULE_PATH 
     ${CMAKE_MODULE_PATH}                                                                           
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/find_modules
 )
+
+#message("CMAKE_MODULE_PATH : ${CMAKE_MODULE_PATH}") 
 
 set_target_cpp_standard(${PROJECT_NAME} 17)
 
