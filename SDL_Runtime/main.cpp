@@ -11,7 +11,7 @@
 
 #include "utils/drawing/Rectangle.hpp"
 
-static int32_t init(MainWindow & app_window) {
+static int32_t init(MainWindow & app_window, SDL_Surface *& image) {
 	std::int32_t rc = EXIT_FAILURE;
 	do {
 	    if(EXIT_SUCCESS != SDLLoader::init()) {
@@ -25,6 +25,12 @@ static int32_t init(MainWindow & app_window) {
 		};
 		if(EXIT_SUCCESS != app_window.init(app_window_cfg)) {
 			std::cerr << "app_window.init() failed." << std::endl;
+	        break;
+		}
+	    const std::string fname = "resources/hello.png";
+		image = Texture::createSurfaceFromFile(fname);
+		if(nullptr == image) {
+			std::cerr << "Texture::createSurfaceFromFile failed." << std::endl;
 	        break;
 		}
 		rc = EXIT_SUCCESS;
@@ -54,12 +60,11 @@ static int32_t draw(MainWindow & app_window, SDL_Surface * image) {
 
 std::int32_t runApplication() {
 	MainWindow app_window;
-    if(EXIT_SUCCESS != init(app_window)) {
+	SDL_Surface * image = nullptr;
+    if(EXIT_SUCCESS != init(app_window, image)) {
         std::cerr << "init() failed." << std::endl;
         return EXIT_FAILURE;
     }
-    const std::string fname = "resources/hello.png";
-	SDL_Surface * image = Texture::createSurfaceFromFile(fname);
 	if(EXIT_SUCCESS != draw(app_window, image)) {
 		std::cerr << "draw failed." << std::endl;
 		return EXIT_FAILURE;
