@@ -1,0 +1,69 @@
+/*
+ * InputEvent.cpp
+ *
+ *  Created on: Oct 12, 2021
+ *      Author: stanimir
+ */
+
+#include "InputEvent.hpp"
+
+#include <SDL_events.h>
+
+InputEvent::~InputEvent() {
+}
+
+bool InputEvent::pollEvent() {
+	SDL_Event event { };
+	if (!SDL_PollEvent(&event)) {
+		return false;
+	}
+	SDL_GetMouseState(&m_Pos.m_X, &m_Pos.m_Y);
+	setEventTypeImpl(event);
+	return true;
+}
+
+void InputEvent::setEventTypeImpl(const SDL_Event &event) {
+	switch (event.type) {
+	case EventType::KEYBOARD_PRESS:
+		m_Key = event.key.keysym.sym;
+		m_MouseButton = Mouse::UNKNOWN;
+		m_Type = TouchEvent::KEYBOARD_PRESS;
+		handleExitKey();
+		break;
+
+	case EventType::KEYBOARD_RELEASE:
+		m_MouseButton = Mouse::UNKNOWN;
+		m_Key = Keyboard::KEY_UNKNOWN;
+		m_Type = TouchEvent::KEYBOARD_RELEASE;
+		break;
+
+		//NOTE: the fall-through is intentional
+	case EventType::MOUSE_PRESS:
+	case EventType::FINGER_PRESS:
+		m_MouseButton = event.button.button;
+		m_Key = Keyboard::KEY_UNKNOWN;
+		m_Type = TouchEvent::TOUCH_PRESS;
+		break;
+
+	case EventType::MOUSE_RELEASE:
+	case EventType::FINGER_RELEASE:
+		m_Key = Keyboard::KEY_UNKNOWN;
+		m_MouseButton = Mouse::UNKNOWN;
+		m_Type = TouchEvent::TOUCH_RELEASE;
+		break;
+
+		//X is pressed on the window (or CTRL-C signal is sent)
+	case EventType::QUIT:
+		m_ExitRequest = true;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void InputEvent::handleExitKey() {
+	if(Keyboard::KEY_ESCAPE == m_Key) {
+		m_ExitRequest = true;
+	}
+}
