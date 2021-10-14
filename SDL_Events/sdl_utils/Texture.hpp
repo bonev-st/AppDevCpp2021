@@ -9,13 +9,13 @@
 #define SDL_UTILS_TEXTURE_HPP_
 
 #include <string>
+#include <memory>
 
 struct SDL_Surface;
 
 namespace Texture {
 
-SDL_Surface * createSurfaceFromFile(const std::string &fname);
-void freeSurface(SDL_Surface *& surface);
+std::shared_ptr<SDL_Surface> createSurfaceFromFile(const std::string &fname);
 
 };
 

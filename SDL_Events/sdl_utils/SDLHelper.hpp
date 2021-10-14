@@ -18,7 +18,8 @@ namespace SDLHelper {
 void print_SDL_Error(const std::string &info);
 void print_IMG_Error(const std::string &info);
 
-SDL_Rect toSDL_Rect(const Rectangle& rect);
+SDL_Rect toRect(const Rectangle& rect);
+Rectangle toRect(const SDL_Rect& rect);
 
 } /* namespace SDLHelper */
 

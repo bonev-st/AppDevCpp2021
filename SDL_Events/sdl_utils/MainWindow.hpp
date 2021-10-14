@@ -9,6 +9,7 @@
 #define SDL_UTILS_MAINWINDOW_HPP_
 
 #include <string>
+#include <memory>
 
 #include "utils/drawing/Rectangle.hpp"
 
@@ -31,7 +32,7 @@ struct MainWindowCfg_t {
 class MainWindow {
 public:
 	MainWindow() = default;
-	~MainWindow();
+	~MainWindow() = default;
 
 	MainWindow(const MainWindow&) = delete;
 	MainWindow& operator =(const MainWindow&) = delete;
@@ -40,9 +41,9 @@ public:
 	MainWindow& operator =(MainWindow&&) = delete;
 
 	std::int32_t init(const MainWindowCfg_t &cfg);
-	void deinit();
 
 	SDL_Surface* getSurface();
+
 	const Rectangle* getRectangle() const {
 		return &m_Rect;
 	}
@@ -53,7 +54,7 @@ public:
 			const Rectangle &dst_rec);
 
 private:
-	SDL_Window *m_Window = nullptr;
+	std::shared_ptr<SDL_Window> m_Window;
 	Rectangle m_Rect = Rectangle::UNDEFINED;
 };
 

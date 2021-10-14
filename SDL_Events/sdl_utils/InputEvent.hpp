@@ -8,20 +8,33 @@
 #ifndef UTILS_INPUT_INPUTEVENT_HPP_
 #define UTILS_INPUT_INPUTEVENT_HPP_
 
+#include <unordered_map>
+#include <functional>
+#include <list>
+
 #include "utils/drawing/Point.hpp"
-#include "utils/input/EventDefines.h"
+#include "utils/inputs/EventDefines.h"
 
 union SDL_Event;
 
 class InputEvent {
 public:
+	using EventCallback = std::function<void(const InputEvent&)>;
+	typedef const void * Handler_t;
 	InputEvent() = default;
-	~InputEvent();
+	~InputEvent() = default;
 
 	bool pollEvent();
 
-	bool checkForExitRequest() const {
+	void registerKeyboard(Keyboard::Key type, EventCallback callback);
+	void registerMouse(Mouse::MouseKey type, EventCallback callback);
+
+	bool isExitRequest() const {
 		return m_ExitRequest;
+	}
+
+	void setExitRequest() {
+		m_ExitRequest = true;
 	}
 
 	/* Holds event position on the screen */
@@ -32,11 +45,14 @@ public:
 	TouchEvent m_Type = TouchEvent::UNKNOWN;
 
 private:
-	  bool m_ExitRequest = false;
+	typedef std::unordered_map<uint32_t, std::list<EventCallback>> Callbacks;
+	bool m_ExitRequest = false;
 
-	  void setEventTypeImpl(const SDL_Event & event);
+	Callbacks m_KeyboardCallbacks;
+	Callbacks m_MouseCallbacks;
 
-	  void handleExitKey();
+	void setEventTypeImpl(const SDL_Event &event);
+	void eventsHandlerImpl(const Callbacks& registered);
 };
 
 #endif /* UTILS_INPUT_INPUTEVENT_HPP_ */

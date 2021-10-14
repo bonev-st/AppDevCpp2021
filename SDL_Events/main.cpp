@@ -4,7 +4,7 @@
 
 #include "App.hpp"
 
-int32_t main([[maybe_unused]]int32_t argc, [[maybe_unused]]char* argv[]) {
+static int32_t runApplication() {
 	App app;
     if(EXIT_SUCCESS != app.init()) {
         std::cerr << "app.init() failed." << std::endl;
@@ -14,6 +14,13 @@ int32_t main([[maybe_unused]]int32_t argc, [[maybe_unused]]char* argv[]) {
     if(EXIT_SUCCESS != rc) {
     	std::cerr << "app.start() failed." << std::endl;
     }
-    app.deinit();
+	return rc;
+}
+
+int32_t main([[maybe_unused]]int32_t argc, [[maybe_unused]]char* argv[]) {
+    int32_t rc = runApplication();
+    if(EXIT_SUCCESS != rc) {
+        std::cerr << "runApplication() failed." << std::endl;
+    }
 	return rc;
 }

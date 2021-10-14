@@ -10,12 +10,16 @@
 
 #include <cstdint>
 
-namespace SDLLoader {
+class SDLLoader {
+public:
+	SDLLoader() = default;
+	~SDLLoader() {
+		deinit();
+	}
+	std::int32_t init();
 
-std::int32_t init();
-
-void deinit();
-
-} /* namespace SDLLoader */
+private:
+	void deinit();
+};
 
 #endif /* SDL_UTILS_SDLLOADER_HPP_ */

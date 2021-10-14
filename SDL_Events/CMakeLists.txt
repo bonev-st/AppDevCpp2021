@@ -17,11 +17,16 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Timer.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Destroy.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Point.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Point.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Rectangle.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Rectangle.cpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/utils/input/EventDefines.h		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/inputs/EventDefines.h		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/thread/ThreadUtils.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/thread/ThreadUtils.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/time/Time.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/time/Time.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/App.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/App.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp

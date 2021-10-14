@@ -14,9 +14,7 @@
 #include "SDLLoader.hpp"
 #include "SDLHelper.hpp"
 
-namespace SDLLoader {
-
-std::int32_t init() {
+std::int32_t SDLLoader::init() {
 	std::int32_t rc = EXIT_FAILURE;
 	do {
         if(EXIT_SUCCESS != SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO)) {
@@ -45,11 +43,13 @@ std::int32_t init() {
 	return rc;
 }
 
-void deinit() {
+void SDLLoader::deinit() {
+	while(Mix_Init(0)) {
+	    Mix_Quit();
+	}
 	IMG_Quit();
-	TTF_Quit();
-	Mix_Quit();
+	if(TTF_WasInit()) {
+		TTF_Quit();
+	}
 	SDL_Quit();
 }
-
-} /* namespace SDLLOader */
