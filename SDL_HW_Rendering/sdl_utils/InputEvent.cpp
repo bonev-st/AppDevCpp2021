@@ -22,24 +22,24 @@ bool InputEvent::pollEvent() {
 void InputEvent::setEventTypeImpl(const SDL_Event &event) {
 	switch (event.type) {
 	case EventType::KEYBOARD_PRESS:
-		m_Key = event.key.keysym.sym;
+		m_Key = static_cast<Keyboard::Key>(event.key.keysym.sym);
 		m_MouseButton = Mouse::UNKNOWN;
 		m_Type = TouchEvent::KEYBOARD_PRESS;
 		break;
 	case EventType::KEYBOARD_RELEASE:
-		m_Key = event.key.keysym.sym;
+		m_Key = static_cast<Keyboard::Key>(event.key.keysym.sym);
 		m_MouseButton = Mouse::UNKNOWN;
 		m_Type = TouchEvent::KEYBOARD_RELEASE;
 		break;
 	case EventType::MOUSE_PRESS:
 	case EventType::FINGER_PRESS:
-		m_MouseButton = event.button.button;
+		m_MouseButton = static_cast<Mouse::MouseKey>(event.button.button);
 		m_Key = Keyboard::KEY_UNKNOWN;
 		m_Type = TouchEvent::TOUCH_PRESS;
 		break;
 	case EventType::MOUSE_RELEASE:
 	case EventType::FINGER_RELEASE:
-		m_MouseButton = event.button.button;
+		m_MouseButton = static_cast<Mouse::MouseKey>(event.button.button);
 		m_Key = Keyboard::KEY_UNKNOWN;
 		m_Type = TouchEvent::TOUCH_RELEASE;
 		break;

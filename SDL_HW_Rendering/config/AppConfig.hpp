@@ -13,7 +13,7 @@
 
 struct AppConfig {
 	MainWindowCfg_t WindowCfg;
-	GameConfig GameCfg;
+	GameBase::GameConfig GameCfg;
 };
 
 

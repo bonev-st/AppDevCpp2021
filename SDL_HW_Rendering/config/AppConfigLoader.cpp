@@ -15,12 +15,18 @@ static void populateAppWindowCfg(MainWindowCfg_t &cfg) {
 	cfg.Flags = WINDOW_SHOWN;
 }
 
-static void populateGameCfg(GameConfig &cfg) {
-	cfg.ImgPath[IDLE_IMG]	= "resources/press_keys.png";
-	cfg.ImgPath[UP_IMG]		= "resources/up.png";
-	cfg.ImgPath[DOWN_IMG]	= "resources/down.png";
-	cfg.ImgPath[LEFT_IMG]	= "resources/left.png";
-	cfg.ImgPath[RIGHT_IMG]	= "resources/right.png";
+static void populateGameCfg(GameBase::GameConfig &cfg) {
+	cfg.ImgPath[GameBase::IDLE_IMG]		= "resources/press_keys.png";
+	cfg.ImgPath[GameBase::UP_IMG]		= "resources/up.png";
+	cfg.ImgPath[GameBase::DOWN_IMG]		= "resources/down.png";
+	cfg.ImgPath[GameBase::LEFT_IMG]		= "resources/left.png";
+	cfg.ImgPath[GameBase::RIGHT_IMG]	= "resources/right.png";
+
+	cfg.Keys[Keyboard::KEY_ESCAPE]		= GameBase::KEY_EXIT_MASK;
+	cfg.Keys[Keyboard::KEY_UP]			= GameBase::KEY_UP_MASK;
+	cfg.Keys[Keyboard::KEY_DOWN]		= GameBase::KEY_DOWN_MASK;
+	cfg.Keys[Keyboard::KEY_LEFT]		= GameBase::KEY_LEFT_MASK;
+	cfg.Keys[Keyboard::KEY_RIGHT]		= GameBase::KEY_RIGHT_MASK;
 }
 
 namespace AppConfigLoader {

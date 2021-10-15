@@ -32,8 +32,8 @@ public:
 	/* Holds event position on the screen */
 	Point m_Pos = Point::UNDEFINED;
 	/* See EventDefines.h for more information */
-	int32_t m_Key = Keyboard::KEY_UNKNOWN;
-	uint8_t m_MouseButton = Mouse::UNKNOWN;
+	Keyboard::Key m_Key = Keyboard::KEY_UNKNOWN;
+	Mouse::MouseKey m_MouseButton = Mouse::UNKNOWN;
 	TouchEvent m_Type = TouchEvent::UNKNOWN;
 
 private:
