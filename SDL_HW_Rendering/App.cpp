@@ -30,7 +30,11 @@ int32_t App::init(const AppConfig& cfg) {
 			std::cerr << "m_AppWindow.init() failed." << std::endl;
 	        break;
 		}
-		if(EXIT_SUCCESS != m_Game.init(cfg.GameCfg)) {
+		if(EXIT_SUCCESS != m_Renderer.init(m_AppWindow.get().get())) {
+			std::cerr << "m_Renderer.init() failed." << std::endl;
+	        break;
+		}
+		if(EXIT_SUCCESS != m_Game.init(cfg.GameCfg, m_Renderer.get())) {
 			std::cerr << "m_Game.init() failed." << std::endl;
 	        break;
 		}
@@ -84,18 +88,23 @@ int32_t App::processFrame() {
 int32_t App::drawFrame() {
 	std::vector<DrawingData::Drawing_t> buffer;
 	m_Game.draw(buffer);
-	for(auto e : buffer) {
-		m_AppWindow.copy(e.m_Surface, e.m_SrcRect, e.m_DstRect);
-	}
-	if(EXIT_SUCCESS != m_AppWindow.updateSurface()) {
-		std::cerr << "m_AppWindow.updateSurface() failed." << std::endl;
+	if(EXIT_SUCCESS != m_Renderer.clearScreen()) {
+		std::cerr << "m_Renderer.clearScreen() failed." << std::endl;
 		return EXIT_FAILURE;
 	}
+	;
+	for(auto e : buffer) {
+		if(EXIT_SUCCESS != m_Renderer.copy(e.m_Surface, e.m_SrcRect, e.m_DstRect)) {
+			std::cerr << "m_Renderer.copy() failed." << std::endl;
+			return EXIT_FAILURE;
+		}
+	}
+	m_Renderer.finishFrame();
 	return EXIT_SUCCESS;
 }
 
 void App::limitFPS(int64_t elapsed_us) {
-	constexpr int64_t MAX_FRAMES_PER_SEC = 100;
+	constexpr int64_t MAX_FRAMES_PER_SEC = 60;
 	constexpr int64_t FRAME_DURATION_US = (int64_t)1E6/MAX_FRAMES_PER_SEC;
 	if(FRAME_DURATION_US > elapsed_us) {
 		ThreadUtils::sleep_usec(FRAME_DURATION_US - elapsed_us);

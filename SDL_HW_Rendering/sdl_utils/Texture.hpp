@@ -11,8 +11,10 @@
 #include <string>
 #include <memory>
 
+
 struct SDL_Surface;
 struct SDL_Texture;
+struct SDL_Renderer;
 
 namespace Texture {
 
@@ -23,8 +25,8 @@ typedef struct _Texture_t {
 } Texture_t;
 
 std::shared_ptr<SDL_Surface> createSurfaceFromFile(const std::string &fname);
-std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname);
-std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface);
+std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname, SDL_Renderer * p_renderer);
+std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface, SDL_Renderer * p_renderer);
 
 };
 

@@ -20,7 +20,7 @@
 
 struct AppConfig;
 
-class App : private NoCopy{
+class App : private NoCopy {
 public:
 	App() = default;
 	~App() = default;
@@ -30,9 +30,9 @@ public:
 
 private:
 	SDLLoader m_Loader;
+	InputEvent m_InputEvents;
 	MainWindow m_AppWindow;
 	Renderer m_Renderer;
-	InputEvent m_InputEvents;
 	Game m_Game;
 
 	int32_t mainLoop();

@@ -37,16 +37,12 @@ public:
 
 	std::int32_t init(const MainWindowCfg_t &cfg);
 
-	SDL_Surface* getSurface();
-
 	const Rectangle* getRectangle() const {
 		return &m_Rect;
 	}
-
-	std::int32_t updateSurface();
-
-	std::int32_t copy(SDL_Surface *src, const Rectangle &src_rec,
-			const Rectangle &dst_rec);
+	std::shared_ptr<SDL_Window> get() const {
+		return m_Window;
+	}
 
 private:
 	std::shared_ptr<SDL_Window> m_Window;

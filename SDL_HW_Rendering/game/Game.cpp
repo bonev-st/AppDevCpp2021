@@ -18,7 +18,8 @@ Game::Game() {
 Game::~Game() {
 }
 
-int32_t Game::init(const GameBase::GameConfig& cfg) {
+int32_t Game::init(const GameBase::GameConfig& cfg, std::shared_ptr<SDL_Renderer> renderer) {
+	m_Renderer = renderer;
 	if(EXIT_SUCCESS != loadResources(cfg.ImgPath)) {
 		std::cerr << "app_window.copy failed." << std::endl;
 		return EXIT_FAILURE;
@@ -47,35 +48,38 @@ int32_t Game::draw(std::vector<DrawingData::Drawing_t> &out) {
 	};
 
 	if(GameBase::KEY_UP_MASK & m_KeysMask) {
-		data.m_Surface = m_Image[GameBase::UP_IMG].get();
+		data.m_Surface = m_Image[GameBase::UP_IMG].get()->m_Texture;
 		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
 	if(GameBase::KEY_DOWN_MASK & m_KeysMask) {
-		data.m_Surface = m_Image[GameBase::DOWN_IMG].get();
+		data.m_Surface = m_Image[GameBase::DOWN_IMG].get()->m_Texture;
 		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
 	if(GameBase::KEY_LEFT_MASK & m_KeysMask) {
-		data.m_Surface = m_Image[GameBase::LEFT_IMG].get();
+		data.m_Surface = m_Image[GameBase::LEFT_IMG].get()->m_Texture;
 		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
 	if(GameBase::KEY_RIGHT_MASK & m_KeysMask) {
-		data.m_Surface = m_Image[GameBase::RIGHT_IMG].get();
+		data.m_Surface = m_Image[GameBase::RIGHT_IMG].get()->m_Texture;
 		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
-	data.m_Surface = m_Image[GameBase::IDLE_IMG].get();
+	data.m_Surface = m_Image[GameBase::IDLE_IMG].get()->m_Texture;
 	out.push_back(data);
-	data.m_Surface = m_Image[GameBase::L2_IMG].get();
+	data.m_Surface = m_Image[GameBase::L2_IMG].get()->m_Texture;
+	data.m_DstRect = Rectangle {0, 0,
+		m_Image[GameBase::L2_IMG].get()->m_W,
+		m_Image[GameBase::L2_IMG].get()->m_H};
 	out.push_back(data);
 	return EXIT_SUCCESS;
 }
 
 int32_t Game::loadResources(const GameBase::ImgRes_t & cfg) {
 	for(const auto & e : cfg) {
-		m_Image[e.first] = Texture::createSurfaceFromFile(e.second);
+		m_Image[e.first] = Texture::createTextureFromFile(e.second, m_Renderer.get());
 		if(nullptr == m_Image[e.first]) {
 			std::cerr << "Texture::createSurfaceFromFile failed." << std::endl;
 	        return EXIT_FAILURE;

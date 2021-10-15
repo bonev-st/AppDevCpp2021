@@ -10,12 +10,12 @@
 
 #include "Rectangle.hpp"
 
-struct SDL_Surface;
+struct SDL_Texture;
 
 namespace DrawingData {
 
 typedef struct _Drawing_t {
-	SDL_Surface * m_Surface;
+	SDL_Texture * m_Surface;
 	Rectangle m_SrcRect;
 	Rectangle m_DstRect;
 } Drawing_t;
