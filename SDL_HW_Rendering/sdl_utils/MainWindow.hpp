@@ -11,6 +11,7 @@
 #include <string>
 #include <memory>
 
+#include "utils/NoCopy.hpp"
 #include "utils/drawing/Rectangle.hpp"
 
 struct SDL_Window;
@@ -29,16 +30,10 @@ struct MainWindowCfg_t {
 	WindowFlags_t Flags = WINDOW_NONE;
 };
 
-class MainWindow {
+class MainWindow : NoCopy {
 public:
 	MainWindow() = default;
 	~MainWindow() = default;
-
-	MainWindow(const MainWindow&) = delete;
-	MainWindow& operator =(const MainWindow&) = delete;
-
-	MainWindow(MainWindow&&) = delete;
-	MainWindow& operator =(MainWindow&&) = delete;
 
 	std::int32_t init(const MainWindowCfg_t &cfg);
 

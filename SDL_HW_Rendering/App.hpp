@@ -15,11 +15,12 @@
 #include "sdl_utils/InputEvent.hpp"
 #include "sdl_utils/Renderer.hpp"
 
+#include "utils/NoCopy.hpp"
 #include "game/Game.hpp"
 
 struct AppConfig;
 
-class App {
+class App : private NoCopy{
 public:
 	App() = default;
 	~App() = default;
