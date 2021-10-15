@@ -17,7 +17,6 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Timer.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.cpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Destroy.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Renderer.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Renderer.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Point.hpp		
@@ -31,6 +30,7 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/time/Time.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/time/Time.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/NoCopy.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/Destroy.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfig.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfigLoader.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfigLoader.cpp		

@@ -82,7 +82,7 @@ int32_t App::processFrame() {
 }
 
 int32_t App::drawFrame() {
-	std::vector<DrawingData::_Drawing_t> buffer;
+	std::vector<DrawingData::Drawing_t> buffer;
 	m_Game.draw(buffer);
 	for(auto e : buffer) {
 		m_AppWindow.copy(e.m_Surface, e.m_SrcRect, e.m_DstRect);

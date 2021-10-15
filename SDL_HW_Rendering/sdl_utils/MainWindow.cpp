@@ -13,7 +13,7 @@
 #include <SDL_video.h>
 
 #include "SDLHelper.hpp"
-#include "Destroy.hpp"
+#include "utils/Destroy.hpp"
 
 #include "utils/drawing/Rectangle.hpp"
 

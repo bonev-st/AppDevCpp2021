@@ -11,7 +11,7 @@
 #include <SDL_render.h>
 
 #include "SDLHelper.hpp"
-#include "Destroy.hpp"
+#include "utils/Destroy.hpp"
 
 namespace Texture {
 
