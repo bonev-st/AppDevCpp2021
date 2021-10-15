@@ -17,21 +17,15 @@
 
 #include "game/Game.hpp"
 
-#include "EventReg_IF.hpp"
-
 struct AppConfig;
 
-class App : public EventReg_IF {
+class App {
 public:
 	App() = default;
 	~App() = default;
 
 	int32_t init(const AppConfig& cfg);
 	int32_t start();
-
-	std::int32_t registerExitKey(Keyboard::Key type);
-	std::int32_t registerKeyboard(Keyboard::Key type, EventCallback callback);
-	std::int32_t registerMouse(Mouse::MouseKey type, EventCallback callback);
 
 private:
 	SDLLoader m_Loader;

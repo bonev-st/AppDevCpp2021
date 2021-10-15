@@ -18,40 +18,69 @@ Game::Game() {
 Game::~Game() {
 }
 
-int32_t Game::init(const GameConfig& cfg, EventReg_IF & event) {
+int32_t Game::init(const GameConfig& cfg) {
 	if(EXIT_SUCCESS != loadResources(cfg.ImgPath)) {
 		std::cerr << "app_window.copy failed." << std::endl;
 		return EXIT_FAILURE;
 	}
-	if(EXIT_SUCCESS != registeringEvents(event)) {
-		std::cerr << "app_window.copy failed." << std::endl;
-		return EXIT_FAILURE;
-	}
 	return EXIT_SUCCESS;
 }
 
-int32_t Game::draw(std::vector<SDL_Surface *> &out) {
+int32_t Game::events(const InputEvent & event, bool & exit) {
+	int32_t rc  = EXIT_SUCCESS;
+	do {
+		if((exit = exitRequest(event))) {
+			break;
+		}
+		if(Keyboard::KEY_LEFT == event.m_Key) {
+			setKeyRequest(TouchEvent::KEYBOARD_PRESS == event.m_Type, KEY_LEFT_MASK);
+			break;
+		}
+		if(Keyboard::KEY_RIGHT == event.m_Key) {
+			setKeyRequest(TouchEvent::KEYBOARD_PRESS == event.m_Type, KEY_RIGHT_MASK);
+			break;
+		}
+		if(Keyboard::KEY_UP == event.m_Key) {
+			setKeyRequest(TouchEvent::KEYBOARD_PRESS == event.m_Type, KEY_UP_MASK);
+			break;
+		}
+		if(Keyboard::KEY_DOWN == event.m_Key) {
+			setKeyRequest(TouchEvent::KEYBOARD_PRESS == event.m_Type, KEY_DOWN_MASK);
+			break;
+		}
+	} while(0);
+	return rc;
+}
+
+int32_t Game::draw(std::vector<DrawingData::Drawing_t> &out) {
+	DrawingData::Drawing_t data = {
+		.m_Surface = nullptr,
+		.m_SrcRect = Rectangle::UNDEFINED,
+		.m_DstRect = Rectangle::UNDEFINED
+	};
+
 	if(KEY_UP_MASK & m_KeysMask) {
-		out.push_back(m_Image[UP_IMG].get());
+		data.m_Surface = m_Image[UP_IMG].get();
+		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
 	if(KEY_DOWN_MASK & m_KeysMask) {
-		out.push_back(m_Image[DOWN_IMG].get());
+		data.m_Surface = m_Image[DOWN_IMG].get();
+		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
 	if(KEY_LEFT_MASK & m_KeysMask) {
-		out.push_back(m_Image[LEFT_IMG].get());
+		data.m_Surface = m_Image[LEFT_IMG].get();
+		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
 	if(KEY_RIGHT_MASK & m_KeysMask) {
-		out.push_back(m_Image[RIGHT_IMG].get());
+		data.m_Surface = m_Image[RIGHT_IMG].get();
+		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
-	out.push_back(m_Image[IDLE_IMG].get());
-	return EXIT_SUCCESS;
-}
-
-int32_t Game::handleEvent() {
+	data.m_Surface = m_Image[IDLE_IMG].get();
+	out.push_back(data);
 	return EXIT_SUCCESS;
 }
 
@@ -66,29 +95,9 @@ int32_t Game::loadResources(const std::unordered_map<ImgId_t, std::string> & cfg
 	return EXIT_SUCCESS;
 }
 
-int32_t Game::registeringEvents(EventReg_IF & event) {
-	event.registerExitKey(Keyboard::KEY_ESCAPE);
-	event.registerKeyboard(Keyboard::KEY_RIGHT,
-		[this](const InputEvent & input) {
-			this->setKeyRequest(TouchEvent::KEYBOARD_PRESS == input.m_Type, KEY_RIGHT_MASK);
-		}
-	);
-	event.registerKeyboard(Keyboard::KEY_LEFT,
-		[this](const InputEvent & input) {
-			this->setKeyRequest(TouchEvent::KEYBOARD_PRESS == input.m_Type, KEY_LEFT_MASK);
-		}
-	);
-	event.registerKeyboard(Keyboard::KEY_DOWN,
-		[this](const InputEvent & input) {
-			this->setKeyRequest(TouchEvent::KEYBOARD_PRESS == input.m_Type, KEY_DOWN_MASK);
-		}
-	);
-	event.registerKeyboard(Keyboard::KEY_UP,
-		[this](const InputEvent & input) {
-			this->setKeyRequest(TouchEvent::KEYBOARD_PRESS == input.m_Type, KEY_UP_MASK);
-		}
-	);
-	return EXIT_SUCCESS;
+bool Game::exitRequest(const InputEvent & m_event) {
+	return (TouchEvent::KEYBOARD_PRESS == m_event.m_Type)
+		&& (Keyboard::KEY_ESCAPE == m_event.m_Key);
 }
 
 void Game::setKeyRequest(bool pressed, KeyMask_t key_mask) {

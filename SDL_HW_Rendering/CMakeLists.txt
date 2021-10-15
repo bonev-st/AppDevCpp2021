@@ -24,6 +24,7 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Point.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Rectangle.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Rectangle.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/DrawingData.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/inputs/EventDefines.h		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/thread/ThreadUtils.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/thread/ThreadUtils.cpp		

@@ -15,10 +15,9 @@
 #include "sdl_utils/SDLHelper.hpp"
 #include "sdl_utils/Timer.hpp"
 
-#include "utils/drawing/Rectangle.hpp"
+#include "utils/drawing/DrawingData.hpp"
 #include "utils/thread/ThreadUtils.hpp"
 #include "utils/time/Time.hpp"
-
 
 int32_t App::init(const AppConfig& cfg) {
 	std::int32_t rc = EXIT_FAILURE;
@@ -31,7 +30,7 @@ int32_t App::init(const AppConfig& cfg) {
 			std::cerr << "m_AppWindow.init() failed." << std::endl;
 	        break;
 		}
-		if(EXIT_SUCCESS != m_Game.init(cfg.GameCfg, *this)) {
+		if(EXIT_SUCCESS != m_Game.init(cfg.GameCfg)) {
 			std::cerr << "m_Game.init() failed." << std::endl;
 	        break;
 		}
@@ -52,7 +51,7 @@ int32_t App::mainLoop() {
 		time.start();
 		rc = processFrame();
 		if(EXIT_SUCCESS != rc) {
-	    	std::cerr << "m_InputEvents() failed." << std::endl;
+	    	std::cerr << "processFrame() failed." << std::endl;
 			break;
 		}
 		rc = drawFrame();
@@ -66,16 +65,27 @@ int32_t App::mainLoop() {
 }
 
 int32_t App::processFrame() {
+	int32_t rc = EXIT_SUCCESS;
     while(m_InputEvents.pollEvent()) {
+    	bool exit;
+    	rc = m_Game.events(m_InputEvents, exit);
+    	if(EXIT_SUCCESS != rc) {
+	    	std::cerr << "m_Game.events() failed." << std::endl;
+	    	break;
+    	}
+    	if(exit) {
+    		setExitRequest();
+    		break;
+    	}
     }
-	return EXIT_SUCCESS;
+	return rc;
 }
 
 int32_t App::drawFrame() {
-	std::vector<SDL_Surface *> buffer;
+	std::vector<DrawingData::_Drawing_t> buffer;
 	m_Game.draw(buffer);
 	for(auto e : buffer) {
-		m_AppWindow.copy(e, Rectangle::UNDEFINED, Rectangle::UNDEFINED);
+		m_AppWindow.copy(e.m_Surface, e.m_SrcRect, e.m_DstRect);
 	}
 	if(EXIT_SUCCESS != m_AppWindow.updateSurface()) {
 		std::cerr << "m_AppWindow.updateSurface() failed." << std::endl;
@@ -90,27 +100,6 @@ void App::limitFPS(int64_t elapsed_us) {
 	if(FRAME_DURATION_US > elapsed_us) {
 		ThreadUtils::sleep_usec(FRAME_DURATION_US - elapsed_us);
 	}
-}
-
-std::int32_t App::registerExitKey(Keyboard::Key type) {
-	return registerKeyboard(type,
-		[this](const InputEvent & input) {
-			if(TouchEvent::KEYBOARD_PRESS == input.m_Type) {
-				this->setExitRequest();
-			}
-		}
-	);
-	return EXIT_SUCCESS;
-}
-
-std::int32_t App::registerKeyboard(Keyboard::Key type, EventCallback callback) {
-	m_InputEvents.registerKeyboard(type, callback);
-	return EXIT_SUCCESS;
-}
-
-std::int32_t App::registerMouse(Mouse::MouseKey type, EventCallback callback) {
-	m_InputEvents.registerMouse(type, callback);
-	return EXIT_SUCCESS;
 }
 
 void App::setExitRequest() {

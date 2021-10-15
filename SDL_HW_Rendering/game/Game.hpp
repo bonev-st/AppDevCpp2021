@@ -12,20 +12,19 @@
 #include <memory>
 #include <vector>
 
+#include "utils/drawing/DrawingData.hpp"
 #include "game/GameConfig.hpp"
 
-class SDL_Surface;
 class InputEvent;
-class EventReg_IF;
 
 class Game {
 public:
 	Game();
 	~Game();
 
-	int32_t init(const GameConfig& cfg, EventReg_IF& even);
-	int32_t draw(std::vector<SDL_Surface *> &out);
-	int32_t handleEvent();
+	int32_t init(const GameConfig& cfg);
+	int32_t events(const InputEvent & event, bool & exit);
+	int32_t draw(std::vector<DrawingData::Drawing_t> &out);
 
 private:
 	typedef enum _KeyMask_t : std::uint32_t {
@@ -40,8 +39,8 @@ private:
 	uint32_t m_KeysMask = 0;
 
 	int32_t loadResources(const std::unordered_map<ImgId_t, std::string> & cfg);
-	int32_t registeringEvents(EventReg_IF & event);
 	void setKeyRequest(bool pressed, KeyMask_t key_mask);
+	bool exitRequest(const InputEvent & event);
 };
 
 #endif /* GAME_GAME_HPP_ */

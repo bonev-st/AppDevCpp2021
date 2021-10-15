@@ -8,10 +8,6 @@
 #ifndef UTILS_INPUT_INPUTEVENT_HPP_
 #define UTILS_INPUT_INPUTEVENT_HPP_
 
-#include <unordered_map>
-#include <list>
-
-#include "EventReg_IF.hpp"
 #include "utils/drawing/Point.hpp"
 #include "utils/inputs/EventDefines.h"
 
@@ -24,9 +20,6 @@ public:
 	~InputEvent() = default;
 
 	bool pollEvent();
-
-	void registerKeyboard(Keyboard::Key type, EventReg_IF::EventCallback callback);
-	void registerMouse(Mouse::MouseKey type, EventReg_IF::EventCallback callback);
 
 	bool isExitRequest() const {
 		return m_ExitRequest;
@@ -44,14 +37,9 @@ public:
 	TouchEvent m_Type = TouchEvent::UNKNOWN;
 
 private:
-	typedef std::unordered_map<uint32_t, std::list<EventReg_IF::EventCallback>> Callbacks;
 	bool m_ExitRequest = false;
 
-	Callbacks m_KeyboardCallbacks;
-	Callbacks m_MouseCallbacks;
-
 	void setEventTypeImpl(const SDL_Event &event);
-	void eventsHandlerImpl(const Callbacks& registered);
 };
 
 #endif /* UTILS_INPUT_INPUTEVENT_HPP_ */
