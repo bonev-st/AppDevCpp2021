@@ -68,6 +68,8 @@ int32_t Game::draw(std::vector<DrawingData::Drawing_t> &out) {
 	}
 	data.m_Surface = m_Image[GameBase::IDLE_IMG].get();
 	out.push_back(data);
+	data.m_Surface = m_Image[GameBase::L2_IMG].get();
+	out.push_back(data);
 	return EXIT_SUCCESS;
 }
 

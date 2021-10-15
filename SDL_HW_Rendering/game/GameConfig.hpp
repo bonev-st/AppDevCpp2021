@@ -19,6 +19,7 @@ typedef enum _ImgId_t {
 	DOWN_IMG,
 	LEFT_IMG,
 	RIGHT_IMG,
+	L2_IMG,
 	NUMB_IMG
 } ImgId_t;
 
