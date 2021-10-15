@@ -16,9 +16,15 @@ struct SDL_Texture;
 
 namespace Texture {
 
+typedef struct _Texture_t {
+	SDL_Texture * m_Texture;
+	int32_t m_W;
+	int32_t m_H;
+} Texture_t;
+
 std::shared_ptr<SDL_Surface> createSurfaceFromFile(const std::string &fname);
-std::shared_ptr<SDL_Texture> createTextureFromFile(const std::string &fname);
-std::shared_ptr<SDL_Texture> createTextureFromSurface(SDL_Surface* surface);
+std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname);
+std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface);
 
 };
 

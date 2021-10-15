@@ -25,22 +25,31 @@ std::shared_ptr<SDL_Surface> createSurfaceFromFile(const std::string &fname) {
 	return rc;
 }
 
-std::shared_ptr<SDL_Texture> createTextureFromFile(const std::string &fname) {
+std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname) {
 	auto p_surface = createSurfaceFromFile(fname);
 	if(nullptr == p_surface) {
-		return std::shared_ptr<SDL_Texture>(nullptr);
+		return std::shared_ptr<Texture_t>(nullptr);
 	}
 	return createTextureFromSurface(p_surface.get());
 }
 
-std::shared_ptr<SDL_Texture> createTextureFromSurface(SDL_Surface* surface) {
+std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface) {
 	SDL_Renderer * renderer = nullptr;
 	SDL_Texture * p_texture = SDL_CreateTextureFromSurface(renderer, surface);
 	if(nullptr == p_texture) {
 		SDLHelper::print_IMG_Error("SDL_CreateTextureFromSurface() fault.");
-		return std::shared_ptr<SDL_Texture>(nullptr);
+		return std::shared_ptr<Texture_t>(nullptr);
 	}
-	std::shared_ptr<SDL_Texture> rc(p_texture, Destroy::free<SDL_Texture, SDL_DestroyTexture>);
+	Texture_t data = {
+		.m_Texture = p_texture,
+		.m_W = surface->w,
+		.m_H = surface->h,
+	};
+	std::shared_ptr<Texture_t> rc(&data, [](Texture_t * p){
+		if(p) {
+			SDL_DestroyTexture(p->m_Texture);
+		}
+	});
 	return rc;
 }
 
