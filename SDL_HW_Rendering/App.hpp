@@ -10,12 +10,12 @@
 
 #include <cstdint>
 
+#include "utils/NoCopy.hpp"
+
 #include "sdl_utils/SDLLoader.hpp"
-#include "sdl_utils/MainWindow.hpp"
 #include "sdl_utils/InputEvent.hpp"
 #include "sdl_utils/Renderer.hpp"
 
-#include "utils/NoCopy.hpp"
 #include "game/Game.hpp"
 
 struct AppConfig;
@@ -31,7 +31,6 @@ public:
 private:
 	SDLLoader m_Loader;
 	InputEvent m_InputEvents;
-	MainWindow m_AppWindow;
 	Renderer m_Renderer;
 	Game m_Game;
 
@@ -40,7 +39,6 @@ private:
 	int32_t processFrame();
 
 	void limitFPS(int64_t elapsed_us);
-	void setExitRequest();
 };
 
 #endif /* APP_HPP_ */

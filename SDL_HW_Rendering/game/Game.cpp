@@ -18,7 +18,7 @@ Game::Game() {
 Game::~Game() {
 }
 
-int32_t Game::init(const GameBase::GameConfig& cfg, std::shared_ptr<SDL_Renderer> renderer) {
+int32_t Game::init(const GameBase::GameConfig& cfg, SDL_Renderer* renderer) {
 	m_Renderer = renderer;
 	if(EXIT_SUCCESS != loadResources(cfg.ImgPath)) {
 		std::cerr << "app_window.copy failed." << std::endl;
@@ -79,7 +79,7 @@ int32_t Game::draw(std::vector<DrawingData::Drawing_t> &out) {
 
 int32_t Game::loadResources(const GameBase::ImgRes_t & cfg) {
 	for(const auto & e : cfg) {
-		m_Image[e.first] = Texture::createTextureFromFile(e.second, m_Renderer.get());
+		m_Image[e.first] = Texture::createTextureFromFile(e.second, m_Renderer);
 		if(nullptr == m_Image[e.first]) {
 			std::cerr << "Texture::createSurfaceFromFile failed." << std::endl;
 	        return EXIT_FAILURE;

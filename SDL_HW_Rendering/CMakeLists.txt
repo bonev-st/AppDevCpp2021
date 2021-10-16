@@ -89,3 +89,11 @@ target_link_libraries(
             ${SDL2_TTF_LIBRARY}
             ${SDL2_MIXER_LIBRARY}
 )
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+	target_compile_definitions(
+		${PROJECT_NAME}
+			PRIVATE
+				-DSHOW_MEM_ALLOC_INFO=1
+	)
+endif()

@@ -30,6 +30,9 @@ std::int32_t MainWindow::init(const MainWindowCfg_t &cfg) {
 		SDLHelper::print_SDL_Error("SDL_CreateWindow() failed.");
 		return EXIT_FAILURE;
 	}
+#ifdef SHOW_MEM_ALLOC_INFO
+	std::cout << "+ MainWindow::init() create SDL_Window " << p_win << std::endl;
+#endif
 	m_Window = std::shared_ptr<SDL_Window>(p_win, Destroy::free<SDL_Window, SDL_DestroyWindow>);
 	return EXIT_SUCCESS;
 }

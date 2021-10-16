@@ -8,6 +8,7 @@
 #include "Renderer.hpp"
 
 #include <cstdlib>
+#include <iostream>
 
 #include <SDL_render.h>
 #include <SDL_pixels.h>
@@ -18,13 +19,20 @@
 #include "utils/drawing/Rectangle.hpp"
 
 
-int32_t Renderer::init(SDL_Window *p_window) {
+int32_t Renderer::init(const MainWindowCfg_t &cfg) {
+	if(EXIT_SUCCESS != m_AppWindow.init(cfg)) {
+		std::cerr << "m_AppWindow.init() failed." << std::endl;
+		return EXIT_FAILURE;
+	}
 	constexpr auto unspec_driver_id = -1;
-	SDL_Renderer * p_render = SDL_CreateRenderer(p_window, unspec_driver_id, SDL_RENDERER_ACCELERATED);
+	SDL_Renderer * p_render = SDL_CreateRenderer(m_AppWindow.get(), unspec_driver_id, SDL_RENDERER_ACCELERATED);
 	if (nullptr == p_render) {
 		SDLHelper::print_SDL_Error("SDL_CreateRenderer() failed.");
 		return EXIT_FAILURE;
 	}
+#ifdef SHOW_MEM_ALLOC_INFO
+	std::cout << "+ Renderer::init() create SDL_Renderer " << p_render << std::endl;
+#endif
 	m_Renderer = std::shared_ptr<SDL_Renderer>(p_render, Destroy::free<SDL_Renderer, SDL_DestroyRenderer>);
 	if(EXIT_SUCCESS != SDL_SetRenderDrawColor(p_render, 0, 0, 0, SDL_ALPHA_OPAQUE)) {
 		SDLHelper::print_SDL_Error("SDL_SetRenderDrawColor() failed.");

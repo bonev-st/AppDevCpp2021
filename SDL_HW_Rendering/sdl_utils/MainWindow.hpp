@@ -40,8 +40,8 @@ public:
 	const Rectangle* getRectangle() const {
 		return &m_Rect;
 	}
-	std::shared_ptr<SDL_Window> get() const {
-		return m_Window;
+	SDL_Window* get() const {
+		return m_Window.get();
 	}
 
 private:

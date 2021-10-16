@@ -5,6 +5,7 @@
  *      Author: stanimir
  */
 #include <cstdlib>
+#include <iostream>
 
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -17,7 +18,7 @@
 std::int32_t SDLLoader::init() {
 	std::int32_t rc = EXIT_FAILURE;
 	do {
-        if(EXIT_SUCCESS != SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO)) {
+        if(EXIT_SUCCESS != SDL_Init(SDL_INIT_EVERYTHING)) {
         	SDLHelper::print_SDL_Error("SDL_Init() failed.");
         	break;
         }

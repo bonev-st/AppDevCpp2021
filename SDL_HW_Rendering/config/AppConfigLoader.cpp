@@ -22,7 +22,6 @@ static void populateGameCfg(GameBase::GameConfig &cfg) {
 	cfg.ImgPath[GameBase::LEFT_IMG]		= "resources/left.png";
 	cfg.ImgPath[GameBase::RIGHT_IMG]	= "resources/right.png";
 	cfg.ImgPath[GameBase::L2_IMG]		= "resources/layer_2.png";
-
 	cfg.Keys[Keyboard::KEY_ESCAPE]		= GameBase::KEY_EXIT_MASK;
 	cfg.Keys[Keyboard::KEY_UP]			= GameBase::KEY_UP_MASK;
 	cfg.Keys[Keyboard::KEY_DOWN]		= GameBase::KEY_DOWN_MASK;
