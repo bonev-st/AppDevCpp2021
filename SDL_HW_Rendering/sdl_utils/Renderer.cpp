@@ -19,13 +19,14 @@
 #include "utils/drawing/Rectangle.hpp"
 
 
-int32_t Renderer::init(const MainWindowCfg_t &cfg) {
-	if(EXIT_SUCCESS != m_AppWindow.init(cfg)) {
-		std::cerr << "m_AppWindow.init() failed." << std::endl;
+int32_t Renderer::init(const MainWindow::MainWindowCfg_t &cfg) {
+	m_AppWindow = MainWindow::createMainWindow(cfg);
+	if(nullptr == m_AppWindow) {
+		std::cerr << "MainWindow::createMainWindow() failed." << std::endl;
 		return EXIT_FAILURE;
 	}
 	constexpr auto unspec_driver_id = -1;
-	SDL_Renderer * p_render = SDL_CreateRenderer(m_AppWindow.get(), unspec_driver_id, SDL_RENDERER_ACCELERATED);
+	SDL_Renderer * p_render = SDL_CreateRenderer(m_AppWindow->m_Window, unspec_driver_id, SDL_RENDERER_ACCELERATED);
 	if (nullptr == p_render) {
 		SDLHelper::print_SDL_Error("SDL_CreateRenderer() failed.");
 		return EXIT_FAILURE;

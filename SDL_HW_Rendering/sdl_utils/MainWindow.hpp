@@ -11,14 +11,21 @@
 #include <string>
 #include <memory>
 
-#include "utils/NoCopy.hpp"
 #include "utils/drawing/Rectangle.hpp"
 
 struct SDL_Window;
 struct SDL_Surface;
 
+namespace MainWindow {
+
+typedef struct _MainWindow_t {
+	SDL_Window * m_Window;
+	Rectangle m_Rect;
+} MainWindow_t;
+
 enum WindowFlags_t {
-	WINDOW_NONE = 0, WINDOW_FULLSCREEN = 0x00000001, 	// SDL_WINDOW_FULLSCREEN
+	WINDOW_NONE = 0,
+	WINDOW_FULLSCREEN = 0x00000001, 	// SDL_WINDOW_FULLSCREEN
 	WINDOW_SHOWN = 0x00000004, 			// SDL_WINDOW_SHOWN
 	WINDOW_BORDERLESS = 0x00000010, 	// SDL_WINDOW_BORDERLESS
 	WINDOW_DESKTOP = 0x00001000,		// SDL_WINDOW_DESKTOP
@@ -30,23 +37,8 @@ struct MainWindowCfg_t {
 	WindowFlags_t Flags = WINDOW_NONE;
 };
 
-class MainWindow : NoCopy {
-public:
-	MainWindow() = default;
-	~MainWindow() = default;
+std::shared_ptr<MainWindow_t> createMainWindow(const MainWindowCfg_t &cfg);
 
-	std::int32_t init(const MainWindowCfg_t &cfg);
-
-	const Rectangle* getRectangle() const {
-		return &m_Rect;
-	}
-	SDL_Window* get() const {
-		return m_Window.get();
-	}
-
-private:
-	std::shared_ptr<SDL_Window> m_Window;
-	Rectangle m_Rect = Rectangle::UNDEFINED;
-};
+}
 
 #endif /* SDL_UTILS_MAINWINDOW_HPP_ */

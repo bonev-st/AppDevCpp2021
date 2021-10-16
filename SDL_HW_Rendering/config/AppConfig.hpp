@@ -12,7 +12,7 @@
 #include "game/GameConfig.hpp"
 
 struct AppConfig {
-	MainWindowCfg_t WindowCfg;
+	MainWindow::MainWindowCfg_t WindowCfg;
 	GameBase::GameConfig GameCfg;
 };
 

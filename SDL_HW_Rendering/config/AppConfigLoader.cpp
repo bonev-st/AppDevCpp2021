@@ -9,10 +9,10 @@
 
 #include "config/AppConfig.hpp"
 
-static void populateAppWindowCfg(MainWindowCfg_t &cfg) {
+static void populateAppWindowCfg(MainWindow::MainWindowCfg_t &cfg) {
 	cfg.Name = "HW rendering";
 	cfg.Rect = Rectangle(Point::UNDEFINED, 640, 480);
-	cfg.Flags = WINDOW_SHOWN;
+	cfg.Flags = MainWindow::WINDOW_SHOWN;
 }
 
 static void populateGameCfg(GameBase::GameConfig &cfg) {

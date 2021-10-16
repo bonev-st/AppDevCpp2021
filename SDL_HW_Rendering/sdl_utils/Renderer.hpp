@@ -24,7 +24,7 @@ public:
 	Renderer() = default;
 	~Renderer() = default;
 
-	int32_t init(const MainWindowCfg_t &cfg);
+	int32_t init(const MainWindow::MainWindowCfg_t &cfg);
 	int32_t clearScreen();
 	void finishFrame();
 	int32_t copy(SDL_Texture *p_texture, const Rectangle &src_rec, const Rectangle &dst_rec);
@@ -33,7 +33,7 @@ public:
 	}
 
 private:
-	MainWindow m_AppWindow;
+	std::shared_ptr<MainWindow::MainWindow_t> m_AppWindow;
 	std::shared_ptr<SDL_Renderer> m_Renderer;
 };
 
