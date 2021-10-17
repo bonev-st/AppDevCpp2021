@@ -7,6 +7,8 @@
 
 #include "Texture.hpp"
 
+#include <cassert>
+
 #include <SDL_image.h>
 #include <SDL_render.h>
 
@@ -45,35 +47,19 @@ std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface, SDL_Re
 #ifdef SHOW_MEM_ALLOC_INFO
 	std::cout << "+ createTextureFromSurface() create SDL_Texture " << p_texture << std::endl;
 #endif
-	auto data = new Texture_t {
+	auto p_data = new Texture_t {
 		.m_Texture = p_texture,
 		.m_W = surface->w,
 		.m_H = surface->h,
 		};
-	if(nullptr == data) {
+	if(nullptr == p_data) {
 		SDL_DestroyTexture(p_texture);
 		std::cerr << "Create Texture_t failed." << std::endl;
 		return std::shared_ptr<Texture_t>(nullptr);
 	}
 #ifdef SHOW_MEM_ALLOC_INFO
-	std::cout << "+ createTextureFromSurface() create Texture_t " << data << std::endl;
+	std::cout << "+ createTextureFromSurface() create Texture_t " << p_data << std::endl;
 #endif
-	return std::shared_ptr<Texture_t> (data,
-		[](Texture_t * p) {
-			if(p) {
-#ifdef SHOW_MEM_ALLOC_INFO
-				std::cout << "- Destroy with SDL_DestroyTexture(" << p->m_Texture <<")" << std::endl;
-				std::cout << "- Destroy with delete " << p << std::endl;
-#endif
-				SDL_DestroyTexture(p->m_Texture);
-				delete p;
-			}
-#ifdef SHOW_MEM_ALLOC_INFO
-			else {
-				std::cout << "- Try to destroy with SDL_DestroyTexture(nullptr)" << std::endl;
-			}
-#endif
-		}
-	);
+	return std::shared_ptr<Texture_t> (p_data, Destroy::freeMember<Texture_t, SDL_Texture, &Texture_t::m_Texture, SDL_DestroyTexture>);
 }
 }
