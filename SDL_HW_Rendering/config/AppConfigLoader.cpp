@@ -10,8 +10,12 @@
 #include "config/AppConfig.hpp"
 
 static void populateAppWindowCfg(MainWindow::MainWindowCfg_t &cfg) {
-	cfg.Name = "HW rendering";
-	cfg.Rect = Rectangle(Point::UNDEFINED, 640, 480);
+	constexpr auto app_name = "HW rendering";
+	constexpr auto WINDOW_WIDTH = 640;
+	constexpr auto WINDOW_HEIGHT = 480;
+
+	cfg.Name = app_name;
+	cfg.Rect = Rectangle(Point::UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT);
 	cfg.Flags = MainWindow::WINDOW_SHOWN;
 }
 

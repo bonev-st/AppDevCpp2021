@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "sdl_utils/Texture.hpp"
-#include "utils/drawing/DrawingData.hpp"
 #include "game/GameConfig.hpp"
 
 class InputEvent;
@@ -25,7 +24,7 @@ public:
 
 	int32_t init(const GameBase::GameConfig& cfg, SDL_Renderer* renderer);
 	int32_t events(const InputEvent & event, bool & exit);
-	int32_t draw(std::vector<DrawingData::Drawing_t> &out);
+	int32_t draw(std::vector<Texture::Drawing_t> &out);
 
 private:
 	std::array<std::shared_ptr<Texture::Texture_t>, GameBase::NUMB_IMG> m_Image;

@@ -27,7 +27,7 @@ std::int32_t SDLLoader::init() {
         	break;
         }
 		constexpr std::int32_t imgFlags = IMG_INIT_PNG;
-		if (! (IMG_Init(imgFlags) & imgFlags)) {
+		if (!(IMG_Init(imgFlags) & imgFlags)) {
         	SDLHelper::print_IMG_Error("IMG_Init() failed.");
         	break;
 		}

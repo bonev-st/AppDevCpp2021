@@ -19,7 +19,7 @@ struct SDL_Surface;
 namespace MainWindow {
 
 typedef struct _MainWindow_t {
-	SDL_Window * m_Window;
+	std::shared_ptr<SDL_Window> m_Window;
 	Rectangle m_Rect;
 } MainWindow_t;
 

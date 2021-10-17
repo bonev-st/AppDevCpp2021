@@ -18,33 +18,26 @@
 namespace MainWindow {
 
 std::shared_ptr<MainWindow_t> createMainWindow(const MainWindowCfg_t &cfg) {
-	auto p_win = new MainWindow_t {
-		.m_Window = nullptr,
+	Rectangle rect = cfg.Rect;
+	if (Point::UNDEFINED == rect.m_Pos) {
+		rect.m_Pos = Point(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	}
+	auto data = MainWindow_t {
+		.m_Window = std::shared_ptr<SDL_Window>(SDL_CreateWindow(cfg.Name.c_str()
+										, rect.m_Pos.m_X, rect.m_Pos.m_Y
+										, rect.m_W, rect.m_H
+										, cfg.Flags)
+							, Destroy::free<SDL_Window, SDL_DestroyWindow>),
 		.m_Rect = cfg.Rect
 	};
-	if(nullptr == p_win) {
-		std::cerr << "Create MainWindow_t failed." << std::endl;
+#ifdef SHOW_MEM_ALLOC_INFO
+	std::cout << "+ SDL_CreateWindow() create SDL_Window " << data.m_Window << std::endl;
+#endif
+	if(nullptr == data.m_Window) {
+		SDLHelper::print_IMG_Error("SDL_CreateWindow() fault.");
 		return std::shared_ptr<MainWindow_t>(nullptr);
 	}
-	if (Point::UNDEFINED == p_win->m_Rect.m_Pos) {
-		p_win->m_Rect.m_Pos = Point(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-	}
-#ifdef SHOW_MEM_ALLOC_INFO
-	std::cout << "+ createMainWindow() create MainWindow_t " << p_win << std::endl;
-#endif
-	auto rc = std::shared_ptr<MainWindow_t> (p_win, Destroy::freeMember<MainWindow_t, SDL_Window, &MainWindow_t::m_Window, SDL_DestroyWindow>);
-	rc->m_Window = SDL_CreateWindow(cfg.Name.c_str()
-			, p_win->m_Rect.m_Pos.m_X, p_win->m_Rect.m_Pos.m_Y
-			, p_win->m_Rect.m_W, p_win->m_Rect.m_H
-			, cfg.Flags);
-	if (nullptr == p_win->m_Window) {
-		SDLHelper::print_SDL_Error("SDL_CreateWindow() failed.");
-		return std::shared_ptr<MainWindow_t>(nullptr);
-	}
-#ifdef SHOW_MEM_ALLOC_INFO
-	std::cout << "+ createMainWindow() create SDL_Window " << p_win << std::endl;
-#endif
-	return rc;
+	return std::make_shared<MainWindow_t>(data);
 }
 
 }

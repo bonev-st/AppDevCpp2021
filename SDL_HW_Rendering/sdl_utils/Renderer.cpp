@@ -25,17 +25,18 @@ int32_t Renderer::init(const MainWindow::MainWindowCfg_t &cfg) {
 		std::cerr << "MainWindow::createMainWindow() failed." << std::endl;
 		return EXIT_FAILURE;
 	}
-	constexpr auto unspec_driver_id = -1;
-	SDL_Renderer * p_render = SDL_CreateRenderer(m_AppWindow->m_Window, unspec_driver_id, SDL_RENDERER_ACCELERATED);
-	if (nullptr == p_render) {
+	constexpr auto UNSPEC_DRIVER_ID = -1;
+	m_Renderer = std::shared_ptr<SDL_Renderer>(SDL_CreateRenderer(m_AppWindow->m_Window.get()
+													, UNSPEC_DRIVER_ID, SDL_RENDERER_ACCELERATED)
+					, Destroy::free<SDL_Renderer, SDL_DestroyRenderer>);
+#ifdef SHOW_MEM_ALLOC_INFO
+	std::cout << "+ Renderer::init() create SDL_Renderer " << m_Renderer << std::endl;
+#endif
+	if (nullptr == m_Renderer) {
 		SDLHelper::print_SDL_Error("SDL_CreateRenderer() failed.");
 		return EXIT_FAILURE;
 	}
-#ifdef SHOW_MEM_ALLOC_INFO
-	std::cout << "+ Renderer::init() create SDL_Renderer " << p_render << std::endl;
-#endif
-	m_Renderer = std::shared_ptr<SDL_Renderer>(p_render, Destroy::free<SDL_Renderer, SDL_DestroyRenderer>);
-	if(EXIT_SUCCESS != SDL_SetRenderDrawColor(p_render, 0, 0, 0, SDL_ALPHA_OPAQUE)) {
+	if(EXIT_SUCCESS != SDL_SetRenderDrawColor(m_Renderer.get(), 0, 0, 0, SDL_ALPHA_OPAQUE)) {
 		SDLHelper::print_SDL_Error("SDL_SetRenderDrawColor() failed.");
 		return EXIT_FAILURE;
 	}
@@ -57,8 +58,8 @@ void Renderer::finishFrame() {
 int32_t Renderer::copy(SDL_Texture * p_texture, const Rectangle &src_rec, const Rectangle &dst_rec) {
 	const SDL_Rect * p_srcrect = nullptr;
 	const SDL_Rect * p_dstrect = nullptr;
-	SDL_Rect src_rect{};
-	SDL_Rect dst_rect{};
+	auto src_rect = SDL_Rect {};
+	auto dst_rect = SDL_Rect {};
 	if (Rectangle::UNDEFINED != src_rec) {
 		src_rect = SDLHelper::toRect(src_rec);
 		p_srcrect = &src_rect;
@@ -67,7 +68,6 @@ int32_t Renderer::copy(SDL_Texture * p_texture, const Rectangle &src_rec, const 
 		dst_rect = SDLHelper::toRect(dst_rec);
 		p_dstrect = &dst_rect;
 	}
-
 	if(EXIT_SUCCESS != SDL_RenderCopy(m_Renderer.get(), p_texture, p_srcrect, p_dstrect)) {
 		SDLHelper::print_SDL_Error("SDL_RenderCopy() failed.");
 		return EXIT_FAILURE;

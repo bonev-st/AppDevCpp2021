@@ -15,7 +15,6 @@
 #include "sdl_utils/SDLHelper.hpp"
 #include "sdl_utils/Timer.hpp"
 
-#include "utils/drawing/DrawingData.hpp"
 #include "utils/thread/ThreadUtils.hpp"
 #include "utils/time/Time.hpp"
 
@@ -81,7 +80,7 @@ int32_t App::processFrame() {
 }
 
 int32_t App::drawFrame() {
-	std::vector<DrawingData::Drawing_t> buffer;
+	std::vector<Texture::Drawing_t> buffer;
 	m_Game.draw(buffer);
 	if(EXIT_SUCCESS != m_Renderer.clearScreen()) {
 		std::cerr << "m_Renderer.clearScreen() failed." << std::endl;
