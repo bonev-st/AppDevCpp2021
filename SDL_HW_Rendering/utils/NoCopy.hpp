@@ -9,13 +9,14 @@
 #define UTILS_NOCOPY_HPP_
 
 class NoCopy {
-	NoCopy(const NoCopy &) = delete;
-	NoCopy(NoCopy &&) = delete;
-	NoCopy operator = (const NoCopy &) = delete;
-	NoCopy operator = (NoCopy &&) = delete;
 public:
 	NoCopy() = default;
     ~NoCopy() = default;
+
+    NoCopy(const NoCopy &) = delete;
+	NoCopy(NoCopy &&) = delete;
+	NoCopy operator = (const NoCopy &) = delete;
+	NoCopy operator = (NoCopy &&) = delete;
 };
 
 #endif /* UTILS_NOCOPY_HPP_ */
