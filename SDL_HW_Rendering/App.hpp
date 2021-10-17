@@ -22,9 +22,6 @@ struct AppConfig;
 
 class App : private NoCopy {
 public:
-	App() = default;
-	~App() = default;
-
 	int32_t init(const AppConfig& cfg);
 	int32_t start();
 

@@ -12,7 +12,6 @@
 
 class SDLLoader {
 public:
-	SDLLoader() = default;
 	~SDLLoader() {
 		deinit();
 	}

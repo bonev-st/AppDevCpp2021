@@ -21,9 +21,6 @@ class Rectangle;
 
 class Renderer : private NoCopy {
 public:
-	Renderer() = default;
-	~Renderer() = default;
-
 	int32_t init(const MainWindow::MainWindowCfg_t &cfg);
 	int32_t clearScreen();
 	void finishFrame();

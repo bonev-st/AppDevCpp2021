@@ -19,9 +19,6 @@ class SDL_Renderer;
 
 class Game {
 public:
-	Game();
-	~Game();
-
 	int32_t init(const GameBase::GameConfig& cfg, SDL_Renderer* renderer);
 	int32_t events(const InputEvent & event, bool & exit);
 	int32_t draw(std::vector<Texture::Drawing_t> &out);

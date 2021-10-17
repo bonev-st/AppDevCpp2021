@@ -17,9 +17,6 @@ public:
 	typedef std::chrono::microseconds Microseconds_t;
 	typedef std::chrono::nanoseconds Nanoseconds_t;
 
-	Time() = default;
-	~Time() = default;
-
 	void start();
 
 	template<class T = Microseconds_t>

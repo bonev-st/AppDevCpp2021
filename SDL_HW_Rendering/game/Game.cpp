@@ -12,12 +12,6 @@
 #include "sdl_utils/Texture.hpp"
 #include "sdl_utils/InputEvent.hpp"
 
-Game::Game() {
-}
-
-Game::~Game() {
-}
-
 int32_t Game::init(const GameBase::GameConfig& cfg, SDL_Renderer* renderer) {
 	m_Renderer = renderer;
 	if(EXIT_SUCCESS != loadResources(cfg.ImgPath)) {

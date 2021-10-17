@@ -16,8 +16,6 @@ union SDL_Event;
 class InputEvent {
 public:
 	typedef const void * Handler_t;
-	InputEvent() = default;
-	~InputEvent() = default;
 
 	bool pollEvent();
 
