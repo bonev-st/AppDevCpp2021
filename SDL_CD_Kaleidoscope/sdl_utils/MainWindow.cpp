@@ -76,7 +76,7 @@ std::int32_t MainWindow::copy(SDL_Surface *src, const Rectangle &src_rec,
 		dst_rect = SDLHelper::toSDL_Rect(src_rec);
 		p_dst_rect = &dst_rect;
 	}
-	if (EXIT_SUCCESS != SDL_BlitSurface(src, p_src_rect, dst, p_dst_rect)) {
+	if (EXIT_SUCCESS != SDL_BlitScaled(src, p_src_rect, dst, p_dst_rect)) {
 		SDLHelper::print_SDL_Error("SDL_BlitSurface() failed.");
 		return EXIT_FAILURE;
 	}

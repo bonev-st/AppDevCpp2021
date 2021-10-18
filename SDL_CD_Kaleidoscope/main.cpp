@@ -22,18 +22,17 @@ static int32_t init(MainWindow & app_window, SDL_Surface *& surface) {
 	    }
 	    MainWindowCfg_t app_window_cfg = {
 			.Name = "SDL runtime",
-			.Rect = Rectangle(Point::UNDEFINED, 640, 480),
+			.Rect = Rectangle(Point::UNDEFINED, 480*2, 480*2),
 			.Flags = WINDOW_SHOWN
 		};
 		if(EXIT_SUCCESS != app_window.init(app_window_cfg)) {
 			std::cerr << "app_window.init() failed." << std::endl;
 	        break;
 		}
-	    const auto * main_rect = app_window.getRectangle();
 	    Texture::RGB_SurfaceCfg_t rgb_cfg = {
 	    	.Flags = 0,
-	    	.W = main_rect->m_W,
-	    	.H = main_rect->m_H,
+	    	.W = 64,
+	    	.H = 64,
 	    	.D = 32,
 	    	.R_Mask = 0,
 	    	.G_Mask = 0,
@@ -58,7 +57,7 @@ static void deinit(MainWindow & app_window, SDL_Surface *& surface) {
 }
 
 static int32_t draw(MainWindow & app_window, Kaleidoscope & kscope) {
-	for(uint32_t i = 0; 20 > i; ++i) {
+	for(uint32_t i = 0; 200000 > i; ++i) {
 		if(EXIT_SUCCESS != kscope.update()) {
 	    	std::cerr << "kscope.update() failed." << std::endl;
 	        return EXIT_FAILURE;
@@ -71,7 +70,7 @@ static int32_t draw(MainWindow & app_window, Kaleidoscope & kscope) {
 	    	std::cerr << "app_window.updateSurface() failed." << std::endl;
 	        return EXIT_FAILURE;
 	    }
-	    Timer::Delay(300);
+	    //Timer::Delay(1);
 	}
     return EXIT_SUCCESS;
 }
@@ -83,7 +82,8 @@ std::int32_t runApplication() {
         std::cerr << "init() failed." << std::endl;
         return EXIT_FAILURE;
     }
-	Kaleidoscope kscope(surface);
+	Kaleidoscope kscope;
+	kscope.init();
 	if(EXIT_SUCCESS != draw(app_window, kscope)) {
 		std::cerr << "draw failed." << std::endl;
 		return EXIT_FAILURE;
