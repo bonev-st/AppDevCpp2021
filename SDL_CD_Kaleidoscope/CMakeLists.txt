@@ -11,6 +11,8 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/SDLLoader.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/MainWindow.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/MainWindow.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Texture.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Texture.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Timer.hpp		
@@ -19,6 +21,7 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Point.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Rectangle.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Rectangle.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/inputs/EventDefines.h		
 	${CMAKE_CURRENT_SOURCE_DIR}/Kaleidoscope.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Kaleidoscope.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp

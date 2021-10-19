@@ -7,6 +7,7 @@
 #include "sdl_utils/SDLLoader.hpp"
 #include "sdl_utils/SDLHelper.hpp"
 #include "sdl_utils/Texture.hpp"
+#include "sdl_utils/InputEvent.hpp"
 #include "sdl_utils/Timer.hpp"
 
 #include "utils/drawing/Rectangle.hpp"
@@ -57,7 +58,14 @@ static void deinit(MainWindow & app_window, SDL_Surface *& surface) {
 }
 
 static int32_t draw(MainWindow & app_window, Kaleidoscope & kscope) {
-	for(uint32_t i = 0; 200000 > i; ++i) {
+	InputEvent event;
+	while(!event.isExitRequest()) {
+		while(event.pollEvent()) {
+			if(   (TouchEvent::KEYBOARD_PRESS == event.m_Type)
+			   && (Keyboard::KEY_ESCAPE == event.m_Key)) {
+				event.setExitRequest();
+			}
+		}
 		if(EXIT_SUCCESS != kscope.update()) {
 	    	std::cerr << "kscope.update() failed." << std::endl;
 	        return EXIT_FAILURE;

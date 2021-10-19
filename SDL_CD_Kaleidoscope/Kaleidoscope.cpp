@@ -137,7 +137,7 @@ void Kaleidoscope::subroutine() {
     m_Acc = m_PixelAddr.m_H;
     ACI(0);
     m_PixelAddr.m_H = m_Acc;
-    m_Acc= m_B;
+    m_Acc = m_B;
     ANI(0xF8);
     RAR();
     RAR();
