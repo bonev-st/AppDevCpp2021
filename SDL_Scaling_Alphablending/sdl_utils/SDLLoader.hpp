@@ -15,7 +15,7 @@ public:
 	~SDLLoader() {
 		deinit();
 	}
-	std::int32_t init();
+	bool init();
 
 private:
 	void deinit();

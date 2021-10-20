@@ -6,23 +6,23 @@
 #include "config/AppConfig.hpp"
 #include "config/AppConfigLoader.hpp"
 
-static int32_t runApplication() {
+static bool runApplication() {
 	App app;
-    if(EXIT_SUCCESS != app.init(AppConfigLoader::Loader())) {
+    if(!app.init(AppConfigLoader::Loader())) {
         std::cerr << "app.init() failed." << std::endl;
-    	return EXIT_FAILURE;
+    	return false;
     }
-	int32_t rc = app.start();
-    if(EXIT_SUCCESS != rc) {
+    if(!app.start()) {
     	std::cerr << "app.start() failed." << std::endl;
+    	return false;
     }
-	return rc;
+	return true;
 }
 
 int32_t main([[maybe_unused]]int32_t argc, [[maybe_unused]]char* argv[]) {
-    int32_t rc = runApplication();
-    if(EXIT_SUCCESS != rc) {
+    if(!runApplication()) {
         std::cerr << "runApplication() failed." << std::endl;
+        return EXIT_FAILURE;
     }
-	return rc;
+    return EXIT_SUCCESS;
 }

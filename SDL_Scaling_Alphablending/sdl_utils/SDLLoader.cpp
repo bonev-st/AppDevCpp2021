@@ -4,7 +4,6 @@
  *  Created on: Oct 10, 2021
  *      Author: stanimir
  */
-#include <cstdlib>
 #include <iostream>
 
 #include <SDL.h>
@@ -15,8 +14,8 @@
 #include "SDLLoader.hpp"
 #include "SDLHelper.hpp"
 
-std::int32_t SDLLoader::init() {
-	std::int32_t rc = EXIT_FAILURE;
+bool SDLLoader::init() {
+	bool rc = false;
 	do {
         if(EXIT_SUCCESS != SDL_Init(SDL_INIT_EVERYTHING)) {
         	SDLHelper::print_SDL_Error("SDL_Init() failed.");
@@ -39,7 +38,7 @@ std::int32_t SDLLoader::init() {
         	SDLHelper::print_SDL_Error("Mix_OpenAudio() failed.");
         	break;
 		}
-		rc = EXIT_SUCCESS;
+		rc = true;
 	} while(0);
 	return rc;
 }

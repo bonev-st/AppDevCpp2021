@@ -7,7 +7,6 @@
 
 #include "MainWindow.hpp"
 
-#include <cstdlib>
 #include <iostream>
 
 #include <SDL_video.h>

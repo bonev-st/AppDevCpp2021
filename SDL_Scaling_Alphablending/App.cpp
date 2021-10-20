@@ -19,12 +19,12 @@
 #include "utils/thread/ThreadUtils.hpp"
 #include "utils/time/Time.hpp"
 
-int32_t App::init(const AppConfig& cfg) {
-	std::int32_t rc = EXIT_FAILURE;
+bool App::init(const AppConfig& cfg) {
+	bool rc = false;
 	do {
-	    if(EXIT_SUCCESS != m_Loader.init()) {
+	    if(!m_Loader.init()) {
 	        std::cerr << "m_Loader.init() failed." << std::endl;
-	        return EXIT_FAILURE;
+	        return false;
 	    }
 		if(!m_Renderer.init(cfg.m_WindowCfg)) {
 			std::cerr << "m_Renderer.init() failed." << std::endl;
@@ -34,76 +34,71 @@ int32_t App::init(const AppConfig& cfg) {
 			std::cerr << "m_ImageContainer.init() failed." << std::endl;
 	        break;
 		}
-		if(EXIT_SUCCESS != m_Game.init(cfg.m_GameCfg)) {
+		if(!m_Game.init(cfg.m_GameCfg)) {
 			std::cerr << "m_Game.init() failed." << std::endl;
 	        break;
 		}
-		rc = EXIT_SUCCESS;
+		rc = true;
 	} while(0);
 	return rc;
 }
 
-int32_t App::start() {
+bool App::start() {
 	return mainLoop();
 }
 
-int32_t App::mainLoop() {
-	std::int32_t rc = EXIT_SUCCESS;
+bool App::mainLoop() {
 	Time time;
 	while(!m_InputEvents.isExitRequest()) {
 		time.start();
-		rc = processFrame();
-		if(EXIT_SUCCESS != rc) {
+		if(!processFrame()) {
 	    	std::cerr << "processFrame() failed." << std::endl;
-			break;
+	    	return false;
 		}
-		rc = drawFrame();
-	    if(EXIT_SUCCESS != rc) {
+	    if(!drawFrame()) {
 	    	std::cerr << "drawFrame() failed." << std::endl;
-			break;
+	    	return false;
 	    }
 	    limitFPS(time.toTime<Time::Microseconds_t>());
 	}
-	return rc;
+	return true;
 }
 
-int32_t App::processFrame() {
-	int32_t rc = EXIT_SUCCESS;
+bool App::processFrame() {
     while(m_InputEvents.pollEvent()) {
     	bool exit;
-    	rc = m_Game.events(m_InputEvents, exit);
-    	if(EXIT_SUCCESS != rc) {
+    	if(!m_Game.events(m_InputEvents, exit)) {
 	    	std::cerr << "m_Game.events() failed." << std::endl;
-	    	break;
+	    	return false;
     	}
     	if(exit) {
     		m_InputEvents.setExitRequest();
     		break;
     	}
     }
-	return rc;
+	return true;
 }
 
-int32_t App::drawFrame() {
+bool App::drawFrame() {
 	std::vector<DrawingParams_t> buffer;
 	m_Game.draw(buffer);
 	if(EXIT_SUCCESS != m_Renderer.clearScreen()) {
 		std::cerr << "m_Renderer.clearScreen() failed." << std::endl;
-		return EXIT_FAILURE;
+		return false;
 	}
 	for(auto e : buffer) {
 		auto p_data = m_ImageContainer.get(e.m_ResrId);
 		if(nullptr == p_data) {
 			std::cerr << "m_ImageContainer.get failed." << std::endl;
-			return EXIT_FAILURE;
+			return false;
 		}
-		if(EXIT_SUCCESS != m_Renderer.copy(p_data->m_Texture.get(), e.m_SrcRect, e.m_DstRect)) {
+		if(!m_Renderer.copy(p_data->m_Texture.get(), e.m_SrcRect, e.m_DstRect)) {
 			std::cerr << "m_Renderer.copy() failed." << std::endl;
-			return EXIT_FAILURE;
+			return false;
 		}
 	}
 	m_Renderer.finishFrame();
-	return EXIT_SUCCESS;
+	return true;
 }
 
 void App::limitFPS(int64_t elapsed_us) {

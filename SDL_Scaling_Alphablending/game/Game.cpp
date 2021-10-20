@@ -13,57 +13,55 @@
 
 #include "utils/drawing/DrawParams.hpp"
 
-int32_t Game::init(const GameConfig::Config_t & cfg) {
+bool Game::init(const GameConfig::Config_t & cfg) {
 	if(!loadKeys(cfg.m_Keys)) {
 		std::cerr << "loadKeys() failed." << std::endl;
-		return EXIT_FAILURE;
+		return false;
 	}
 	if(!loadImgDimenstion(cfg.m_ImgDimention)) {
 		std::cerr << "loadImgDimenstion() failed." << std::endl;
-		return EXIT_FAILURE;
+		return false;
 	}
-	return EXIT_SUCCESS;
+	return true;
 }
 
-int32_t Game::events(const InputEvent & event, bool & exit) {
+bool Game::events(const InputEvent & event, bool & exit) {
 	const auto it = m_Keys.find(event.m_Key);
 	if(m_Keys.end() != it) {
 		setKeyRequest(TouchEvent::KEYBOARD_PRESS == event.m_Type, it->second);
 	}
 	exit = exitRequest();
-	return EXIT_SUCCESS;
+	return true;
 }
 
-int32_t Game::draw(std::vector<DrawingParams_t> &out) {
+bool Game::draw(std::vector<DrawingParams_t> &out) {
 	DrawingParams_t data;
 	if(GameConfig::KEY_UP_MASK & m_KeysMask) {
 		data.m_ResrId = UP_IMG;
 		out.push_back(data);
-		return EXIT_SUCCESS;
+		return true;
 	}
 	if(GameConfig::KEY_DOWN_MASK & m_KeysMask) {
 		data.m_ResrId = DOWN_IMG;
 		out.push_back(data);
-		return EXIT_SUCCESS;
+		return true;
 	}
 	if(GameConfig::KEY_LEFT_MASK & m_KeysMask) {
 		data.m_ResrId = LEFT_IMG;
 		out.push_back(data);
-		return EXIT_SUCCESS;
+		return true;
 	}
 	if(GameConfig::KEY_RIGHT_MASK & m_KeysMask) {
 		data.m_ResrId = RIGHT_IMG;
 		out.push_back(data);
-		return EXIT_SUCCESS;
+		return true;
 	}
-
 	data.m_ResrId = IDLE_IMG;
 	out.push_back(data);
 	data.m_ResrId = L2_IMG;
-	data.m_DstRect = Rectangle(0, 0, m_ImgDimetion[L2_IMG].m_W, m_ImgDimetion[L2_IMG].m_H);
+	data.m_DstRect = getImgDimension(L2_IMG);
 	out.push_back(data);
-
-	return EXIT_SUCCESS;
+	return true;
 }
 
 bool Game::loadImgDimenstion(const GameConfig::ImgDimetionRes_t & cfg) {
@@ -90,3 +88,10 @@ void Game::setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask) {
 	}
 }
 
+Rectangle Game::getImgDimension(int32_t id) const {
+	auto dim = m_ImgDimetion[id];
+	if(dim.m_H && dim.m_W) {
+		return Rectangle(0, 0, dim.m_W, dim.m_H);
+	}
+	return Rectangle::UNDEFINED;
+}

@@ -7,7 +7,6 @@
 
 #include "Renderer.hpp"
 
-#include <cstdlib>
 #include <iostream>
 
 #include <SDL_render.h>
@@ -60,7 +59,7 @@ void Renderer::finishFrame() {
 	SDL_RenderPresent(m_Renderer.get());
 }
 
-int32_t Renderer::copy(SDL_Texture * p_texture, const Rectangle &src_rec, const Rectangle &dst_rec) {
+bool Renderer::copy(SDL_Texture * p_texture, const Rectangle &src_rec, const Rectangle &dst_rec) {
 	const SDL_Rect * p_srcrect = nullptr;
 	const SDL_Rect * p_dstrect = nullptr;
 	auto src_rect = SDL_Rect {};
@@ -75,8 +74,8 @@ int32_t Renderer::copy(SDL_Texture * p_texture, const Rectangle &src_rec, const 
 	}
 	if(EXIT_SUCCESS != SDL_RenderCopy(m_Renderer.get(), p_texture, p_srcrect, p_dstrect)) {
 		SDLHelper::print_SDL_Error("SDL_RenderCopy() failed.");
-		return EXIT_FAILURE;
+		return false;
 	}
-	return EXIT_SUCCESS;
+	return true;
 
 }

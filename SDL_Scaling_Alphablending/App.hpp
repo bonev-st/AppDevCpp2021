@@ -23,8 +23,8 @@ struct AppConfig;
 
 class App : private NoCopy {
 public:
-	int32_t init(const AppConfig& cfg);
-	int32_t start();
+	bool init(const AppConfig& cfg);
+	bool start();
 
 private:
 	SDLLoader m_Loader;
@@ -33,9 +33,9 @@ private:
 	Renderer m_Renderer;
 	Game m_Game;
 
-	int32_t mainLoop();
-	int32_t drawFrame();
-	int32_t processFrame();
+	bool mainLoop();
+	bool drawFrame();
+	bool processFrame();
 
 	void limitFPS(int64_t elapsed_us);
 };
