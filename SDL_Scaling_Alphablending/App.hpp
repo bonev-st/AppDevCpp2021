@@ -29,8 +29,8 @@ public:
 private:
 	SDLLoader m_Loader;
 	InputEvent m_InputEvents;
-	ImageContainer m_ImageContainer;
 	Renderer m_Renderer;
+	ImageContainer m_ImageContainer;
 	Game m_Game;
 
 	bool mainLoop();
