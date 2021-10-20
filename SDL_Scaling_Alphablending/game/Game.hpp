@@ -11,27 +11,26 @@
 #include <array>
 #include <vector>
 
-#include "sdl_utils/Texture.hpp"
-#include "game/GameConfig.hpp"
+#include "config/GameConfig.hpp"
+#include "common/CommonDefines.hpp"
 
 class InputEvent;
-class SDL_Renderer;
+struct DrawingParams_t;
 
 class Game {
 public:
-	int32_t init(const GameBase::GameConfig& cfg, SDL_Renderer* renderer);
+	int32_t init(const GameConfig::Config_t & cfg);
 	int32_t events(const InputEvent & event, bool & exit);
-	int32_t draw(std::vector<Texture::Drawing_t> &out);
+	int32_t draw(std::vector<DrawingParams_t> &out);
 
 private:
-	std::array<std::shared_ptr<Texture::Texture_t>, GameBase::NUMB_IMG> m_Image;
-	GameBase::KeyRes_t Keys;
+	std::array<GameConfig::ImgDimetion_t, NUMB_IMG> m_ImgDimetion{};
+	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;
-	SDL_Renderer* m_Renderer = nullptr;
 
-	int32_t loadResources(const GameBase::ImgRes_t & cfg);
-	int32_t loadKeys(const GameBase::KeyRes_t & cfg);
-	void setKeyRequest(bool pressed, GameBase::KeyMask_t key_mask);
+	bool loadKeys(const GameConfig::KeyRes_t & cfg);
+	bool loadImgDimenstion(const GameConfig::ImgDimetionRes_t & cfg);
+	void setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask);
 	bool exitRequest() const;
 };
 

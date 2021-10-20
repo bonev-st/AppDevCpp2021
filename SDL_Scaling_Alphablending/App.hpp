@@ -15,6 +15,7 @@
 #include "sdl_utils/SDLLoader.hpp"
 #include "sdl_utils/InputEvent.hpp"
 #include "sdl_utils/Renderer.hpp"
+#include "sdl_utils/containers/ImageContainer.hpp"
 
 #include "game/Game.hpp"
 
@@ -28,6 +29,7 @@ public:
 private:
 	SDLLoader m_Loader;
 	InputEvent m_InputEvents;
+	ImageContainer m_ImageContainer;
 	Renderer m_Renderer;
 	Game m_Game;
 

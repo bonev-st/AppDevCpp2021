@@ -31,13 +31,13 @@ enum WindowFlags_t {
 	WINDOW_DESKTOP = 0x00001000,		// SDL_WINDOW_DESKTOP
 };
 
-struct MainWindowCfg_t {
-	std::string Name = "";
-	Rectangle Rect = Rectangle::UNDEFINED;
-	WindowFlags_t Flags = WINDOW_NONE;
+struct Config_t {
+	std::string m_Name = "";
+	Rectangle m_Rect = Rectangle::UNDEFINED;
+	WindowFlags_t m_Flags = WINDOW_NONE;
 };
 
-std::shared_ptr<MainWindow_t> createMainWindow(const MainWindowCfg_t &cfg);
+std::shared_ptr<MainWindow_t> createMainWindow(const Config_t &cfg);
 
 }
 

@@ -5,20 +5,31 @@ project(sdl_scaling_alpha LANGUAGES CXX)
 #generate project binary
 add_executable(
 	${PROJECT_NAME}
+	${CMAKE_CURRENT_SOURCE_DIR}/common/CommonDefines.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfig.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfigLoader.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfigLoader.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/config/GameConfig.hpp	
+	${CMAKE_CURRENT_SOURCE_DIR}/config/ResourcesConfig.hpp	
+	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.hpp	
+	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/containers/ImageContainer.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/containers/ImageContainer.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/MainWindow.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/MainWindow.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Renderer.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Renderer.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/SDLHelper.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/SDLHelper.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/SDLLoader.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/SDLLoader.cpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/MainWindow.hpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/MainWindow.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Texture.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Texture.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Timer.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Timer.cpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.hpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.cpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Renderer.hpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/Renderer.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/DrawParams.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Point.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Point.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Rectangle.hpp		
@@ -30,12 +41,6 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/time/Time.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/NoCopy.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/Destroy.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfig.hpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfigLoader.hpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfigLoader.cpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/game/GameConfig.hpp		
-	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.hpp	
-	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/App.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/App.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp

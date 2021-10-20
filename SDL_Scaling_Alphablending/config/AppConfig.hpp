@@ -9,11 +9,13 @@
 #define CONFIG_APPCONFIG_HPP_
 
 #include "sdl_utils/MainWindow.hpp"
-#include "game/GameConfig.hpp"
+#include "config/ResourcesConfig.hpp"
+#include "config/GameConfig.hpp"
 
 struct AppConfig {
-	MainWindow::MainWindowCfg_t WindowCfg;
-	GameBase::GameConfig GameCfg;
+	MainWindow::Config_t m_WindowCfg;
+	ResourcesConfig::Config_t m_ResourcesCfg;
+	GameConfig::Config_t m_GameCfg;
 };
 
 

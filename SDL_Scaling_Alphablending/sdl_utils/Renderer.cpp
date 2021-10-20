@@ -12,6 +12,7 @@
 
 #include <SDL_render.h>
 #include <SDL_pixels.h>
+#include <SDL_hints.h>
 
 #include "sdl_utils/SDLHelper.hpp"
 
@@ -19,11 +20,15 @@
 #include "utils/drawing/Rectangle.hpp"
 
 
-int32_t Renderer::init(const MainWindow::MainWindowCfg_t &cfg) {
+bool Renderer::init(const MainWindow::Config_t &cfg) {
 	m_AppWindow = MainWindow::createMainWindow(cfg);
 	if(nullptr == m_AppWindow) {
 		std::cerr << "MainWindow::createMainWindow() failed." << std::endl;
-		return EXIT_FAILURE;
+		return false;
+	}
+	if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+		SDLHelper::print_SDL_Error("SDL_CreateRenderer() failed.");
+		return false;
 	}
 	constexpr auto UNSPEC_DRIVER_ID = -1;
 	m_Renderer = std::shared_ptr<SDL_Renderer>(SDL_CreateRenderer(m_AppWindow->m_Window.get()
@@ -34,13 +39,13 @@ int32_t Renderer::init(const MainWindow::MainWindowCfg_t &cfg) {
 #endif
 	if (nullptr == m_Renderer) {
 		SDLHelper::print_SDL_Error("SDL_CreateRenderer() failed.");
-		return EXIT_FAILURE;
+		return false;
 	}
 	if(EXIT_SUCCESS != SDL_SetRenderDrawColor(m_Renderer.get(), 0, 0, 0, SDL_ALPHA_OPAQUE)) {
 		SDLHelper::print_SDL_Error("SDL_SetRenderDrawColor() failed.");
-		return EXIT_FAILURE;
+		return false;
 	}
-	return EXIT_SUCCESS;
+	return true;
 }
 
 int32_t Renderer::clearScreen() {

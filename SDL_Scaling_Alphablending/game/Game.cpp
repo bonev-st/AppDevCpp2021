@@ -9,88 +9,80 @@
 
 #include <iostream>
 
-#include "sdl_utils/Texture.hpp"
 #include "sdl_utils/InputEvent.hpp"
 
-int32_t Game::init(const GameBase::GameConfig& cfg, SDL_Renderer* renderer) {
-	m_Renderer = renderer;
-	if(EXIT_SUCCESS != loadResources(cfg.ImgPath)) {
-		std::cerr << "loadResources() failed." << std::endl;
+#include "utils/drawing/DrawParams.hpp"
+
+int32_t Game::init(const GameConfig::Config_t & cfg) {
+	if(!loadKeys(cfg.m_Keys)) {
+		std::cerr << "loadKeys() failed." << std::endl;
 		return EXIT_FAILURE;
 	}
-	if(EXIT_SUCCESS != loadKeys(cfg.Keys)) {
-		std::cerr << "loadKeys() failed." << std::endl;
+	if(!loadImgDimenstion(cfg.m_ImgDimention)) {
+		std::cerr << "loadImgDimenstion() failed." << std::endl;
 		return EXIT_FAILURE;
 	}
 	return EXIT_SUCCESS;
 }
 
 int32_t Game::events(const InputEvent & event, bool & exit) {
-	const auto it = Keys.find(event.m_Key);
-	if(Keys.end() != it) {
+	const auto it = m_Keys.find(event.m_Key);
+	if(m_Keys.end() != it) {
 		setKeyRequest(TouchEvent::KEYBOARD_PRESS == event.m_Type, it->second);
 	}
 	exit = exitRequest();
 	return EXIT_SUCCESS;
 }
 
-int32_t Game::draw(std::vector<Texture::Drawing_t> &out) {
-	 auto data = Texture::Drawing_t {
-		.m_Surface = nullptr,
-		.m_SrcRect = Rectangle::UNDEFINED,
-		.m_DstRect = Rectangle::UNDEFINED
-	};
-	if(GameBase::KEY_UP_MASK & m_KeysMask) {
-		data.m_Surface = m_Image[GameBase::UP_IMG].get()->m_Texture.get();
+int32_t Game::draw(std::vector<DrawingParams_t> &out) {
+	DrawingParams_t data;
+	if(GameConfig::KEY_UP_MASK & m_KeysMask) {
+		data.m_ResrId = UP_IMG;
 		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
-	if(GameBase::KEY_DOWN_MASK & m_KeysMask) {
-		data.m_Surface = m_Image[GameBase::DOWN_IMG].get()->m_Texture.get();
+	if(GameConfig::KEY_DOWN_MASK & m_KeysMask) {
+		data.m_ResrId = DOWN_IMG;
 		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
-	if(GameBase::KEY_LEFT_MASK & m_KeysMask) {
-		data.m_Surface = m_Image[GameBase::LEFT_IMG].get()->m_Texture.get();
+	if(GameConfig::KEY_LEFT_MASK & m_KeysMask) {
+		data.m_ResrId = LEFT_IMG;
 		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
-	if(GameBase::KEY_RIGHT_MASK & m_KeysMask) {
-		data.m_Surface = m_Image[GameBase::RIGHT_IMG].get()->m_Texture.get();
+	if(GameConfig::KEY_RIGHT_MASK & m_KeysMask) {
+		data.m_ResrId = RIGHT_IMG;
 		out.push_back(data);
 		return EXIT_SUCCESS;
 	}
-	data.m_Surface = m_Image[GameBase::IDLE_IMG].get()->m_Texture.get();
+
+	data.m_ResrId = IDLE_IMG;
 	out.push_back(data);
-	data.m_Surface = m_Image[GameBase::L2_IMG].get()->m_Texture.get();
-	data.m_DstRect = Rectangle {0, 0,
-		m_Image[GameBase::L2_IMG].get()->m_W,
-		m_Image[GameBase::L2_IMG].get()->m_H};
+	data.m_ResrId = L2_IMG;
+	data.m_DstRect = Rectangle(0, 0, m_ImgDimetion[L2_IMG].m_W, m_ImgDimetion[L2_IMG].m_H);
 	out.push_back(data);
+
 	return EXIT_SUCCESS;
 }
 
-int32_t Game::loadResources(const GameBase::ImgRes_t & cfg) {
+bool Game::loadImgDimenstion(const GameConfig::ImgDimetionRes_t & cfg) {
 	for(const auto & e : cfg) {
-		m_Image[e.first] = Texture::createTextureFromFile(e.second, m_Renderer);
-		if(nullptr == m_Image[e.first]) {
-			std::cerr << "Texture::createSurfaceFromFile() failed." << std::endl;
-	        return EXIT_FAILURE;
-		}
+		m_ImgDimetion[e.first] = e.second;
 	}
-	return EXIT_SUCCESS;
+	return true;
 }
 
-int32_t Game::loadKeys(const GameBase::KeyRes_t & cfg) {
-	Keys = cfg;
-	return EXIT_SUCCESS;
+bool Game::loadKeys(const GameConfig::KeyRes_t & cfg) {
+	m_Keys = cfg;
+	return true;
 }
 
 bool Game::exitRequest() const {
-	return !!(GameBase::KEY_EXIT_MASK & m_KeysMask);
+	return !!(GameConfig::KEY_EXIT_MASK & m_KeysMask);
 }
 
-void Game::setKeyRequest(bool pressed, GameBase::KeyMask_t key_mask) {
+void Game::setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask) {
 	if(pressed) {
 		m_KeysMask |=  key_mask;
 	} else {

@@ -15,6 +15,7 @@
 #include "sdl_utils/SDLHelper.hpp"
 #include "sdl_utils/Timer.hpp"
 
+#include "utils/drawing/DrawParams.hpp"
 #include "utils/thread/ThreadUtils.hpp"
 #include "utils/time/Time.hpp"
 
@@ -25,11 +26,15 @@ int32_t App::init(const AppConfig& cfg) {
 	        std::cerr << "m_Loader.init() failed." << std::endl;
 	        return EXIT_FAILURE;
 	    }
-		if(EXIT_SUCCESS != m_Renderer.init(cfg.WindowCfg)) {
+		if(!m_Renderer.init(cfg.m_WindowCfg)) {
 			std::cerr << "m_Renderer.init() failed." << std::endl;
 	        break;
 		}
-		if(EXIT_SUCCESS != m_Game.init(cfg.GameCfg, m_Renderer.get())) {
+		if(!m_ImageContainer.init(cfg.m_ResourcesCfg.m_ImgPath, m_Renderer.get())) {
+			std::cerr << "m_ImageContainer.init() failed." << std::endl;
+	        break;
+		}
+		if(EXIT_SUCCESS != m_Game.init(cfg.m_GameCfg)) {
 			std::cerr << "m_Game.init() failed." << std::endl;
 	        break;
 		}
@@ -80,14 +85,19 @@ int32_t App::processFrame() {
 }
 
 int32_t App::drawFrame() {
-	std::vector<Texture::Drawing_t> buffer;
+	std::vector<DrawingParams_t> buffer;
 	m_Game.draw(buffer);
 	if(EXIT_SUCCESS != m_Renderer.clearScreen()) {
 		std::cerr << "m_Renderer.clearScreen() failed." << std::endl;
 		return EXIT_FAILURE;
 	}
 	for(auto e : buffer) {
-		if(EXIT_SUCCESS != m_Renderer.copy(e.m_Surface, e.m_SrcRect, e.m_DstRect)) {
+		auto p_data = m_ImageContainer.get(e.m_ResrId);
+		if(nullptr == p_data) {
+			std::cerr << "m_ImageContainer.get failed." << std::endl;
+			return EXIT_FAILURE;
+		}
+		if(EXIT_SUCCESS != m_Renderer.copy(p_data->m_Texture.get(), e.m_SrcRect, e.m_DstRect)) {
 			std::cerr << "m_Renderer.copy() failed." << std::endl;
 			return EXIT_FAILURE;
 		}

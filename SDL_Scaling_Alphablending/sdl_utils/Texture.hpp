@@ -25,12 +25,6 @@ struct Texture_t {
 	int32_t m_H;
 };
 
-struct Drawing_t {
-	SDL_Texture * m_Surface;
-	Rectangle m_SrcRect;
-	Rectangle m_DstRect;
-};
-
 std::shared_ptr<SDL_Surface> createSurfaceFromFile(const std::string &fname);
 std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname, SDL_Renderer * p_renderer);
 std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface, SDL_Renderer * p_renderer);
