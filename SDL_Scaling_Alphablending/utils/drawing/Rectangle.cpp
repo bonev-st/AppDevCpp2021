@@ -5,6 +5,7 @@
  *      Author: stanimir
  */
 
+#include <cmath>
 #include "Rectangle.hpp"
 
 const Rectangle Rectangle::ZERO(0, 0, 0, 0);
@@ -30,3 +31,9 @@ bool Rectangle::operator == (const Rectangle& other) const {
 		&& (other.m_H == m_H)
 		;
 }
+
+void Rectangle::scale(double scaling_factor) {
+	m_W = static_cast<int32_t>(std::round(m_W * scaling_factor));
+	m_H = static_cast<int32_t>(std::round(m_H * scaling_factor));
+}
+

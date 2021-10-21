@@ -10,6 +10,7 @@
 
 #include <cstdint>
 
+namespace TextureId {
 enum ImgId_t : uint32_t {
 	IDLE_IMG,
 	UP_IMG,
@@ -19,5 +20,6 @@ enum ImgId_t : uint32_t {
 	L2_IMG,
 	NUMB_IMG
 };
+}
 
 #endif /* COMMON_COMMONDEFINES_HPP_ */

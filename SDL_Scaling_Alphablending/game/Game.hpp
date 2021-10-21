@@ -13,19 +13,21 @@
 
 #include "config/GameConfig.hpp"
 #include "common/CommonDefines.hpp"
+#include "utils/drawing/DrawParams.hpp"
 
 class InputEvent;
 class Rectangle;
-struct DrawingParams_t;
 
 class Game {
 public:
 	bool init(const GameConfig::Config_t & cfg);
 	bool events(const InputEvent & event, bool & exit);
-	bool draw(std::vector<DrawingParams_t> &out);
+	bool draw(std::vector<DrawParams_t> &out);
 
 private:
-	std::array<GameConfig::ImgDimetion_t, NUMB_IMG> m_ImgDimetion{};
+	static const int32_t MOVE_STEP = 1;
+	std::array<DrawParams_t, TextureId::NUMB_IMG> m_Img;
+	std::array<GameConfig::ImgDimetion_t, TextureId::NUMB_IMG> m_ImgDimention;
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;
 
@@ -33,7 +35,6 @@ private:
 	bool loadImgDimenstion(const GameConfig::ImgDimetionRes_t & cfg);
 	void setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask);
 	bool exitRequest() const;
-	Rectangle getImgDimension(int32_t id) const;
 };
 
 #endif /* GAME_GAME_HPP_ */

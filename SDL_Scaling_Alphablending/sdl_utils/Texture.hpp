@@ -12,6 +12,7 @@
 #include <memory>
 
 #include "utils/drawing/Rectangle.hpp"
+#include "utils/drawing/DrawParams.hpp"
 
 struct SDL_Surface;
 struct SDL_Texture;
@@ -26,8 +27,9 @@ struct Texture_t {
 };
 
 std::shared_ptr<SDL_Surface> createSurfaceFromFile(const std::string &fname);
-std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname, SDL_Renderer * p_renderer);
-std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface, SDL_Renderer * p_renderer);
+std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname, SDL_Renderer * p_renderer, BlendMode_t blend_mode);
+std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface, SDL_Renderer * p_renderer, BlendMode_t blend_mode);
+bool setAlphaTexture(const Texture_t *texture, int32_t alpha);
 
 };
 

@@ -22,8 +22,6 @@ public:
 
 private:
 	std::unordered_map<uint32_t, std::shared_ptr<Texture::Texture_t>> m_Container;
-
-	bool load(SDL_Renderer *p_renderer, uint32_t id, const std::string &fname);
 };
 
 #endif /* SDL_UTILS_CONTAINERS_IMAGECONTAINER_HPP_ */

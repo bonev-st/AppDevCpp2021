@@ -13,23 +13,13 @@
 
 bool ImageContainer::init(const ResourcesConfig::ImgRes_t & cfg, SDL_Renderer *p_renderer) {
 	for(const auto & e: cfg) {
-		m_Container[e.first] = Texture::createTextureFromFile(e.second, p_renderer);
+		m_Container[e.first] = Texture::createTextureFromFile(e.second, p_renderer, BlendMode_t::BLEND);
 		if(nullptr == m_Container[e.first]) {
 			std::cerr << "Texture::createSurfaceFromFile() failed." << std::endl;
 	        return false;
 		}
 	}
 	return true;
-}
-
-bool ImageContainer::load(SDL_Renderer *p_renderer, uint32_t id, const std::string &fname) {
-	auto texture = Texture::createTextureFromFile(fname, p_renderer);
-	m_Container[id] = texture;
-	if(nullptr == texture) {
-		std::cerr << "Texture::createTextureFromFile() failed." << std::endl;
-        return false;
-	}
-    return true;
 }
 
 const Texture::Texture_t* ImageContainer::get(uint32_t id) const {

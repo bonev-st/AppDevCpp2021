@@ -34,39 +34,70 @@ bool Game::events(const InputEvent & event, bool & exit) {
 	return true;
 }
 
-bool Game::draw(std::vector<DrawingParams_t> &out) {
-	DrawingParams_t data;
+bool Game::draw(std::vector<DrawParams_t> &out) {
 	if(GameConfig::KEY_UP_MASK & m_KeysMask) {
-		data.m_ResrId = UP_IMG;
-		out.push_back(data);
+		out.push_back(m_Img[TextureId::UP_IMG]);
 		return true;
 	}
 	if(GameConfig::KEY_DOWN_MASK & m_KeysMask) {
-		data.m_ResrId = DOWN_IMG;
-		out.push_back(data);
+		out.push_back(m_Img[TextureId::DOWN_IMG]);
 		return true;
 	}
 	if(GameConfig::KEY_LEFT_MASK & m_KeysMask) {
-		data.m_ResrId = LEFT_IMG;
-		out.push_back(data);
+		out.push_back(m_Img[TextureId::LEFT_IMG]);
 		return true;
 	}
 	if(GameConfig::KEY_RIGHT_MASK & m_KeysMask) {
-		data.m_ResrId = RIGHT_IMG;
-		out.push_back(data);
+		out.push_back(m_Img[TextureId::RIGHT_IMG]);
 		return true;
 	}
-	data.m_ResrId = IDLE_IMG;
-	out.push_back(data);
-	data.m_ResrId = L2_IMG;
-	data.m_DstRect = getImgDimension(L2_IMG);
-	out.push_back(data);
+
+	if(GameConfig::KEY_MOVE_UP_MASK & m_KeysMask) {
+		m_Img[TextureId::IDLE_IMG].m_DstRect.m_Pos.m_Y -= MOVE_STEP;
+	}
+	if(GameConfig::KEY_MOVE_DOWN_MASK & m_KeysMask) {
+		m_Img[TextureId::IDLE_IMG].m_DstRect.m_Pos.m_Y += MOVE_STEP;
+	}
+	if(GameConfig::KEY_MOVE_LEFT_MASK & m_KeysMask) {
+		m_Img[TextureId::IDLE_IMG].m_DstRect.m_Pos.m_X -= MOVE_STEP;
+	}
+	if(GameConfig::KEY_MOVE_RIGHT_MASK & m_KeysMask) {
+		m_Img[TextureId::IDLE_IMG].m_DstRect.m_Pos.m_X += MOVE_STEP;
+	}
+	if(GameConfig::KEY_ZOOM_UP_MASK & m_KeysMask) {
+		m_Img[TextureId::IDLE_IMG].m_DstRect.scale(1.01);
+	}
+	if(GameConfig::KEY_ZOOM_DOWN_MASK & m_KeysMask) {
+		m_Img[TextureId::IDLE_IMG].m_DstRect.scale(0.99);
+	}
+	if(GameConfig::KEY_OPACITY_UP_MASK & m_KeysMask) {
+		auto & opacity = m_Img[TextureId::IDLE_IMG].m_Opacity;
+		opacity += 1;
+		if(FULL_OPACITY < opacity) {
+			opacity = FULL_OPACITY;
+		}
+	}
+	if(GameConfig::KEY_OPACITY_DOWN_MASK & m_KeysMask) {
+		auto & opacity = m_Img[TextureId::IDLE_IMG].m_Opacity;
+		opacity -= 1;
+		if(ZERO_OPACITY > opacity) {
+			opacity = ZERO_OPACITY;
+		}
+	}
+	out.push_back(m_Img[TextureId::IDLE_IMG]);
+	out.push_back(m_Img[TextureId::L2_IMG]);
 	return true;
 }
 
 bool Game::loadImgDimenstion(const GameConfig::ImgDimetionRes_t & cfg) {
 	for(const auto & e : cfg) {
-		m_ImgDimetion[e.first] = e.second;
+		const auto & dim = e.second;
+		const auto id = e.first;
+		m_ImgDimention[id] = dim;
+		m_Img[id].m_ResrId = id;
+		if(dim.m_H && dim.m_W) {
+			m_Img[id].m_DstRect = m_Img[id].m_SrcRect = Rectangle(0, 0, dim.m_W, dim.m_H);
+		}
 	}
 	return true;
 }
@@ -86,12 +117,4 @@ void Game::setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask) {
 	} else {
 		m_KeysMask &= ~key_mask;
 	}
-}
-
-Rectangle Game::getImgDimension(int32_t id) const {
-	auto dim = m_ImgDimetion[id];
-	if(dim.m_H && dim.m_W) {
-		return Rectangle(0, 0, dim.m_W, dim.m_H);
-	}
-	return Rectangle::UNDEFINED;
 }

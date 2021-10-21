@@ -80,7 +80,7 @@ bool App::processFrame() {
 }
 
 bool App::drawFrame() {
-	std::vector<DrawingParams_t> buffer;
+	std::vector<DrawParams_t> buffer;
 	m_Game.draw(buffer);
 	if(EXIT_SUCCESS != m_Renderer.clearScreen()) {
 		std::cerr << "m_Renderer.clearScreen() failed." << std::endl;
@@ -89,12 +89,28 @@ bool App::drawFrame() {
 	for(auto e : buffer) {
 		auto p_data = m_ImageContainer.get(e.m_ResrId);
 		if(nullptr == p_data) {
-			std::cerr << "m_ImageContainer.get failed." << std::endl;
+			std::cerr << "m_ImageContainer.get failed, for id " << e.m_ResrId  << std::endl;
 			return false;
 		}
-		if(!m_Renderer.copy(p_data->m_Texture.get(), e.m_SrcRect, e.m_DstRect)) {
-			std::cerr << "m_Renderer.copy() failed." << std::endl;
-			return false;
+		auto p_texture = p_data->m_Texture.get();
+		if (FULL_OPACITY == e.m_Opacity) {
+			if(!m_Renderer.copy(p_texture, e.m_SrcRect, e.m_DstRect)) {
+				std::cerr << "m_Renderer.copy() failed, for id " << e.m_ResrId  << std::endl;
+				return false;
+			}
+		} else {
+			if(!Texture::setAlphaTexture(p_data, e.m_Opacity)) {
+				std::cerr << "setAlphaTexture() failed, for id " << e.m_ResrId << std::endl;
+				return false;
+			}
+			if(!m_Renderer.copy(p_texture, e.m_SrcRect, e.m_DstRect)) {
+				std::cerr << "m_Renderer.copy() failed, for id " << e.m_ResrId << std::endl;
+				return false;
+			}
+			if(!Texture::setAlphaTexture(p_data, FULL_OPACITY)) {
+				std::cerr << "setAlphaTexture(FULL_OPACITY) failed, for id " << e.m_ResrId << std::endl;
+				return false;
+			}
 		}
 	}
 	m_Renderer.finishFrame();

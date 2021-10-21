@@ -14,7 +14,7 @@
 
 namespace ResourcesConfig {
 
-typedef std::unordered_map<ImgId_t, std::string> ImgRes_t;
+typedef std::unordered_map<TextureId::ImgId_t, std::string> ImgRes_t;
 
 struct Config_t {
 	ImgRes_t m_ImgPath;

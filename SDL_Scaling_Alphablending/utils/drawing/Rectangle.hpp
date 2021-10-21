@@ -28,6 +28,7 @@ public:
 		return !operator == (other);
 	}
 
+	void scale(double scaling_factor);
 	static const Rectangle ZERO;
 	static const Rectangle UNDEFINED;
 };
