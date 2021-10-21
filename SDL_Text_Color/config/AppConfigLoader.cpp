@@ -25,12 +25,12 @@ static void populateAppWindowCfg(MainWindow::Config_t &cfg) {
 }
 
 static void populateResourcesCfg(ResourcesConfig::Config_t &cfg) {
-	cfg.m_ImgPath[TextureId::IDLE_IMG]	= "resources/press_keys.png";
-	cfg.m_ImgPath[TextureId::UP_IMG]	= "resources/up.png";
-	cfg.m_ImgPath[TextureId::DOWN_IMG]	= "resources/down.png";
-	cfg.m_ImgPath[TextureId::LEFT_IMG]	= "resources/left.png";
-	cfg.m_ImgPath[TextureId::RIGHT_IMG]	= "resources/right.png";
-	cfg.m_ImgPath[TextureId::L2_IMG]	= "resources/layer_2.png";
+	cfg.m_ImgPath[TextureId::IDLE_IMG]	= "resources/images/press_keys.png";
+	cfg.m_ImgPath[TextureId::UP_IMG]	= "resources/images/up.png";
+	cfg.m_ImgPath[TextureId::DOWN_IMG]	= "resources/images/down.png";
+	cfg.m_ImgPath[TextureId::LEFT_IMG]	= "resources/images/left.png";
+	cfg.m_ImgPath[TextureId::RIGHT_IMG]	= "resources/images/right.png";
+	cfg.m_ImgPath[TextureId::L2_IMG]	= "resources/images/layer_2.png";
 }
 
 static void populateGameCfg(GameConfig::Config_t &cfg) {

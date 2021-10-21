@@ -32,12 +32,16 @@ private:
 	Renderer m_Renderer;
 	ImageContainer m_ImageContainer;
 	Game m_Game;
+	std::shared_ptr<Texture::Texture_t>  m_Text;
 
 	bool mainLoop();
 	bool drawFrame();
 	bool processFrame();
 
 	void limitFPS(int64_t elapsed_us);
+
+	void load_text();
+	void show_text();
 };
 
 #endif /* APP_HPP_ */

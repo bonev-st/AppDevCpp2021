@@ -19,6 +19,12 @@
 #include "utils/thread/ThreadUtils.hpp"
 #include "utils/time/Time.hpp"
 
+#include "SDL_ttf.h"
+
+TTF_Font * gFont = nullptr;
+int32_t gTextWidth = 0;
+int32_t gTextHeight = 0;
+
 bool App::init(const AppConfig& cfg) {
 	bool rc = false;
 	do {
@@ -38,6 +44,7 @@ bool App::init(const AppConfig& cfg) {
 			std::cerr << "m_Game.init() failed." << std::endl;
 	        break;
 		}
+		load_text();
 		rc = true;
 	} while(0);
 	return rc;
@@ -113,6 +120,7 @@ bool App::drawFrame() {
 			}
 		}
 	}
+	show_text();
 	m_Renderer.finishFrame();
 	return true;
 }
@@ -122,5 +130,28 @@ void App::limitFPS(int64_t elapsed_us) {
 	constexpr int64_t FRAME_DURATION_US = (int64_t)1E6/MAX_FRAMES_PER_SEC;
 	if(FRAME_DURATION_US > elapsed_us) {
 		ThreadUtils::sleep_usec(FRAME_DURATION_US - elapsed_us);
+	}
+}
+
+void App::load_text() {
+	gFont = TTF_OpenFont("resources/fonts/AngelineVintage.ttf", 80);
+	if(nullptr == gFont) {
+		SDLHelper::print_IMG_Error("TTF_OpenFont() fault.");
+		return;
+	}
+	SDL_Color color = {.r = 127, .g = 127, .b = 127, .a = 255};
+	SDL_Surface *textSurface = TTF_RenderText_Solid(gFont, "Hello world", color);
+	gTextWidth = textSurface->w;
+	gTextHeight = textSurface->h;
+	m_Text = Texture::createTextureFromSurface(textSurface, m_Renderer.get(), BlendMode_t::BLEND);
+}
+
+void App::show_text() {
+	Rectangle src_text_rec = Rectangle(0,0,gTextWidth,gTextHeight);
+	Rectangle dest_text_rec = src_text_rec;
+	dest_text_rec.m_Pos.m_X = 100;
+	dest_text_rec.m_Pos.m_Y = 20;
+	if(!m_Renderer.copy(m_Text->m_Texture.get(), src_text_rec, dest_text_rec)) {
+		std::cerr << "m_Renderer.copy() failed, for text" << std::endl;
 	}
 }
