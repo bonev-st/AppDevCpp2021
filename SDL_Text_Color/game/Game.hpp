@@ -26,13 +26,11 @@ public:
 
 private:
 	static const int32_t MOVE_STEP = 1;
-	std::array<DrawParams_t, TextureId::NUMB_IMG> m_Img;
-	std::array<GameConfig::ImgDimetion_t, TextureId::NUMB_IMG> m_ImgDimention;
+//	std::array<DrawParams_t, TextureId::NUMB_IMG> m_Img;
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;
 
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
-	bool loadImgDimenstion(const GameConfig::ImgDimetionRes_t & cfg);
 	void setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask);
 	bool exitRequest() const;
 };

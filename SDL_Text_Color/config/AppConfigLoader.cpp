@@ -25,12 +25,21 @@ static void populateAppWindowCfg(MainWindow::Config_t &cfg) {
 }
 
 static void populateResourcesCfg(ResourcesConfig::Config_t &cfg) {
-	cfg.m_ImgPath[TextureId::IDLE_IMG]	= "resources/images/press_keys.png";
-	cfg.m_ImgPath[TextureId::UP_IMG]	= "resources/images/up.png";
-	cfg.m_ImgPath[TextureId::DOWN_IMG]	= "resources/images/down.png";
-	cfg.m_ImgPath[TextureId::LEFT_IMG]	= "resources/images/left.png";
-	cfg.m_ImgPath[TextureId::RIGHT_IMG]	= "resources/images/right.png";
-	cfg.m_ImgPath[TextureId::L2_IMG]	= "resources/images/layer_2.png";
+	ImgConfig::Config_t res;
+	res.m_Path = "resources/images/press_keys.png";
+	res.m_Dimention = {.m_W = IMG_WIDTH, .m_H = IMG_HEIGHT};
+	cfg.m_ImgRes[ResurcesId::IDLE_IMG]	= res;
+	res.m_Path = "resources/images/up.png";
+	cfg.m_ImgRes[ResurcesId::UP_IMG]	= res;
+	res.m_Path = "resources/images/down.png";
+	cfg.m_ImgRes[ResurcesId::DOWN_IMG]	= res;
+	res.m_Path = "resources/images/left.png";
+	cfg.m_ImgRes[ResurcesId::LEFT_IMG]	= res;
+	res.m_Path = "resources/images/right.png";
+	cfg.m_ImgRes[ResurcesId::RIGHT_IMG]	= res;
+	res.m_Path = "resources/images/layer_2.png";
+	res.m_Dimention = {.m_W = L2_WIDTH, .m_H = L2_HEIGHT};
+	cfg.m_ImgRes[ResurcesId::L2_IMG]	= res;
 }
 
 static void populateGameCfg(GameConfig::Config_t &cfg) {
@@ -47,13 +56,6 @@ static void populateGameCfg(GameConfig::Config_t &cfg) {
 	cfg.m_Keys[Keyboard::KEY_NUMPAD_MINUS]		= GameConfig::KEY_ZOOM_DOWN_MASK;
 	cfg.m_Keys[Keyboard::KEY_A]					= GameConfig::KEY_OPACITY_UP_MASK;
 	cfg.m_Keys[Keyboard::KEY_S]					= GameConfig::KEY_OPACITY_DOWN_MASK;
-
-	cfg.m_ImgDimention[TextureId::IDLE_IMG]		= GameConfig::ImgDimetion_t{.m_W = IMG_WIDTH,	.m_H = IMG_HEIGHT};
-	cfg.m_ImgDimention[TextureId::UP_IMG]		= GameConfig::ImgDimetion_t{.m_W = IMG_WIDTH,	.m_H = IMG_HEIGHT};
-	cfg.m_ImgDimention[TextureId::DOWN_IMG]		= GameConfig::ImgDimetion_t{.m_W = IMG_WIDTH,	.m_H = IMG_HEIGHT};
-	cfg.m_ImgDimention[TextureId::LEFT_IMG]		= GameConfig::ImgDimetion_t{.m_W = IMG_WIDTH,	.m_H = IMG_HEIGHT};
-	cfg.m_ImgDimention[TextureId::RIGHT_IMG]	= GameConfig::ImgDimetion_t{.m_W = IMG_WIDTH,	.m_H = IMG_HEIGHT};
-	cfg.m_ImgDimention[TextureId::L2_IMG]		= GameConfig::ImgDimetion_t{.m_W = L2_WIDTH,	.m_H = L2_HEIGHT};
 }
 
 namespace AppConfigLoader {

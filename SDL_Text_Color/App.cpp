@@ -22,8 +22,6 @@
 #include "SDL_ttf.h"
 
 TTF_Font * gFont = nullptr;
-int32_t gTextWidth = 0;
-int32_t gTextHeight = 0;
 
 bool App::init(const AppConfig& cfg) {
 	bool rc = false;
@@ -36,7 +34,7 @@ bool App::init(const AppConfig& cfg) {
 			std::cerr << "m_Renderer.init() failed." << std::endl;
 	        break;
 		}
-		if(!m_ImageContainer.init(cfg.m_ResourcesCfg.m_ImgPath, m_Renderer.get())) {
+		if(!m_ImageContainer.init(cfg.m_ResourcesCfg.m_ImgRes, m_Renderer.get())) {
 			std::cerr << "m_ImageContainer.init() failed." << std::endl;
 	        break;
 		}
@@ -94,30 +92,17 @@ bool App::drawFrame() {
 		return false;
 	}
 	for(auto e : buffer) {
-		auto p_data = m_ImageContainer.get(e.m_ResrId);
-		if(nullptr == p_data) {
-			std::cerr << "m_ImageContainer.get failed, for id " << e.m_ResrId  << std::endl;
-			return false;
-		}
-		auto p_texture = p_data->m_Texture.get();
-		if (FULL_OPACITY == e.m_Opacity) {
-			if(!m_Renderer.copy(p_texture, e.m_SrcRect, e.m_DstRect)) {
-				std::cerr << "m_Renderer.copy() failed, for id " << e.m_ResrId  << std::endl;
+		if(WidgetType_t::IMAGE == e.m_WidgetType) {
+			if(!drawImage(e)) {
+				return false;
+			}
+		} else if (WidgetType_t::TEXT == e.m_WidgetType) {
+			if(!drawText(e)) {
 				return false;
 			}
 		} else {
-			if(!Texture::setAlphaTexture(p_data, e.m_Opacity)) {
-				std::cerr << "setAlphaTexture() failed, for id " << e.m_ResrId << std::endl;
-				return false;
-			}
-			if(!m_Renderer.copy(p_texture, e.m_SrcRect, e.m_DstRect)) {
-				std::cerr << "m_Renderer.copy() failed, for id " << e.m_ResrId << std::endl;
-				return false;
-			}
-			if(!Texture::setAlphaTexture(p_data, FULL_OPACITY)) {
-				std::cerr << "setAlphaTexture(FULL_OPACITY) failed, for id " << e.m_ResrId << std::endl;
-				return false;
-			}
+			std::cerr << "drawFrame() failed, unknown widget type" << static_cast<uint8_t>(e.m_WidgetType) << std::endl;
+			return false;
 		}
 	}
 	show_text();
@@ -133,21 +118,65 @@ void App::limitFPS(int64_t elapsed_us) {
 	}
 }
 
+bool App::drawImage(DrawParams_t & img) {
+	bool rc = false;
+	do {
+		auto p_data = m_ImageContainer.get(img.m_ResrId);
+		if(nullptr == p_data) {
+			std::cerr << "m_ImageContainer.get failed, for image id " << img.m_ResrId  << std::endl;
+			break;
+		}
+		auto p_texture = p_data->m_Texture.get();
+		if (FULL_OPACITY == img.m_Opacity) {
+			if(!m_Renderer.copy(p_texture, img.m_SrcRect, img.m_DstRect)) {
+				std::cerr << "m_Renderer.copy() failed, for image id " << img.m_ResrId  << std::endl;
+				break;
+			};
+		} else {
+			if(!Texture::setAlphaTexture(p_data, img.m_Opacity)) {
+				std::cerr << "setAlphaTexture() failed, for image id " << img.m_ResrId << std::endl;
+				break;
+			}
+			if(!m_Renderer.copy(p_texture, img.m_SrcRect, img.m_DstRect)) {
+				std::cerr << "m_Renderer.copy() failed, for image id " << img.m_ResrId << std::endl;
+				break;
+			}
+			if(!Texture::setAlphaTexture(p_data, FULL_OPACITY)) {
+				std::cerr << "setAlphaTexture(FULL_OPACITY) failed, for id " << img.m_ResrId << std::endl;
+				break;
+			}
+		}
+		rc = true;
+	} while(0);
+	return rc;
+}
+
+bool App::drawText(DrawParams_t & text) {
+	auto p_data = m_TextContainer.get(text.m_ResrId);
+	if(!Texture::setAlphaTexture(p_data, text.m_Opacity)) {
+		std::cerr << "setAlphaTexture() failed, for text id " << text.m_ResrId << std::endl;
+		return false;
+	}
+	if(!m_Renderer.copy(p_data->m_Texture.get(), text.m_SrcRect, text.m_DstRect)) {
+		std::cerr << "m_Renderer.copy() failed, for text id " << text.m_ResrId  << std::endl;
+		return false;
+	};
+	return true;
+}
+
 void App::load_text() {
 	gFont = TTF_OpenFont("resources/fonts/AngelineVintage.ttf", 80);
 	if(nullptr == gFont) {
 		SDLHelper::print_IMG_Error("TTF_OpenFont() fault.");
 		return;
 	}
-	SDL_Color color = {.r = 127, .g = 127, .b = 127, .a = 255};
-	SDL_Surface *textSurface = TTF_RenderText_Solid(gFont, "Hello world", color);
-	gTextWidth = textSurface->w;
-	gTextHeight = textSurface->h;
+	SDL_Color color = {.r = 127, .g = 255, .b = 255, .a = 255};
+	SDL_Surface *textSurface = TTF_RenderText_Blended(gFont, "Hello world!", color);
 	m_Text = Texture::createTextureFromSurface(textSurface, m_Renderer.get(), BlendMode_t::BLEND);
 }
 
 void App::show_text() {
-	Rectangle src_text_rec = Rectangle(0,0,gTextWidth,gTextHeight);
+	Rectangle src_text_rec = Rectangle(0,0,m_Text->m_W,m_Text->m_H);
 	Rectangle dest_text_rec = src_text_rec;
 	dest_text_rec.m_Pos.m_X = 100;
 	dest_text_rec.m_Pos.m_Y = 20;

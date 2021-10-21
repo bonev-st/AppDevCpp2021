@@ -16,6 +16,7 @@
 #include "sdl_utils/InputEvent.hpp"
 #include "sdl_utils/Renderer.hpp"
 #include "sdl_utils/containers/ImageContainer.hpp"
+#include "sdl_utils/containers/TextContainer.hpp"
 
 #include "game/Game.hpp"
 
@@ -31,6 +32,7 @@ private:
 	InputEvent m_InputEvents;
 	Renderer m_Renderer;
 	ImageContainer m_ImageContainer;
+	TextContainer m_TextContainer;
 	Game m_Game;
 	std::shared_ptr<Texture::Texture_t>  m_Text;
 
@@ -42,6 +44,10 @@ private:
 
 	void load_text();
 	void show_text();
+
+	bool drawImage(DrawParams_t & img);
+	bool drawText(DrawParams_t & text);
+
 };
 
 #endif /* APP_HPP_ */

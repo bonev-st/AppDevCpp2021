@@ -15,6 +15,8 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/containers/ImageContainer.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/containers/ImageContainer.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/containers/TextContainer.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/containers/TextContainer.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/InputEvent.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/sdl_utils/MainWindow.hpp		
@@ -34,6 +36,8 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Point.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Rectangle.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Rectangle.cpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Color.hpp		
+	${CMAKE_CURRENT_SOURCE_DIR}/utils/drawing/Color.cpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/inputs/EventDefines.h		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/thread/ThreadUtils.hpp		
 	${CMAKE_CURRENT_SOURCE_DIR}/utils/thread/ThreadUtils.cpp		

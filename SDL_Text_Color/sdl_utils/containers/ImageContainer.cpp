@@ -5,7 +5,7 @@
  *      Author: stanimir
  */
 
-#include "sdl_utils/containers/ImageContainer.hpp"
+#include "ImageContainer.hpp"
 
 #include <iostream>
 
@@ -13,10 +13,18 @@
 
 bool ImageContainer::init(const ResourcesConfig::ImgRes_t & cfg, SDL_Renderer *p_renderer) {
 	for(const auto & e: cfg) {
-		m_Container[e.first] = Texture::createTextureFromFile(e.second, p_renderer, BlendMode_t::BLEND);
+		m_Container[e.first] = Texture::createTextureFromFile(e.second.m_Path, p_renderer, BlendMode_t::BLEND);
 		if(nullptr == m_Container[e.first]) {
 			std::cerr << "Texture::createSurfaceFromFile() failed." << std::endl;
 	        return false;
+		}
+		const auto dim = e.second.m_Dimention;
+		// replace image dimension with dimension from configuration
+		// may be will be simple to scale image to desired size!!!
+		if(dim.m_H && dim.m_W) {
+			auto texture = m_Container[e.first].get();
+			texture->m_W = dim.m_W;
+			texture->m_H = dim.m_H;
 		}
 	}
 	return true;

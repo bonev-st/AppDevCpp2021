@@ -1,0 +1,25 @@
+/*
+ * FontConfig.hpp
+ *
+ *  Created on: Oct 21, 2021
+ *      Author: stanimir
+ */
+
+#ifndef CONFIG_FONTCONFIG_HPP_
+#define CONFIG_FONTCONFIG_HPP_
+
+#include <cstdint>
+
+#include "utils/drawing/Color.hpp"
+
+namespace FontConfig {
+
+struct Config_t {
+	std::string m_Path = "";
+	int32_t m_TextSize = 0;
+	Color m_Color;
+};
+
+}
+
+#endif /* CONFIG_FONTCONFIG_HPP_ */

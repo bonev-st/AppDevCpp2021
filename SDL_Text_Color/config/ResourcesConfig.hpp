@@ -11,13 +11,17 @@
 #include <unordered_map>
 
 #include "common/CommonDefines.hpp"
+#include "config/ImgConfig.hpp"
+#include "config/FontConfig.hpp"
 
 namespace ResourcesConfig {
 
-typedef std::unordered_map<TextureId::ImgId_t, std::string> ImgRes_t;
+typedef std::unordered_map<ResurcesId::ImgId_t,  ImgConfig::Config_t> ImgRes_t;
+typedef std::unordered_map<ResurcesId::FontId_t, FontConfig::Config_t> TextRes_t;
 
 struct Config_t {
-	ImgRes_t m_ImgPath;
+	ImgRes_t m_ImgRes;
+	TextRes_t m_TextRes;
 };
 }
 

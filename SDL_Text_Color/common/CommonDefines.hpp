@@ -10,7 +10,8 @@
 
 #include <cstdint>
 
-namespace TextureId {
+namespace ResurcesId {
+
 enum ImgId_t : uint32_t {
 	IDLE_IMG,
 	UP_IMG,
@@ -20,6 +21,14 @@ enum ImgId_t : uint32_t {
 	L2_IMG,
 	NUMB_IMG
 };
+
+enum FontId_t : uint32_t {
+	ANGELINE_VINTAGE_40_TTF,
+	ANGELINE_VINTAGE_80_TTF,
+	ANGELINE_VINTAGE_160_TTF,
+	NUMB_TTF
+};
+
 }
 
 #endif /* COMMON_COMMONDEFINES_HPP_ */
