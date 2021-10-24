@@ -9,6 +9,7 @@ set(_INC_DIR ${_BASE_DIR}/utils)
 #generate project library
 add_library(
 	${PROJECT_NAME} STATIC
+		${_INC_DIR}/containers/FirstFreeContainer.hpp
 		${_INC_DIR}/drawing/DrawParams.hpp
 		${_INC_DIR}/drawing/Dimention.hpp		
 		${_INC_DIR}/drawing/Point.hpp

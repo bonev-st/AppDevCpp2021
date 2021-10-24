@@ -19,16 +19,16 @@ bool SDLLoader::init() {
 	bool rc = false;
 	do {
         if(EXIT_SUCCESS != SDL_Init(SDL_INIT_EVERYTHING)) {
-        	SDLHelper::print_SDL_Error("SDL_Init() failed.");
+        	SDLHelper::print_SDL_Error("SDLLoader::init::SDL_Init() failed.");
         	break;
         }
         if(EXIT_SUCCESS != TTF_Init()) {
-        	SDLHelper::print_SDL_Error("TTF_Init() failed.");
+        	SDLHelper::print_SDL_Error("SDLLoader::init::TTF_Init() failed.");
         	break;
         }
 		constexpr std::int32_t imgFlags = IMG_INIT_PNG;
 		if (!(IMG_Init(imgFlags) & imgFlags)) {
-        	SDLHelper::print_IMG_Error("IMG_Init() failed.");
+        	SDLHelper::print_IMG_Error("SDLLoader::init::IMG_Init() failed.");
         	break;
 		}
 		if (0 > Mix_OpenAudio(44100					//sound frequency
@@ -36,7 +36,7 @@ bool SDLLoader::init() {
 							, 2						//stereo hardware channels
 							, 2048)					//chunk size
 			) {
-        	SDLHelper::print_SDL_Error("Mix_OpenAudio() failed.");
+        	SDLHelper::print_SDL_Error("SDLLoader::init::Mix_OpenAudio() failed.");
         	break;
 		}
 		rc = true;

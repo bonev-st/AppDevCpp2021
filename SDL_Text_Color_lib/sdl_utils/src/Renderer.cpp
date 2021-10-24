@@ -21,11 +21,11 @@
 bool Renderer::init(const MainWindow::Config_t &cfg) {
 	m_AppWindow = MainWindow::createMainWindow(cfg);
 	if(nullptr == m_AppWindow) {
-		std::cerr << "MainWindow::createMainWindow() failed." << std::endl;
+		std::cerr << "Renderer::init::MainWindow::createMainWindow() failed." << std::endl;
 		return false;
 	}
 	if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
-		SDLHelper::print_SDL_Error("SDL_CreateRenderer() failed.");
+		SDLHelper::print_SDL_Error("Renderer::init::SDL_CreateRenderer() failed.");
 		return false;
 	}
 	constexpr auto UNSPEC_DRIVER_ID = -1;
@@ -36,22 +36,22 @@ bool Renderer::init(const MainWindow::Config_t &cfg) {
 	std::cout << "+ Renderer::init() create SDL_Renderer " << m_Renderer << std::endl;
 #endif
 	if (nullptr == m_Renderer) {
-		SDLHelper::print_SDL_Error("SDL_CreateRenderer() failed.");
+		SDLHelper::print_SDL_Error("Renderer::init::SDL_CreateRenderer() failed.");
 		return false;
 	}
 	if(EXIT_SUCCESS != SDL_SetRenderDrawColor(m_Renderer.get(), 0, 0, 0, SDL_ALPHA_OPAQUE)) {
-		SDLHelper::print_SDL_Error("SDL_SetRenderDrawColor() failed.");
+		SDLHelper::print_SDL_Error("Renderer::init::SDL_SetRenderDrawColor() failed.");
 		return false;
 	}
 	return true;
 }
 
-int32_t Renderer::clearScreen() {
+bool Renderer::clearScreen() {
 	if(EXIT_SUCCESS != SDL_RenderClear(m_Renderer.get())) {
-		SDLHelper::print_SDL_Error("SDL_RenderClear() failed.");
-		return EXIT_FAILURE;
+		SDLHelper::print_SDL_Error("Renderer::clearScreen::SDL_RenderClear() failed.");
+		return false;
 	}
-	return EXIT_SUCCESS;
+	return true;
 }
 
 void Renderer::finishFrame() {
@@ -72,7 +72,7 @@ bool Renderer::copy(SDL_Texture * p_texture, const Rectangle &src_rec, const Rec
 		p_dstrect = &dst_rect;
 	}
 	if(EXIT_SUCCESS != SDL_RenderCopy(m_Renderer.get(), p_texture, p_srcrect, p_dstrect)) {
-		SDLHelper::print_SDL_Error("SDL_RenderCopy() failed.");
+		SDLHelper::print_SDL_Error("Renderer::copy::SDL_RenderCopy() failed.");
 		return false;
 	}
 	return true;

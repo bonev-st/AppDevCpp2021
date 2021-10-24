@@ -22,7 +22,7 @@ class Rectangle;
 class Renderer : private NoCopy {
 public:
 	bool init(const MainWindow::Config_t &cfg);
-	int32_t clearScreen();
+	bool clearScreen();
 	void finishFrame();
 	bool copy(SDL_Texture *p_texture, const Rectangle &src_rec, const Rectangle &dst_rec);
 	SDL_Renderer* get() const {

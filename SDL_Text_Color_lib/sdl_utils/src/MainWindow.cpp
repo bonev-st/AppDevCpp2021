@@ -33,7 +33,7 @@ std::shared_ptr<MainWindow_t> createMainWindow(const Config_t &cfg) {
 	std::cout << "+ SDL_CreateWindow() create SDL_Window " << data.m_Window << std::endl;
 #endif
 	if(nullptr == data.m_Window) {
-		SDLHelper::print_IMG_Error("SDL_CreateWindow() fault.");
+		SDLHelper::print_SDL_Error("MainWindow::createMainWindow::SDL_CreateWindow() fault.");
 		return std::shared_ptr<MainWindow_t>(nullptr);
 	}
 	return std::make_shared<MainWindow_t>(data);

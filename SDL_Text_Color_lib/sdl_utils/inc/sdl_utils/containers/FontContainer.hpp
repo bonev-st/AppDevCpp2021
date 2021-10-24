@@ -5,23 +5,23 @@
  *      Author: stanimir
  */
 
-#ifndef SDL_UTILS_CONTAINERS_TEXTCONTAINER_HPP_
-#define SDL_UTILS_CONTAINERS_TEXTCONTAINER_HPP_
+#ifndef SDL_UTILS_CONTAINERS_FONTCONTAINER_HPP_
+#define SDL_UTILS_CONTAINERS_FONTCONTAINER_HPP_
 
 #include <unordered_map>
 #include <memory>
 
 #include "sdl_utils/config/FontConfig.hpp"
 
-#include "sdl_utils/Texture.hpp"
+typedef struct _TTF_Font TTF_Font;
 
-class TextContainer {
+class FontContainer {
 public:
-	bool init(const FontConfig::FontRes_t & cfg, SDL_Renderer *p_renderer);
-	const Texture::Texture_t* get(uint32_t id) const;
+	bool init(const FontConfig::FontRes_t & cfg);
+	const TTF_Font* get(uint32_t id) const;
 
 private:
-	std::unordered_map<uint32_t, std::shared_ptr<Texture::Texture_t>> m_Container;
+	std::unordered_map<uint32_t, std::shared_ptr<TTF_Font>> m_Container;
 };
 
-#endif /* SDL_UTILS_CONTAINERS_TEXTCONTAINER_HPP_ */
+#endif /* SDL_UTILS_CONTAINERS_FONTCONTAINER_HPP_ */

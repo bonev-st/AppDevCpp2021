@@ -14,6 +14,8 @@
 
 #include "game/config/GameConfig.hpp"
 
+namespace {
+
 constexpr auto WINDOW_WIDTH		= 640;
 constexpr auto WINDOW_HEIGHT	= 480;
 constexpr auto IMG_WIDTH		= WINDOW_WIDTH;
@@ -29,25 +31,42 @@ static void populateAppWindowCfg(MainWindow::Config_t &cfg) {
 	cfg.m_Flags = MainWindow::WINDOW_SHOWN;
 }
 
-static void populateResourcesCfg(ResourcesConfig::Config_t &cfg) {
+void populateImgCfg(ImgConfig::ImgRes_t &cfg) {
 	ImgConfig::Config_t res;
 	res.m_Path = "resources/images/press_keys.png";
 	res.m_Dimention = Dimention(IMG_WIDTH, IMG_HEIGHT);
-	cfg.m_ImgRes[ResurcesId::IDLE_IMG]	= res;
+	cfg[ResurcesId::IDLE_IMG]	= res;
 	res.m_Path = "resources/images/up.png";
-	cfg.m_ImgRes[ResurcesId::UP_IMG]	= res;
+	cfg[ResurcesId::UP_IMG]	= res;
 	res.m_Path = "resources/images/down.png";
-	cfg.m_ImgRes[ResurcesId::DOWN_IMG]	= res;
+	cfg[ResurcesId::DOWN_IMG]	= res;
 	res.m_Path = "resources/images/left.png";
-	cfg.m_ImgRes[ResurcesId::LEFT_IMG]	= res;
+	cfg[ResurcesId::LEFT_IMG]	= res;
 	res.m_Path = "resources/images/right.png";
-	cfg.m_ImgRes[ResurcesId::RIGHT_IMG]	= res;
+	cfg[ResurcesId::RIGHT_IMG]	= res;
 	res.m_Path = "resources/images/layer_2.png";
 	res.m_Dimention = Dimention(L2_WIDTH, L2_HEIGHT);
-	cfg.m_ImgRes[ResurcesId::L2_IMG]	= res;
+	cfg[ResurcesId::L2_IMG]	= res;
 }
 
-static void populateGameCfg(GameConfig::Config_t &cfg) {
+void populateFontCfg(FontConfig::FontRes_t &cfg) {
+	FontConfig::Config_t res;
+	res.m_Path = "resources/fonts/AngelineVintage.ttf";
+	res.m_TextSize = 40;
+	cfg[ResurcesId::ANGELINE_VINTAGE_40_TTF] = res;
+	res.m_TextSize = 80;
+	cfg[ResurcesId::ANGELINE_VINTAGE_80_TTF] = res;
+	res.m_TextSize = 160;
+	cfg[ResurcesId::ANGELINE_VINTAGE_160_TTF] = res;
+}
+
+void populateResourcesCfg(ResourcesConfig::Config_t &cfg) {
+	populateImgCfg(cfg.m_ImgRes);
+	populateFontCfg(cfg.m_FontRes);
+	populateAppWindowCfg(cfg.m_WindowCfg);
+}
+
+void populateGameCfg(GameConfig::Config_t &cfg) {
 	cfg.m_Keys[Keyboard::KEY_ESCAPE]			= GameConfig::KEY_EXIT_MASK;
 	cfg.m_Keys[Keyboard::KEY_UP]				= GameConfig::KEY_UP_MASK;
 	cfg.m_Keys[Keyboard::KEY_DOWN]				= GameConfig::KEY_DOWN_MASK;
@@ -62,12 +81,11 @@ static void populateGameCfg(GameConfig::Config_t &cfg) {
 	cfg.m_Keys[Keyboard::KEY_A]					= GameConfig::KEY_OPACITY_UP_MASK;
 	cfg.m_Keys[Keyboard::KEY_S]					= GameConfig::KEY_OPACITY_DOWN_MASK;
 }
+}
 
 namespace AppConfigLoader {
-
 AppConfig Loader() {
 	AppConfig cfg;
-	populateAppWindowCfg(cfg.m_ResourcesCfg.m_WindowCfg);
 	populateResourcesCfg(cfg.m_ResourcesCfg);
 	populateGameCfg(cfg.m_GameCfg);
 	return cfg;

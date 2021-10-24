@@ -5,36 +5,31 @@
  *      Author: stanimir
  */
 
-#include "sdl_utils/containers/TextContainer.hpp"
+#include "sdl_utils/containers/FontContainer.hpp"
 
 #include <iostream>
 
-#include "sdl_utils/Texture.hpp"
+#include <SDL_ttf.h>
+#include "utils/Destroy.hpp"
 
-bool TextContainer::init(const FontConfig::FontRes_t & cfg, SDL_Renderer *p_renderer) {
-	for(const auto & e: cfg) {
+#include "sdl_utils/SDLHelper.hpp"
 
-//		gFont = TTF_OpenFont("resources/fonts/AngelineVintage.ttf", 80);
-//		if(nullptr == gFont) {
-//			SDLHelper::print_IMG_Error("TTF_OpenFont() fault.");
-//			return;
-//		}
-//		TTF_Font *
-//
-//		SDL_Color color = {.r = 127, .g = 255, .b = 255, .a = 255};
-//		SDL_Surface *textSurface = TTF_RenderText_Blended(gFont, "Hello world!", color);
-//		m_Text = Texture::createTextureFromSurface(textSurface, m_Renderer.get(), BlendMode_t::BLEND);
-
-		m_Container[e.first] = Texture::createTextureFromFile(e.second.m_Path, p_renderer, BlendMode_t::BLEND);
-		if(nullptr == m_Container[e.first]) {
-			std::cerr << "Texture::createSurfaceFromFile() failed." << std::endl;
-	        return false;
+bool FontContainer::init(const FontConfig::FontRes_t & cfg) {
+	for(const auto & [key , val] : cfg) {
+		auto font = std::shared_ptr<TTF_Font>(TTF_OpenFont(val.m_Path.c_str(), val.m_TextSize), Destroy::free<TTF_Font, TTF_CloseFont>);
+#ifdef SHOW_MEM_ALLOC_INFO
+		std::cout << "+ TTF_OpenFont() create Font " << font.get() << std::endl;
+#endif
+		if(nullptr == font) {
+			SDLHelper::print_SDL_Error("FontContainer::init::TTF_OpenFont() fault.");
+			return false;
 		}
+		m_Container[key] = font;
 	}
 	return true;
 }
 
-const Texture::Texture_t* TextContainer::get(uint32_t id) const {
+const TTF_Font* FontContainer::get(uint32_t id) const {
 	auto it = m_Container.find(id);
 	if(m_Container.end() == it) {
 		return nullptr;

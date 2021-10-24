@@ -19,7 +19,7 @@ namespace ResourcesConfig {
 struct Config_t {
 	MainWindow::Config_t m_WindowCfg;
 	ImgConfig::ImgRes_t m_ImgRes;
-	FontConfig::FontRes_t m_TextRes;
+	FontConfig::FontRes_t m_FontRes;
 };
 }
 

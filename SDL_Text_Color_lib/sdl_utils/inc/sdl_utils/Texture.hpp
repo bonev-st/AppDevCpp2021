@@ -17,6 +17,9 @@
 struct SDL_Surface;
 struct SDL_Texture;
 struct SDL_Renderer;
+struct Color;
+
+typedef struct _TTF_Font TTF_Font;
 
 namespace Texture {
 
@@ -27,8 +30,12 @@ struct Texture_t {
 };
 
 std::shared_ptr<SDL_Surface> createSurfaceFromFile(const std::string &fname);
-std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname, SDL_Renderer * p_renderer, BlendMode_t blend_mode);
 std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface, SDL_Renderer * p_renderer, BlendMode_t blend_mode);
+std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname, SDL_Renderer * p_renderer, BlendMode_t blend_mode);
+
+std::shared_ptr<SDL_Surface> createSurfaceFromText(const std::string &text, const Color &color, const TTF_Font* font);
+std::shared_ptr<Texture_t> createTextureFromFont(const std::string &text, const Color &color, const TTF_Font* font, SDL_Renderer * p_renderer, BlendMode_t blend_mode);
+
 bool setAlphaTexture(const Texture_t *texture, int32_t alpha);
 
 };

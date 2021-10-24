@@ -18,7 +18,6 @@ namespace FontConfig {
 struct Config_t {
 	std::string m_Path = "";
 	int32_t m_TextSize = 0;
-	Color m_Color;
 };
 
 typedef std::unordered_map<uint32_t, FontConfig::Config_t> FontRes_t;

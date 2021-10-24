@@ -15,7 +15,7 @@ bool ImageContainer::init(const ImgConfig::ImgRes_t & cfg, SDL_Renderer *p_rende
 	for(const auto & e: cfg) {
 		m_Container[e.first] = Texture::createTextureFromFile(e.second.m_Path, p_renderer, BlendMode_t::BLEND);
 		if(nullptr == m_Container[e.first]) {
-			std::cerr << "Texture::createSurfaceFromFile() failed." << std::endl;
+			std::cerr << "ImageContainer::init::Texture::createTextureFromFile() failed." << std::endl;
 	        return false;
 		}
 		const auto dim = e.second.m_Dimention;
