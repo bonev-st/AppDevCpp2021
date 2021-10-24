@@ -15,15 +15,15 @@
 #include "sdl_utils/InputEvent.hpp"
 #include "sdl_utils/containers/ImageContainer.hpp"
 #include "sdl_utils/containers/TextContainer.hpp"
+#include "sdl_utils/resource_manager/ResourceManager.hpp"
+
 #include "utils/drawing/DrawParams.hpp"
 #include "utils/drawing/Color.hpp"
 #include "common/CommonDefines.hpp"
 
-bool Game::init(const GameConfig::Config_t & cfg, const ImageContainer * img_if, TextContainer * text_if) {
-	assert(img_if);
-	assert(text_if);
-	m_ImageContainerIF = img_if;
-	m_TextContainerIF = text_if;
+bool Game::init(const GameConfig::Config_t & cfg, ResourceManager * manager) {
+	assert(manager);
+	m_ResourceManager = manager;
 	if(!loadKeys(cfg.m_Keys)) {
 		std::cerr << "Game::init::loadKeys() failed." << std::endl;
 		return false;
@@ -32,20 +32,10 @@ bool Game::init(const GameConfig::Config_t & cfg, const ImageContainer * img_if,
 		std::cerr << "Game::init::initImgs() failed." << std::endl;
 		return false;
 	}
-	std::for_each(&m_Img[0], &m_Img[IMG_ARRAY_SIZE],
-		[](DrawParams_t & e) {
-			e.m_WidgetType = WidgetType_t::IMAGE;
-		}
-	);
-	std::for_each(&m_Text[0], &m_Text[IMG_ARRAY_SIZE],
-		[](DrawParams_t & e) {
-			e.m_WidgetType = WidgetType_t::TEXT;
-		}
-	);
 	m_Img[IMG_BACKGROUND_INDX].m_ResrId = ResurcesId::IDLE_IMG;
 	m_Img[IMG_L2_INDX].m_ResrId = ResurcesId::L2_IMG;
 
-	if(!loadImgDimention()) {
+	if(!initImgs()) {
 		std::cerr << "Game::init::loadImgDimention() failed." << std::endl;
 		return false;
 	}
@@ -152,76 +142,45 @@ bool Game::loadKeys(const GameConfig::KeyRes_t & cfg) {
 }
 
 bool Game::initImgs() {
-	std::for_each(&m_Img[0], &m_Img[IMG_ARRAY_SIZE], [](DrawParams_t & e){
-			e.m_WidgetType = WidgetType_t::IMAGE;
-		}
-	);
 	m_Img[IMG_BACKGROUND_INDX].m_ResrId = ResurcesId::IDLE_IMG;
 	m_Img[IMG_L2_INDX].m_ResrId = ResurcesId::L2_IMG;
-	if(!loadImgDimention()) {
-		std::cerr << "Game::initImgs::loadImgDimention() failed." << std::endl;
-		return false;
-	}
-	return true;
-}
-
-bool Game::loadImgDimention() {
 	for(auto &e : m_Img) {
-		auto img = m_ImageContainerIF->get(e.m_ResrId);
-		if(nullptr == img) {
-			std::cerr << "Game::ImageContainer::get() can't found id: " << e.m_ResrId << std::endl;
+		if(!m_ResourceManager->populateImg(e)) {
+			std::cerr << "Game::initImgs::m_ResourceManager->populateImg(e) fault" << std::endl;
 			return false;
 		}
-		auto rect = Rectangle(0, 0, img->m_W, img->m_H);
-		e.m_DstRect = rect;
-		e.m_SrcRect = rect;
 	}
 	return true;
 }
 
 bool Game::createTexts() {
-	std::for_each(&m_Text[0], &m_Text[TEXT_ARRAY_SIZE], [](DrawParams_t & e){
-			e.m_WidgetType = WidgetType_t::TEXT;
-		}
-	);
-	if(!m_TextContainerIF->createText("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF, m_Text[TEXT_HELLO_INDX].m_ResrId)) {
-		std::cerr << "Game::createTexts::m_TextContainerIF->createText() fault"<< std::endl;
+	if(!m_ResourceManager->createText("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF, m_Text[TEXT_HELLO_INDX])) {
+		std::cerr << "Game::createTexts::m_ResourceManager->createText() fault"<< std::endl;
 		return false;
 	}
-	if(!m_TextContainerIF->createText("Hello world!!", Colors::BLUE, ResurcesId::ANGELINE_VINTAGE_80_TTF, m_Text[TEXT_2_INDX].m_ResrId)) {
-		std::cerr << "Game::createTexts::m_TextContainerIF->createText() fault"<< std::endl;
+	if(!m_ResourceManager->createText("Hello world!!", Colors::BLUE, ResurcesId::ANGELINE_VINTAGE_80_TTF, m_Text[TEXT_2_INDX])) {
+		std::cerr << "Game::createTexts::m_ResourceManager->createText() fault"<< std::endl;
 		return false;
 	}
-	if(!m_TextContainerIF->createText("Hello world!!!", Colors::RED, ResurcesId::ANGELINE_VINTAGE_40_TTF, m_Text[TEXT_3_INDX].m_ResrId)) {
-		std::cerr << "Game::createTexts::m_TextContainerIF->createText() fault"<< std::endl;
+	if(!m_ResourceManager->createText("Hello world!!!", Colors::RED, ResurcesId::ANGELINE_VINTAGE_40_TTF, m_Text[TEXT_3_INDX])) {
+		std::cerr << "Game::createTexts::m_ResourceManager->createText() fault"<< std::endl;
 		return false;
 	}
-	if(!m_TextContainerIF->createText("0h", Colors::ORANGE, ResurcesId::ANGELINE_VINTAGE_80_TTF, m_Text[TEXT_DYNAMIC_INDX].m_ResrId)) {
-		std::cerr << "Game::createTexts::m_TextContainerIF->createText() fault"<< std::endl;
+	if(!m_ResourceManager->createText("0h", Colors::ORANGE, ResurcesId::ANGELINE_VINTAGE_80_TTF, m_Text[TEXT_DYNAMIC_INDX])) {
+		std::cerr << "Game::createTexts::m_ResourceManager->createText() fault"<< std::endl;
 		return false;
 	}
-#if 0
+#if 1
 	// test first free container
-	if(!m_TextContainerIF->unloadText(m_Text[TEXT_HELLO_INDX].m_ResrId)) {
-		std::cerr << "Game::createTexts::m_TextContainerIF->unloadText() fault"<< std::endl;
+	if(!m_ResourceManager->releaseText(m_Text[TEXT_HELLO_INDX])) {
+		std::cerr << "Game::createTexts::m_ResourceManager->releaseText() fault"<< std::endl;
 		return false;
 	}
-	if(!m_TextContainerIF->createText("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF, m_Text[TEXT_HELLO_INDX].m_ResrId)) {
-		std::cerr << "Game::createTexts::m_TextContainerIF->createText() fault"<< std::endl;
+	if(!m_ResourceManager->createText("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF, m_Text[TEXT_HELLO_INDX])) {
+		std::cerr << "Game::createTexts::m_ResourceManager->createText() fault"<< std::endl;
 		return false;
 	}
 #endif
-	for(auto &e : m_Text) {
-		auto txt = m_TextContainerIF->get(e.m_ResrId);
-		if(nullptr == txt) {
-			std::cerr << "Game::createTexts::TextContainer::get() can't found id: " << e.m_ResrId << std::endl;
-			return false;
-		}
-		e.m_DstRect = Rectangle(0, 0, txt->m_W, txt->m_H);
-		e.m_SrcRect = Rectangle::UNDEFINED;
-	}
-	m_Text[TEXT_DYNAMIC_INDX].m_DstRect.m_Pos.m_X = 500;
-	m_Text[TEXT_DYNAMIC_INDX].m_DstRect.m_Pos.m_Y = 250;
 	return true;
 }
 
@@ -244,18 +203,14 @@ bool Game::updateDynamicText(bool &update) {
 		std::ostringstream stream_txt;
 		stream_txt << std::hex << m_KeysMask << "h" ;
 		stream_txt.flush();
-		if(!m_TextContainerIF->reloadText(stream_txt.str(),
+		auto hold = m_Text[TEXT_DYNAMIC_INDX].m_DstRect;
+		if(!m_ResourceManager->createText(stream_txt.str(),
 				Colors::ORANGE, ResurcesId::ANGELINE_VINTAGE_80_TTF,
-				m_Text[TEXT_DYNAMIC_INDX].m_ResrId)) {
+				m_Text[TEXT_DYNAMIC_INDX])) {
+
 			return false;
 		}
-		auto obj = m_TextContainerIF->get(m_Text[TEXT_DYNAMIC_INDX].m_ResrId);
-		if(nullptr == obj) {
-			std::cerr << "Game::TextContainer::get() can't found id: " << m_Text[TEXT_DYNAMIC_INDX].m_ResrId << std::endl;
-			return false;
-		}
-		m_Text[TEXT_DYNAMIC_INDX].m_DstRect.m_H = obj->m_H;
-		m_Text[TEXT_DYNAMIC_INDX].m_DstRect.m_W = obj->m_W;
+		m_Text[TEXT_DYNAMIC_INDX].m_DstRect.m_Pos = hold.m_Pos;
 		update = true;
 	}
 	return true;

@@ -26,15 +26,16 @@ bool App::init(const AppConfig& cfg) {
 			std::cerr << "App::init::m_Renderer.init() failed." << std::endl;
 	        break;
 		}
-		if(!m_ImageContainer.init(cfg.m_ResourcesCfg.m_ImgRes, m_Renderer.get())) {
-			std::cerr << "App::init::m_ImageContainer.init() failed." << std::endl;
+		m_ResourceManager.init(m_Renderer.get());
+		if(!m_ResourceManager.loadImg(cfg.m_ResourcesCfg.m_ImgRes)) {
+			std::cerr << "App::init::m_ResourceManager.loadImg() failed." << std::endl;
 	        break;
 		}
-		if(!m_TextContainer.init(cfg.m_ResourcesCfg.m_FontRes, m_Renderer.get())) {
-			std::cerr << "App::init::m_TextContainer.init() failed." << std::endl;
+		if(!m_ResourceManager.loadFonts(cfg.m_ResourcesCfg.m_FontRes)) {
+			std::cerr << "App::init::m_ResourceManager.loadFonts() failed." << std::endl;
 	        break;
 		}
-		if(!m_Game.init(cfg.m_GameCfg, &m_ImageContainer, &m_TextContainer)) {
+		if(!m_Game.init(cfg.m_GameCfg, &m_ResourceManager)) {
 			std::cerr << "App::init::m_Game.init() failed." << std::endl;
 	        break;
 		}
@@ -103,7 +104,7 @@ bool App::drawFrame() {
 					return false;
 				}
 			} else {
-				std::cerr << "App::drawFrame::drawFrame() failed, unknown widget type" << static_cast<int>(e.m_WidgetType) << std::endl;
+				std::cerr << "App::drawFrame::drawFrame() failed, unknown widget type: " << static_cast<int>(e.m_WidgetType) << std::endl;
 				return false;
 			}
 		}
@@ -123,7 +124,7 @@ void App::limitFPS(int64_t elapsed_us) {
 bool App::drawImage(DrawParams_t & img) {
 	bool rc = false;
 	do {
-		auto p_data = m_ImageContainer.get(img.m_ResrId);
+		auto p_data = m_ResourceManager.get(img);
 		if(nullptr == p_data) {
 			std::cerr << "App::drawImage::m_ImageContainer.get failed, for image id " << img.m_ResrId  << std::endl;
 			break;
@@ -154,9 +155,9 @@ bool App::drawImage(DrawParams_t & img) {
 }
 
 bool App::drawText(DrawParams_t & text) {
-	auto p_data = m_TextContainer.get(text.m_ResrId);
+	auto p_data = m_ResourceManager.get(text);
 	if(nullptr == p_data) {
-		std::cerr << "App::drawText::m_TextContainer.get() failed, Reason: can't find id " << text.m_ResrId << std::endl;
+		std::cerr << "App::drawText::m_ResourceManager.get() failed, Reason: can't find id " << text.m_ResrId << std::endl;
 		return false;
 	}
 	if(!Texture::setAlphaTexture(p_data, text.m_Opacity)) {

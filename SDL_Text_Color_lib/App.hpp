@@ -11,12 +11,11 @@
 #include <cstdint>
 
 #include "utils/NoCopy.hpp"
+#include "sdl_utils/resource_manager/ResourceManager.hpp"
 
 #include "sdl_utils/SDLLoader.hpp"
 #include "sdl_utils/InputEvent.hpp"
 #include "sdl_utils/Renderer.hpp"
-#include "sdl_utils/containers/ImageContainer.hpp"
-#include "sdl_utils/containers/TextContainer.hpp"
 
 #include "game/Game.hpp"
 
@@ -31,8 +30,7 @@ private:
 	SDLLoader m_Loader;
 	InputEvent m_InputEvents;
 	Renderer m_Renderer;
-	ImageContainer m_ImageContainer;
-	TextContainer m_TextContainer;
+	ResourceManager m_ResourceManager;
 	Game m_Game;
 
 	bool mainLoop();
