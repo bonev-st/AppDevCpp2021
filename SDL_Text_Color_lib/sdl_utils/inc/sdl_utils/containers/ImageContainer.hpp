@@ -17,10 +17,10 @@
 class ImageContainer {
 public:
 	bool init(const ImgConfig::ImgRes_t & cfg, SDL_Renderer *p_renderer);
-	const Texture::Texture_t* get(uint32_t id) const;
+	const Texture::Texture_t* get(std::size_t id) const;
 
 private:
-	std::unordered_map<uint32_t, std::shared_ptr<Texture::Texture_t>> m_Container;
+	std::unordered_map<std::size_t, std::shared_ptr<Texture::Texture_t>> m_Container;
 };
 
 #endif /* SDL_UTILS_CONTAINERS_IMAGECONTAINER_HPP_ */

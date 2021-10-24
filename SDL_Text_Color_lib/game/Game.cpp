@@ -10,11 +10,11 @@
 #include <cassert>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 
 #include "sdl_utils/InputEvent.hpp"
 #include "sdl_utils/containers/ImageContainer.hpp"
 #include "sdl_utils/containers/TextContainer.hpp"
-#include "sdl_utils/InputEvent.hpp"
 #include "utils/drawing/DrawParams.hpp"
 #include "utils/drawing/Color.hpp"
 #include "common/CommonDefines.hpp"
@@ -184,19 +184,19 @@ bool Game::createTexts() {
 			e.m_WidgetType = WidgetType_t::TEXT;
 		}
 	);
-	if(!m_TextContainerIF->createText("Hello world!", Colors::GREEN, static_cast<int32_t>(ResurcesId::ANGELINE_VINTAGE_160_TTF), m_Text[TEXT_HELLO_INDX].m_ResrId)) {
+	if(!m_TextContainerIF->createText("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF, m_Text[TEXT_HELLO_INDX].m_ResrId)) {
 		std::cerr << "Game::createTexts::m_TextContainerIF->createText() fault"<< std::endl;
 		return false;
 	}
-	if(!m_TextContainerIF->createText("Hello world!!", Colors::BLUE, static_cast<int32_t>(ResurcesId::ANGELINE_VINTAGE_80_TTF), m_Text[TEXT_2_INDX].m_ResrId)) {
+	if(!m_TextContainerIF->createText("Hello world!!", Colors::BLUE, ResurcesId::ANGELINE_VINTAGE_80_TTF, m_Text[TEXT_2_INDX].m_ResrId)) {
 		std::cerr << "Game::createTexts::m_TextContainerIF->createText() fault"<< std::endl;
 		return false;
 	}
-	if(!m_TextContainerIF->createText("Hello world!!!", Colors::RED, static_cast<int32_t>(ResurcesId::ANGELINE_VINTAGE_40_TTF), m_Text[TEXT_3_INDX].m_ResrId)) {
+	if(!m_TextContainerIF->createText("Hello world!!!", Colors::RED, ResurcesId::ANGELINE_VINTAGE_40_TTF, m_Text[TEXT_3_INDX].m_ResrId)) {
 		std::cerr << "Game::createTexts::m_TextContainerIF->createText() fault"<< std::endl;
 		return false;
 	}
-	if(!m_TextContainerIF->createText("0h", Colors::ORANGE, static_cast<int32_t>(ResurcesId::ANGELINE_VINTAGE_80_TTF), m_Text[TEXT_DYNAMIC_INDX].m_ResrId)) {
+	if(!m_TextContainerIF->createText("0h", Colors::ORANGE, ResurcesId::ANGELINE_VINTAGE_80_TTF, m_Text[TEXT_DYNAMIC_INDX].m_ResrId)) {
 		std::cerr << "Game::createTexts::m_TextContainerIF->createText() fault"<< std::endl;
 		return false;
 	}
@@ -206,7 +206,7 @@ bool Game::createTexts() {
 		std::cerr << "Game::createTexts::m_TextContainerIF->unloadText() fault"<< std::endl;
 		return false;
 	}
-	if(!m_TextContainerIF->createText("Hello world!", Colors::GREEN, static_cast<int32_t>(ResurcesId::ANGELINE_VINTAGE_160_TTF), m_Text[TEXT_HELLO_INDX].m_ResrId)) {
+	if(!m_TextContainerIF->createText("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF, m_Text[TEXT_HELLO_INDX].m_ResrId)) {
 		std::cerr << "Game::createTexts::m_TextContainerIF->createText() fault"<< std::endl;
 		return false;
 	}
@@ -245,7 +245,7 @@ bool Game::updateDynamicText(bool &update) {
 		stream_txt << std::hex << m_KeysMask << "h" ;
 		stream_txt.flush();
 		if(!m_TextContainerIF->reloadText(stream_txt.str(),
-				Colors::ORANGE, static_cast<int32_t>(ResurcesId::ANGELINE_VINTAGE_80_TTF),
+				Colors::ORANGE, ResurcesId::ANGELINE_VINTAGE_80_TTF,
 				m_Text[TEXT_DYNAMIC_INDX].m_ResrId)) {
 			return false;
 		}

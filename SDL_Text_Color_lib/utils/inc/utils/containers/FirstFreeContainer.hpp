@@ -10,7 +10,6 @@
 
 #include <vector>
 #include <stack>
-#include <algorithm>
 
 template<class T>
 class FirstFreeContainer {
@@ -57,6 +56,7 @@ private:
 		bool m_Valid = false;
 		T m_Val;
 	};
+
 	std::vector<Data_t> m_Container;
 	std::stack<std::size_t, std::vector<std::size_t>> m_Free;
 

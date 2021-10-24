@@ -30,7 +30,7 @@ bool ImageContainer::init(const ImgConfig::ImgRes_t & cfg, SDL_Renderer *p_rende
 	return true;
 }
 
-const Texture::Texture_t* ImageContainer::get(uint32_t id) const {
+const Texture::Texture_t* ImageContainer::get(std::size_t id) const {
 	auto it = m_Container.find(id);
 	if(m_Container.end() == it) {
 		return nullptr;

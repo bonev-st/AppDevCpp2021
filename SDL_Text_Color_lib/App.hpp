@@ -34,7 +34,6 @@ private:
 	ImageContainer m_ImageContainer;
 	TextContainer m_TextContainer;
 	Game m_Game;
-	std::shared_ptr<Texture::Texture_t>  m_Text;
 
 	bool mainLoop();
 	bool drawFrame();
@@ -47,7 +46,6 @@ private:
 
 	bool drawImage(DrawParams_t & img);
 	bool drawText(DrawParams_t & text);
-
 };
 
 #endif /* APP_HPP_ */

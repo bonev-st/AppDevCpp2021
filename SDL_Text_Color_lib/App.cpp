@@ -94,16 +94,16 @@ bool App::drawFrame() {
 		for(auto e : buffer) {
 			if(WidgetType_t::IMAGE == e.m_WidgetType) {
 				if(!drawImage(e)) {
-					std::cerr << "App::drawFrame::drawImage() failed, id:" << e.m_ResrId << " type: " << static_cast<uint8_t>(e.m_WidgetType) << std::endl;
+					std::cerr << "App::drawFrame::drawImage() failed, id: " << e.m_ResrId << " type: " << static_cast<int>(e.m_WidgetType) << std::endl;
 					return false;
 				}
 			} else if (WidgetType_t::TEXT == e.m_WidgetType) {
 				if(!drawText(e)) {
-					std::cerr << "App::drawFrame::drawText() failed, id:" << e.m_ResrId << " type: " << static_cast<uint8_t>(e.m_WidgetType) << std::endl;
+					std::cerr << "App::drawFrame::drawText() failed, id: " << e.m_ResrId << " type: " << static_cast<int>(e.m_WidgetType) << std::endl;
 					return false;
 				}
 			} else {
-				std::cerr << "App::drawFrame::drawFrame() failed, unknown widget type" << static_cast<uint8_t>(e.m_WidgetType) << std::endl;
+				std::cerr << "App::drawFrame::drawFrame() failed, unknown widget type" << static_cast<int>(e.m_WidgetType) << std::endl;
 				return false;
 			}
 		}
@@ -155,6 +155,10 @@ bool App::drawImage(DrawParams_t & img) {
 
 bool App::drawText(DrawParams_t & text) {
 	auto p_data = m_TextContainer.get(text.m_ResrId);
+	if(nullptr == p_data) {
+		std::cerr << "App::drawText::m_TextContainer.get() failed, Reason: can't find id " << text.m_ResrId << std::endl;
+		return false;
+	}
 	if(!Texture::setAlphaTexture(p_data, text.m_Opacity)) {
 		std::cerr << "App::drawText::Texture::setAlphaTexture() failed, for text id " << text.m_ResrId << std::endl;
 		return false;

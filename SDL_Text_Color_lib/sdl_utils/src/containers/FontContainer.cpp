@@ -29,7 +29,7 @@ bool FontContainer::init(const FontConfig::FontRes_t & cfg) {
 	return true;
 }
 
-const TTF_Font* FontContainer::get(uint32_t id) const {
+const TTF_Font* FontContainer::get(std::size_t id) const {
 	auto it = m_Container.find(id);
 	if(m_Container.end() == it) {
 		return nullptr;

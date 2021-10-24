@@ -12,7 +12,7 @@
 
 namespace ResurcesId {
 
-enum ImgId_t : uint32_t {
+enum ImgId_t : std::size_t {
 	IDLE_IMG,
 	UP_IMG,
 	DOWN_IMG,
@@ -22,7 +22,7 @@ enum ImgId_t : uint32_t {
 	NUMB_IMG
 };
 
-enum FontId_t : uint32_t {
+enum FontId_t : std::size_t {
 	ANGELINE_VINTAGE_40_TTF,
 	ANGELINE_VINTAGE_80_TTF,
 	ANGELINE_VINTAGE_160_TTF,
