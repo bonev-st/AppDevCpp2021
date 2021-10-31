@@ -27,8 +27,8 @@ public:
 
 private:
 	SDLLoader m_Loader;
-	InputEvent m_InputEvents;
 	Mgrs m_Managers;
+	InputEvent m_InputEvents;
 	Game m_Game;
 
 	bool mainLoop();

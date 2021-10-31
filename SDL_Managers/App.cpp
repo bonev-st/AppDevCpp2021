@@ -11,12 +11,10 @@
 
 #include "config/AppConfig.hpp"
 
-#include "utils/drawing/DrawParams.hpp"
 #include "utils/thread/ThreadUtils.hpp"
 #include "utils/time/Time.hpp"
 
 #include "manager_utils/managers/DrawMgr.hpp"
-#include "manager_utils/managers/ResMgr.hpp"
 
 bool App::init(const AppConfig& cfg) {
 	bool rc = false;
@@ -25,14 +23,8 @@ bool App::init(const AppConfig& cfg) {
 	        std::cerr << "App::init::m_Loader.init() failed." << std::endl;
 	        return false;
 	    }
-		G_pDrawMgr = new DrawMgr;
-	    if(G_pDrawMgr->init(cfg.m_ResourcesCfg.m_DrawMgrCfg)) {
-	        std::cerr << "App::init.G_pDrawMgr->init failed." << std::endl;
-	        return false;
-	    }
-		G_pResMgr = new ResMgr;
-	    if(G_pResMgr->init(cfg.m_ResourcesCfg.m_ResMgrCfg, G_pDrawMgr->getRendered())) {
-	        std::cerr << "App::init.m_ResMgrCfg->init failed." << std::endl;
+	    if(m_Managers.init(cfg.m_ResourcesCfg)) {
+	        std::cerr << "App::init.m_Managers.init() failed." << std::endl;
 	        return false;
 	    }
 	    if(!m_Game.init(cfg.m_GameCfg)) {
@@ -81,22 +73,15 @@ bool App::processFrame() {
 }
 
 bool App::drawFrame() {
-	std::vector<DrawParams_t> buffer;
-	bool update = false;
-	if(!m_Game.draw(buffer, update)) {
+	if(!G_pDrawMgr->clearScreen()) {
+		std::cerr << "App::drawFrame::m_Renderer.clearScreen() failed." << std::endl;
+		return false;
+	}
+	if(!m_Game.draw()) {
 		std::cerr << "App::drawFrame::m_Game.draw() failed." << std::endl;
 		return false;
 	}
-	if(update) {
-		if(!G_pDrawMgr->clearScreen()) {
-			std::cerr << "App::drawFrame::m_Renderer.clearScreen() failed." << std::endl;
-			return false;
-		}
-		for(auto e : buffer) {
-			G_pDrawMgr->draw(e);
-		}
-		G_pDrawMgr->finishFrame();
-	}
+	G_pDrawMgr->finishFrame();
 	return true;
 }
 

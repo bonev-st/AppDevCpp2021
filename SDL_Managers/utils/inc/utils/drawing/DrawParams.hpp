@@ -32,6 +32,7 @@ inline constexpr int32_t ZERO_OPACITY = 0;
 struct DrawParams_t {
 	std::size_t m_ResrId = INVALID_RESR_ID;
 	int32_t m_Opacity = FULL_OPACITY;
+	BlendMode_t m_BlendMode = BlendMode_t::NONE;
 	Rectangle m_SrcRect = Rectangle::UNDEFINED;
 	Rectangle m_DstRect = Rectangle::UNDEFINED;
 	WidgetType_t m_WidgetType = WidgetType_t::UNKNOWN;

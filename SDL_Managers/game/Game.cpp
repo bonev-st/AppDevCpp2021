@@ -16,7 +16,6 @@
 #include "sdl_utils/containers/ImageContainer.hpp"
 #include "sdl_utils/containers/TextContainer.hpp"
 
-#include "utils/drawing/DrawParams.hpp"
 #include "utils/drawing/Color.hpp"
 #include "common/CommonDefines.hpp"
 
@@ -55,58 +54,45 @@ bool Game::events(const InputEvent & event, bool & exit) {
 	return true;
 }
 
-bool Game::draw(std::vector<DrawParams_t> &out, bool &update) {
+bool Game::draw() {
 	if(GameConfig::KEY_UP_MASK & m_KeysMask) {
 		m_Text[TEXT_DYNAMIC_INDX].m_DstRect.m_Pos.m_Y -= MOVE_STEP;
-		update = true;
 	}
 	if(GameConfig::KEY_DOWN_MASK & m_KeysMask) {
 		m_Text[TEXT_DYNAMIC_INDX].m_DstRect.m_Pos.m_Y += MOVE_STEP;
-		update = true;
 	}
 	if(GameConfig::KEY_LEFT_MASK & m_KeysMask) {
 		m_Text[TEXT_DYNAMIC_INDX].m_DstRect.m_Pos.m_X -= MOVE_STEP;
-		update = true;
 	}
 	if(GameConfig::KEY_RIGHT_MASK & m_KeysMask) {
 		m_Text[TEXT_DYNAMIC_INDX].m_DstRect.m_Pos.m_X += MOVE_STEP;
-		update = true;
 	}
 	if(GameConfig::KEY_ZOOM_UP_MASK & m_KeysMask) {
 		m_Img[IMG_BACKGROUND_INDX].m_DstRect.scale(1.01);
-		update = true;
 	}
 	if(GameConfig::KEY_MOVE_UP_MASK & m_KeysMask) {
 		m_Img[IMG_BACKGROUND_INDX].m_DstRect.m_Pos.m_Y -= MOVE_STEP;
-		update = true;
 	}
 	if(GameConfig::KEY_MOVE_DOWN_MASK & m_KeysMask) {
 		m_Img[IMG_BACKGROUND_INDX].m_DstRect.m_Pos.m_Y += MOVE_STEP;
-		update = true;
 	}
 	if(GameConfig::KEY_MOVE_LEFT_MASK & m_KeysMask) {
 		m_Img[IMG_BACKGROUND_INDX].m_DstRect.m_Pos.m_X -= MOVE_STEP;
-		update = true;
 	}
 	if(GameConfig::KEY_MOVE_RIGHT_MASK & m_KeysMask) {
 		m_Img[IMG_BACKGROUND_INDX].m_DstRect.m_Pos.m_X += MOVE_STEP;
-		update = true;
 	}
 	if(GameConfig::KEY_ZOOM_UP_MASK & m_KeysMask) {
 		m_Img[IMG_BACKGROUND_INDX].m_DstRect.scale(1.01);
-		update = true;
 	}
 	if(GameConfig::KEY_ZOOM_DOWN_MASK & m_KeysMask) {
 		m_Img[IMG_BACKGROUND_INDX].m_DstRect.scale(0.99);
-		update = true;
 	}
 	if(GameConfig::KEY_OPACITY_UP_MASK & m_KeysMask) {
 		auto & opacity = m_Img[IMG_BACKGROUND_INDX].m_Opacity;
 		opacity += 1;
 		if(FULL_OPACITY < opacity) {
 			opacity = FULL_OPACITY;
-		} else {
-			update = true;
 		}
 	}
 	if(GameConfig::KEY_OPACITY_DOWN_MASK & m_KeysMask) {
@@ -114,8 +100,6 @@ bool Game::draw(std::vector<DrawParams_t> &out, bool &update) {
 		opacity -= 1;
 		if(ZERO_OPACITY > opacity) {
 			opacity = ZERO_OPACITY;
-		} else {
-			update = true;
 		}
 	}
 	bool dynamic_text_update = false;
@@ -123,16 +107,13 @@ bool Game::draw(std::vector<DrawParams_t> &out, bool &update) {
 		std::cerr << "Game::draw::updateDynamicText() failed." << std::endl;
 		return false;
 	}
-	update |= dynamic_text_update | m_ForceUpdate;
-	m_ForceUpdate = false;
-	if(update) {
-		out.push_back(m_Img[IMG_BACKGROUND_INDX]);
-		out.push_back(m_Img[IMG_L2_INDX]);
-		out.push_back(m_Text[TEXT_HELLO_INDX]);
-		out.push_back(m_Text[TEXT_2_INDX]);
-		out.push_back(m_Text[TEXT_3_INDX]);
-		out.push_back(m_Text[TEXT_DYNAMIC_INDX]);
-	}
+
+	G_pDrawMgr->draw(m_Img[IMG_BACKGROUND_INDX]);
+	G_pDrawMgr->draw(m_Img[IMG_L2_INDX]);
+	G_pDrawMgr->draw(m_Text[TEXT_HELLO_INDX]);
+	G_pDrawMgr->draw(m_Text[TEXT_2_INDX]);
+	G_pDrawMgr->draw(m_Text[TEXT_3_INDX]);
+	G_pDrawMgr->draw(m_Text[TEXT_DYNAMIC_INDX]);
 	return true;
 }
 

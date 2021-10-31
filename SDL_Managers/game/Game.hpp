@@ -20,7 +20,7 @@ class Game {
 public:
 	bool init(const GameConfig::Config_t & cfg);
 	bool events(const InputEvent & event, bool & exit);
-	bool draw(std::vector<DrawParams_t> &out, bool &update);
+	bool draw();
 
 private:
 	enum ImgIndx_t {
@@ -47,7 +47,6 @@ private:
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;
 	uint32_t m_KeysMaskHold = 0;
-	bool m_ForceUpdate = true;
 
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
 	bool initImgs();

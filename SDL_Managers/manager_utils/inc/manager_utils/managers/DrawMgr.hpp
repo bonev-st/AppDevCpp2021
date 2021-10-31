@@ -31,7 +31,6 @@ public:
 private:
 	Renderer m_Renderer;
 	std::int64_t m_MaxFrameRate = 0;
-
 	bool drawImage(const DrawParams_t & img);
 	bool drawText(const DrawParams_t & text);
 };
