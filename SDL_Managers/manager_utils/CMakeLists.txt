@@ -18,10 +18,12 @@ add_library(
 		${_INC_DIR}/managers/DrawMgr.hpp
 		${_INC_DIR}/managers/DrawMgrSing.hpp
 		${_INC_DIR}/managers/Mgrs.hpp
+		${_INC_DIR}/drawing/Widget.hpp
 	
 		${_SRC_DIR}/managers/ResMgr.cpp
 		${_SRC_DIR}/managers/DrawMgr.cpp
 		${_SRC_DIR}/managers/Mgrs.cpp
+		${_SRC_DIR}/drawing/Widget.cpp
 )
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)

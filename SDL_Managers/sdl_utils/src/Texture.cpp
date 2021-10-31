@@ -20,7 +20,7 @@
 
 namespace Texture {
 
-static bool setBlendModeTexture(Texture_t *texture, BlendMode_t blendMode) {
+bool setBlendModeTexture(const Texture_t *texture, BlendMode_t blendMode) {
 	if(EXIT_SUCCESS != SDL_SetTextureBlendMode(texture->m_Texture.get(), static_cast<SDL_BlendMode>(blendMode))) {
 		SDLHelper::print_SDL_Error("Texture::setBlendModeTexture::SDL_SetTextureBlendMode() fault.");
 		return false;

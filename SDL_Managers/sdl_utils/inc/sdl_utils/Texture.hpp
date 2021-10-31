@@ -36,6 +36,7 @@ std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname, SDL_R
 std::shared_ptr<SDL_Surface> createSurfaceFromText(const std::string &text, const Color &color, const TTF_Font* font);
 std::shared_ptr<Texture_t> createTextureFromFont(const std::string &text, const Color &color, const TTF_Font* font, SDL_Renderer * p_renderer, BlendMode_t blend_mode);
 
+bool setBlendModeTexture(const Texture_t *texture, BlendMode_t blendMode);
 bool setAlphaTexture(const Texture_t *texture, int32_t alpha);
 
 };

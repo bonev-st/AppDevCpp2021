@@ -15,9 +15,12 @@ namespace DrawMgrConfig {
 struct Config_t;
 }
 struct DrawParams_t;
+class ResMgr;
 
 class DrawMgr : public BaseMgr {
 public:
+	DrawMgr();
+
 	bool init(const DrawMgrConfig::Config_t &cfg);
 
 	bool clearScreen();
@@ -26,11 +29,16 @@ public:
 
 	SDL_Renderer* getRendered() const;
 
+	bool setBlendMode(const DrawParams_t & draw);
+	bool setAlpha(const DrawParams_t & draw);
+
 private:
 	Renderer m_Renderer;
 	std::int64_t m_MaxFrameRate = 0;
 	bool drawImage(const DrawParams_t & img);
 	bool drawText(const DrawParams_t & text);
+
+	static ResMgr * m_ResMgr;
 };
 
 #endif /* MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_DRAWMGR_HPP_ */
