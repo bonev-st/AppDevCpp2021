@@ -12,7 +12,8 @@
 #include <vector>
 
 #include "game/config/GameConfig.hpp"
-#include "utils/drawing/DrawParams.hpp"
+#include "manager_utils/drawing/Image.hpp"
+#include "manager_utils/drawing/Text.hpp"
 
 class InputEvent;
 
@@ -41,8 +42,8 @@ private:
 
 	static const int32_t MOVE_STEP = 1;
 
-	std::array<DrawParams_t, IMG_ARRAY_SIZE> m_Img;
-	std::array<DrawParams_t, TEXT_ARRAY_SIZE> m_Text;
+	std::array<Image, IMG_ARRAY_SIZE> m_Img;
+	std::array<Text, TEXT_ARRAY_SIZE> m_Text;
 
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;
@@ -51,7 +52,7 @@ private:
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
 	bool initImgs();
 	bool createTexts();
-	bool updateDynamicText(bool &update);
+	bool updateDynamicText();
 
 	void setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask);
 	bool exitRequest() const;

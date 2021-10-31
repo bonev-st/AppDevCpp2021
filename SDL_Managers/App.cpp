@@ -14,7 +14,7 @@
 #include "utils/thread/ThreadUtils.hpp"
 #include "utils/time/Time.hpp"
 
-#include "manager_utils/managers/DrawMgrSing.hpp"
+#include "manager_utils/managers/DrawMgr.hpp"
 
 bool App::init(const AppConfig& cfg) {
 	bool rc = false;
@@ -23,7 +23,7 @@ bool App::init(const AppConfig& cfg) {
 	        std::cerr << "App::init::m_Loader.init() failed." << std::endl;
 	        return false;
 	    }
-	    if(m_Managers.init(cfg.m_ResourcesCfg)) {
+	    if(!m_Managers.init(cfg.m_ResourcesCfg)) {
 	        std::cerr << "App::init.m_Managers.init() failed." << std::endl;
 	        return false;
 	    }
@@ -73,8 +73,7 @@ bool App::processFrame() {
 }
 
 bool App::drawFrame() {
-	auto p_draw = DrawMgrSing::getInstance();
-	if(!p_draw->clearScreen()) {
+	if(!G_pDrawMgr->clearScreen()) {
 		std::cerr << "App::drawFrame.G_pDrawMgr->clearScreen() failed." << std::endl;
 		return false;
 	}
@@ -82,7 +81,7 @@ bool App::drawFrame() {
 		std::cerr << "App::drawFrame::m_Game.draw() failed." << std::endl;
 		return false;
 	}
-	p_draw->finishFrame();
+	G_pDrawMgr->finishFrame();
 	return true;
 }
 

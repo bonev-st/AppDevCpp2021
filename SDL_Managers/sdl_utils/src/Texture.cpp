@@ -40,15 +40,15 @@ std::shared_ptr<SDL_Surface> createSurfaceFromFile(const std::string &fname) {
 	return rc;
 }
 
-std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname, SDL_Renderer * p_renderer, BlendMode_t blend_mode) {
+std::shared_ptr<Texture_t> createTextureFromFile(const std::string &fname, SDL_Renderer * p_renderer) {
 	auto p_surface = createSurfaceFromFile(fname);
 	if(nullptr == p_surface) {
 		return std::shared_ptr<Texture_t>(nullptr);
 	}
-	return createTextureFromSurface(p_surface.get(), p_renderer, blend_mode);
+	return createTextureFromSurface(p_surface.get(), p_renderer);
 }
 
-std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface, SDL_Renderer * p_renderer, BlendMode_t blend_mode) {
+std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface, SDL_Renderer * p_renderer) {
 	auto data = Texture_t {
 		.m_Texture = std::shared_ptr<SDL_Texture>(SDL_CreateTextureFromSurface(p_renderer, surface)
 						, Destroy::free<SDL_Texture, SDL_DestroyTexture>),
@@ -60,10 +60,6 @@ std::shared_ptr<Texture_t> createTextureFromSurface(SDL_Surface* surface, SDL_Re
 #endif
 	if(nullptr == data.m_Texture) {
 		SDLHelper::print_SDL_Error("Texture::createTextureFromSurface::SDL_CreateTextureFromSurface() fault.");
-		return std::shared_ptr<Texture_t>(nullptr);
-	}
-	if(!setBlendModeTexture(&data, blend_mode)) {
-		std::cerr << "Texture::createTextureFromSurface::setBlendModeTexture() failed." << std::endl;
 		return std::shared_ptr<Texture_t>(nullptr);
 	}
 	return std::make_shared<Texture_t>(data);
@@ -82,12 +78,12 @@ std::shared_ptr<SDL_Surface> createSurfaceFromText(const std::string &text, cons
 	return rc;
 }
 
-std::shared_ptr<Texture_t> createTextureFromFont(const std::string &text, const Color &color, const TTF_Font* font, SDL_Renderer * p_renderer, BlendMode_t blend_mode) {
+std::shared_ptr<Texture_t> createTextureFromFont(const std::string &text, const Color &color, const TTF_Font* font, SDL_Renderer * p_renderer) {
 	auto p_surface = createSurfaceFromText(text, color, font);
 	if(nullptr == p_surface) {
 		return std::shared_ptr<Texture_t>(nullptr);
 	}
-	return createTextureFromSurface(p_surface.get(), p_renderer, blend_mode);
+	return createTextureFromSurface(p_surface.get(), p_renderer);
 }
 
 bool setAlphaTexture(const Texture_t *texture, int32_t alpha) {

@@ -14,15 +14,9 @@
 #include "sdl_utils/Texture.hpp"
 
 #include "manager_utils/config/DrawMgrConfig.hpp"
-#include "manager_utils/managers/ResMgrSing.hpp"
+#include "manager_utils/managers/ResMgr.hpp"
 
-ResMgr * DrawMgr::m_ResMgr = nullptr;
-
-DrawMgr::DrawMgr() {
-	if(!m_ResMgr) {
-		m_ResMgr = ResMgrSing::getInstance();
-	}
-}
+DrawMgr *G_pDrawMgr = nullptr;
 
 bool DrawMgr::init(const DrawMgrConfig::Config_t &cfg) {
 	m_MaxFrameRate = cfg.m_MaxFrameRate;
@@ -62,9 +56,9 @@ void DrawMgr::draw(const DrawParams_t & draw) {
 bool DrawMgr::drawImage(const DrawParams_t & img) {
 	bool rc = false;
 	do {
-		auto p_data = m_ResMgr->get(img);
+		auto p_data = G_pResMgr->get(img);
 		if(nullptr == p_data) {
-			std::cerr << "DrawMgr::drawImage::ResMgrSing.m_ResMgr->get() failed, for image id " << img.m_ResrId  << std::endl;
+			std::cerr << "DrawMgr::drawImage::ResMgrSing.G_pResMgr->get() failed, for image id " << img.m_ResrId  << std::endl;
 			break;
 		}
 		auto p_texture = p_data->m_Texture.get();
@@ -93,13 +87,9 @@ bool DrawMgr::drawImage(const DrawParams_t & img) {
 }
 
 bool DrawMgr::drawText(const DrawParams_t & text) {
-	auto p_data = m_ResMgr->get(text);
+	auto p_data = G_pResMgr->get(text);
 	if(nullptr == p_data) {
-		std::cerr << "DrawMgr::drawText.m_ResMgr->get() failed, Reason: can't find id " << text.m_ResrId << std::endl;
-		return false;
-	}
-	if(!Texture::setAlphaTexture(p_data, text.m_Opacity)) {
-		std::cerr << "DrawMgr::drawText::Texture::setAlphaTexture() failed, for text id " << text.m_ResrId << std::endl;
+		std::cerr << "DrawMgr::drawText.G_pResMgr->get() failed, Reason: can't find id " << text.m_ResrId << std::endl;
 		return false;
 	}
 	if(!m_Renderer.copy(p_data->m_Texture.get(), text.m_SrcRect, text.m_DstRect)) {
@@ -114,9 +104,9 @@ SDL_Renderer* DrawMgr::getRendered() const {
 }
 
 bool DrawMgr::setBlendMode(const DrawParams_t & draw) {
-	auto * p_texture = m_ResMgr->get(draw);
+	auto * p_texture = G_pResMgr->get(draw);
 	if(nullptr == p_texture) {
-		std::cerr << "DrawMgr::setBlendMode.m_ResMgr->get() failed, id: " << draw.m_ResrId << " type: " << static_cast<int>(draw.m_WidgetType) << std::endl;
+		std::cerr << "DrawMgr::setBlendMode.G_pResMgr->get() failed, id: " << draw.m_ResrId << " type: " << static_cast<int>(draw.m_WidgetType) << std::endl;
 		return false;
 	}
 	return Texture::setBlendModeTexture(p_texture, draw.m_BlendMode);
@@ -126,9 +116,9 @@ bool DrawMgr::setAlpha(const DrawParams_t & draw) {
 	if(WidgetType_t::IMAGE == draw.m_WidgetType) {
 		return true;
 	}
-	auto * p_texture = m_ResMgr->get(draw);
+	auto * p_texture = G_pResMgr->get(draw);
 	if(nullptr == p_texture) {
-		std::cerr << "DrawMgr::setAlpha.m_ResMgr->get() failed, id: " << draw.m_ResrId << " type: " << static_cast<int>(draw.m_WidgetType) << std::endl;
+		std::cerr << "DrawMgr::setAlpha.G_pResMgr->get() failed, id: " << draw.m_ResrId << " type: " << static_cast<int>(draw.m_WidgetType) << std::endl;
 		return false;
 	}
 	return Texture::setAlphaTexture(p_texture, draw.m_Opacity);

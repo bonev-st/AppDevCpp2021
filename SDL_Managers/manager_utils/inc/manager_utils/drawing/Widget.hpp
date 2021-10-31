@@ -14,8 +14,6 @@ class DrawMgr;
 
 class Widget {
 public:
-	Widget();
-
 	void draw();
 
 	void setVisible(bool visible);
@@ -36,13 +34,13 @@ public:
 	void setOpacity(int32_t opacity);
 	int32_t getOpacity() const;
 
+	void scale(double val);
 
 protected:
-	  DrawParams_t m_DrawParams;
-	  bool m_Visible = true;
-
+	DrawParams_t m_DrawParams;
+	bool m_Visible = true;
 private:
-	  static DrawMgr * m_DrawMgr;
+	static DrawMgr *& m_DrawMgr;
 };
 
 #endif /* MANAGER_UTILS_INC_MANAGER_UTILS_DRAWING_WIDGET_HPP_ */

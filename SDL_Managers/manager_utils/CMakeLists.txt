@@ -13,17 +13,19 @@ add_library(
 		${_INC_DIR}/config/ResMgrConfig.hpp
 		${_INC_DIR}/config/ResourcesConfig.hpp
 		${_INC_DIR}/managers/ResMgr.hpp
-		${_INC_DIR}/managers/ResMgrSing.hpp
 		${_INC_DIR}/managers/BaseMgr.hpp
 		${_INC_DIR}/managers/DrawMgr.hpp
-		${_INC_DIR}/managers/DrawMgrSing.hpp
 		${_INC_DIR}/managers/Mgrs.hpp
 		${_INC_DIR}/drawing/Widget.hpp
+		${_INC_DIR}/drawing/Image.hpp
+		${_INC_DIR}/drawing/Text.hpp
 	
 		${_SRC_DIR}/managers/ResMgr.cpp
 		${_SRC_DIR}/managers/DrawMgr.cpp
 		${_SRC_DIR}/managers/Mgrs.cpp
 		${_SRC_DIR}/drawing/Widget.cpp
+		${_SRC_DIR}/drawing/Image.cpp
+		${_SRC_DIR}/drawing/Text.cpp
 )
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)

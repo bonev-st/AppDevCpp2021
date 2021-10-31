@@ -13,7 +13,7 @@
 
 bool ImageContainer::init(const ImgConfig::ImgRes_t & cfg, SDL_Renderer *p_renderer) {
 	for(const auto & e: cfg) {
-		m_Container[e.first] = Texture::createTextureFromFile(e.second.m_Path, p_renderer, BlendMode_t::BLEND);
+		m_Container[e.first] = Texture::createTextureFromFile(e.second.m_Path, p_renderer);
 		if(nullptr == m_Container[e.first]) {
 			std::cerr << "ImageContainer::init::Texture::createTextureFromFile() failed." << std::endl;
 	        return false;

@@ -11,6 +11,7 @@
 #include <cstdint>
 
 #include "utils/NoCopy.hpp"
+
 #include "sdl_utils/SDLLoader.hpp"
 #include "sdl_utils/InputEvent.hpp"
 

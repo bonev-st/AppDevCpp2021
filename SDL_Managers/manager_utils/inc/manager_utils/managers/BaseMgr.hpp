@@ -12,8 +12,8 @@
 #include "utils/NoCopy.hpp"
 
 enum ManagersId_t : std::uint32_t {
-	MGR_RES = 0,
-	MGR_DRAW,
+	MGR_DRAW = 0,
+	MGR_RES,
 	MGR_NUMB
 };
 

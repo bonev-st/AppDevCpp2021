@@ -36,4 +36,6 @@ private:
 	void setDimention(DrawParams_t & param, int32_t w, int32_t h);
 };
 
+extern ResMgr * G_pResMgr;
+
 #endif /* MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_RESMGR_HPP_ */

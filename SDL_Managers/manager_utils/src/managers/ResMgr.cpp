@@ -12,6 +12,8 @@
 
 #include "manager_utils/config/ResMgrConfig.hpp"
 
+ResMgr * G_pResMgr = nullptr;
+
 bool ResMgr::init(const ResMgrConfig::Config_t &cfg, SDL_Renderer* render) {
 	assert(render);
 	m_Rerender = render;
@@ -19,8 +21,8 @@ bool ResMgr::init(const ResMgrConfig::Config_t &cfg, SDL_Renderer* render) {
 		std::cerr << "ResMgr::init.m_ImageContainer.init() failed." << std::endl;
 		return false;
 	}
-	if(m_TextContainer.init(cfg.m_FontRes, m_Rerender)) {
-		std::cerr << "ResMgr::init.lm_TextContainer.init() failed." << std::endl;
+	if(!m_TextContainer.init(cfg.m_FontRes, m_Rerender)) {
+		std::cerr << "ResMgr::init.m_TextContainer.init() failed." << std::endl;
 		return false;
 	}
 	return true;

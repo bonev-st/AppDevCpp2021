@@ -29,3 +29,14 @@ Color::Color(const uint8_t red,  const uint8_t green,
 	m_RGBA.b = blue;
 	m_RGBA.a = alpha;
 }
+
+bool Color::operator == (const Color& other) const {
+	return (other.m_RGBA.a == m_RGBA.a)
+		&& (other.m_RGBA.b == m_RGBA.b)
+		&& (other.m_RGBA.g == m_RGBA.g)
+		&& (other.m_RGBA.r == m_RGBA.r);
+}
+
+bool Color::operator != (const Color& other) const  {
+	return !operator==(other);
+}

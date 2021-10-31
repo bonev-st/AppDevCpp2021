@@ -23,7 +23,7 @@ bool TextContainer::createText(const std::string &text, const Color &color, std:
 		std::cerr << "TextContainer::createText::m_Font.get() failed. Reason: Font with id " << font_id << " not found" << std::endl;
 		return false;
 	}
-	Text_t texture = Texture::createTextureFromFont(text, color, font, m_Renderer, BlendMode_t::BLEND);
+	Text_t texture = Texture::createTextureFromFont(text, color, font, m_Renderer);
 	if(nullptr == texture) {
 		std::cerr << "TextContainer::createText::Texture::createTextureFromFont() failed."  << " for text: " << text << std::endl;
         return false;
@@ -38,7 +38,7 @@ bool TextContainer::reloadText(const std::string &text, const Color &color, std:
 		std::cerr << "TextContainer::reloadText::m_Font.get() failed. Reason: Font with id " << font_id << " not found" << std::endl;
 		return false;
 	}
-	Text_t texture = Texture::createTextureFromFont(text, color, font, m_Renderer, BlendMode_t::BLEND);
+	Text_t texture = Texture::createTextureFromFont(text, color, font, m_Renderer);
 	if(nullptr == texture) {
 		std::cerr << "TextContainer::reloadText::Texture::createTextureFromFont() failed." << " for text: " << text << std::endl;
         return false;

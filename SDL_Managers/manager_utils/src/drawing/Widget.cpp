@@ -9,15 +9,9 @@
 
 #include <iostream>
 
-#include "manager_utils/managers/DrawMgrSing.hpp"
+#include "manager_utils/managers/DrawMgr.hpp"
 
-DrawMgr * Widget::m_DrawMgr = nullptr;
-
-Widget::Widget() {
-	if(!m_DrawMgr) {
-		m_DrawMgr = DrawMgrSing::getInstance();
-	}
-}
+DrawMgr *& Widget::m_DrawMgr = G_pDrawMgr;
 
 void Widget::draw() {
 	if(m_Visible) {
@@ -104,4 +98,8 @@ void Widget::deactivateAlphaModulation() {
 	} else {
 		std::cerr << "Widget::deactivateAlphaModulation() failed. BlendMode already disabled" << std::endl;
 	}
+}
+
+void Widget::scale(double val) {
+	m_DrawParams.m_DstRect.scale(val);
 }

@@ -87,6 +87,8 @@ void populateGameCfg(GameConfig::Config_t &cfg) {
 	cfg.m_Keys[Keyboard::KEY_NUMPAD_MINUS]		= GameConfig::KEY_ZOOM_DOWN_MASK;
 	cfg.m_Keys[Keyboard::KEY_A]					= GameConfig::KEY_OPACITY_UP_MASK;
 	cfg.m_Keys[Keyboard::KEY_S]					= GameConfig::KEY_OPACITY_DOWN_MASK;
+	cfg.m_Keys[Keyboard::KEY_Q]					= GameConfig::KEY_T_OPACITY_UP_MASK;
+	cfg.m_Keys[Keyboard::KEY_W]					= GameConfig::KEY_T_OPACITY_DOWN_MASK;
 }
 
 namespace AppConfigLoader {

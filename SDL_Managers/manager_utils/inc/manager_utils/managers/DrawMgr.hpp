@@ -19,8 +19,6 @@ class ResMgr;
 
 class DrawMgr : public BaseMgr {
 public:
-	DrawMgr();
-
 	bool init(const DrawMgrConfig::Config_t &cfg);
 
 	bool clearScreen();
@@ -37,8 +35,8 @@ private:
 	std::int64_t m_MaxFrameRate = 0;
 	bool drawImage(const DrawParams_t & img);
 	bool drawText(const DrawParams_t & text);
-
-	static ResMgr * m_ResMgr;
 };
+
+extern DrawMgr *G_pDrawMgr;
 
 #endif /* MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_DRAWMGR_HPP_ */

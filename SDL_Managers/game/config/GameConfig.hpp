@@ -27,6 +27,8 @@ enum KeyMask_t : std::uint32_t {
 	KEY_ZOOM_DOWN_MASK 		= 1u << 10,
 	KEY_OPACITY_UP_MASK		= 1u << 11,
 	KEY_OPACITY_DOWN_MASK	= 1u << 12,
+	KEY_T_OPACITY_UP_MASK	= 1u << 13,
+	KEY_T_OPACITY_DOWN_MASK	= 1u << 14,
 };
 
 typedef Keyboard::Key Key;
