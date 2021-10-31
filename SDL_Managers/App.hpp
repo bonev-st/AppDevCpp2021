@@ -11,11 +11,10 @@
 #include <cstdint>
 
 #include "utils/NoCopy.hpp"
-#include "sdl_utils/resource_manager/ResourceManager.hpp"
-
 #include "sdl_utils/SDLLoader.hpp"
 #include "sdl_utils/InputEvent.hpp"
-#include "sdl_utils/Renderer.hpp"
+
+#include "manager_utils/managers/Mgrs.hpp"
 
 #include "game/Game.hpp"
 
@@ -29,8 +28,7 @@ public:
 private:
 	SDLLoader m_Loader;
 	InputEvent m_InputEvents;
-	Renderer m_Renderer;
-	ResourceManager m_ResourceManager;
+	Mgrs m_Managers;
 	Game m_Game;
 
 	bool mainLoop();
@@ -41,9 +39,6 @@ private:
 
 	void load_text();
 	void show_text();
-
-	bool drawImage(DrawParams_t & img);
-	bool drawText(DrawParams_t & text);
 };
 
 #endif /* APP_HPP_ */

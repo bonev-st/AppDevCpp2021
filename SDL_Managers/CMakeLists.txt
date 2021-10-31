@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5.1)
 
-project(sdl_managers LANGUAGES CXX)
+project(managers LANGUAGES CXX)
 
 #generate project binary
 add_executable(
@@ -9,7 +9,6 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfig.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfigLoader.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfigLoader.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/config/ResourcesConfig.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfig.hpp
@@ -35,7 +34,8 @@ target_include_directories(
 target_link_libraries(
     ${PROJECT_NAME}
         PRIVATE
-        	sdl_utils
+        	manager_utils
 )
 
-add_subdirectory(sdl_utils)
+add_subdirectory(manager_utils)
+

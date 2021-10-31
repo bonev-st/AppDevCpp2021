@@ -14,12 +14,11 @@
 #include "game/config/GameConfig.hpp"
 #include "utils/drawing/DrawParams.hpp"
 
-class ResourceManager;
 class InputEvent;
 
 class Game {
 public:
-	bool init(const GameConfig::Config_t & cfg, ResourceManager * manager);
+	bool init(const GameConfig::Config_t & cfg);
 	bool events(const InputEvent & event, bool & exit);
 	bool draw(std::vector<DrawParams_t> &out, bool &update);
 
@@ -42,7 +41,6 @@ private:
 
 	static const int32_t MOVE_STEP = 1;
 
-	ResourceManager * m_ResourceManager = nullptr;
 	std::array<DrawParams_t, IMG_ARRAY_SIZE> m_Img;
 	std::array<DrawParams_t, TEXT_ARRAY_SIZE> m_Text;
 

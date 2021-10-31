@@ -17,7 +17,6 @@ namespace ImgConfig {
 
 struct Config_t {
 	std::string m_Path = "";
-	Dimention m_Dimention;
 };
 
 typedef std::unordered_map<uint32_t,  ImgConfig::Config_t> ImgRes_t;

@@ -7,6 +7,8 @@
 
 #include "config/AppConfigLoader.hpp"
 
+#include "common/CommonDefines.hpp"
+
 #include "sdl_utils/MainWindow.hpp"
 #include "utils/drawing/Dimention.hpp"
 
@@ -15,14 +17,12 @@
 #include "game/config/GameConfig.hpp"
 
 namespace {
+constexpr auto APP_NAME	 				= "Managers";
+constexpr auto WINDOW_WIDTH				= 640;
+constexpr auto WINDOW_HEIGHT			= 480;
 
-constexpr auto WINDOW_WIDTH		= 640;
-constexpr auto WINDOW_HEIGHT	= 480;
-constexpr auto IMG_WIDTH		= WINDOW_WIDTH;
-constexpr auto IMG_HEIGHT		= WINDOW_HEIGHT;
-constexpr auto L2_WIDTH  		= 150;
-constexpr auto L2_HEIGHT 		= 150;
-constexpr auto APP_NAME	 		= "Scaling and Alpha blending";
+constexpr std::int64_t MAX_REFRESH_RATE	= 50;
+}
 
 static void populateAppWindowCfg(MainWindow::Config_t &cfg) {
 	constexpr auto app_name = APP_NAME;
@@ -31,10 +31,14 @@ static void populateAppWindowCfg(MainWindow::Config_t &cfg) {
 	cfg.m_Flags = MainWindow::WINDOW_SHOWN;
 }
 
+static void populateDrawingCfg(DrawMgrConfig::Config_t &cfg) {
+	populateAppWindowCfg(cfg.m_WindowCfg);
+	cfg.m_MaxFrameRate = MAX_REFRESH_RATE;
+}
+
 void populateImgCfg(ImgConfig::ImgRes_t &cfg) {
 	ImgConfig::Config_t res;
 	res.m_Path = "resources/images/press_keys.png";
-	res.m_Dimention = Dimention(IMG_WIDTH, IMG_HEIGHT);
 	cfg[ResurcesId::IDLE_IMG]	= res;
 	res.m_Path = "resources/images/up.png";
 	cfg[ResurcesId::UP_IMG]	= res;
@@ -45,7 +49,6 @@ void populateImgCfg(ImgConfig::ImgRes_t &cfg) {
 	res.m_Path = "resources/images/right.png";
 	cfg[ResurcesId::RIGHT_IMG]	= res;
 	res.m_Path = "resources/images/layer_2.png";
-	res.m_Dimention = Dimention(L2_WIDTH, L2_HEIGHT);
 	cfg[ResurcesId::L2_IMG]	= res;
 }
 
@@ -60,10 +63,14 @@ void populateFontCfg(FontConfig::FontRes_t &cfg) {
 	cfg[ResurcesId::ANGELINE_VINTAGE_160_TTF] = res;
 }
 
-void populateResourcesCfg(ResourcesConfig::Config_t &cfg) {
+void populateResourceCfg(ResMgrConfig::Config_t & cfg) {
 	populateImgCfg(cfg.m_ImgRes);
 	populateFontCfg(cfg.m_FontRes);
-	populateAppWindowCfg(cfg.m_WindowCfg);
+}
+
+void populateResourcesCfg(ResourcesConfig::Config_t &cfg) {
+	populateDrawingCfg(cfg.m_DrawMgrCfg);
+	populateResourceCfg(cfg.m_ResMgrCfg);
 }
 
 void populateGameCfg(GameConfig::Config_t &cfg) {
@@ -80,7 +87,6 @@ void populateGameCfg(GameConfig::Config_t &cfg) {
 	cfg.m_Keys[Keyboard::KEY_NUMPAD_MINUS]		= GameConfig::KEY_ZOOM_DOWN_MASK;
 	cfg.m_Keys[Keyboard::KEY_A]					= GameConfig::KEY_OPACITY_UP_MASK;
 	cfg.m_Keys[Keyboard::KEY_S]					= GameConfig::KEY_OPACITY_DOWN_MASK;
-}
 }
 
 namespace AppConfigLoader {

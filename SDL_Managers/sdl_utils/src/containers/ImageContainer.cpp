@@ -18,14 +18,6 @@ bool ImageContainer::init(const ImgConfig::ImgRes_t & cfg, SDL_Renderer *p_rende
 			std::cerr << "ImageContainer::init::Texture::createTextureFromFile() failed." << std::endl;
 	        return false;
 		}
-		const auto dim = e.second.m_Dimention;
-		// replace image dimension with dimension from configuration
-		// may be will be simple to scale image to desired size!!!
-		if(dim.m_H && dim.m_W) {
-			auto texture = m_Container[e.first].get();
-			texture->m_W = dim.m_W;
-			texture->m_H = dim.m_H;
-		}
 	}
 	return true;
 }

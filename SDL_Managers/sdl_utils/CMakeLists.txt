@@ -9,7 +9,6 @@ set(_INC_DIR ${_BASE_DIR}/sdl_utils)
 #generate project library
 add_library(
 	${PROJECT_NAME} STATIC
-		${_INC_DIR}/resource_manager/ResourceManager.hpp
 		${_INC_DIR}/config/ImgConfig.hpp
 		${_INC_DIR}/config/FontConfig.hpp
 		${_INC_DIR}/containers/ImageContainer.hpp
@@ -23,7 +22,6 @@ add_library(
 		${_INC_DIR}/Texture.hpp
 		${_INC_DIR}/Timer.hpp
 	
-		${_SRC_DIR}/resource_manager/ResourceManager.cpp
 		${_SRC_DIR}/containers/ImageContainer.cpp
 		${_SRC_DIR}/containers/FontContainer.cpp
 		${_SRC_DIR}/containers/TextContainer.cpp

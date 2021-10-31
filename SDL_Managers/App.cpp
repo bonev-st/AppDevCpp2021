@@ -15,6 +15,9 @@
 #include "utils/thread/ThreadUtils.hpp"
 #include "utils/time/Time.hpp"
 
+#include "manager_utils/managers/DrawMgr.hpp"
+#include "manager_utils/managers/ResMgr.hpp"
+
 bool App::init(const AppConfig& cfg) {
 	bool rc = false;
 	do {
@@ -22,23 +25,20 @@ bool App::init(const AppConfig& cfg) {
 	        std::cerr << "App::init::m_Loader.init() failed." << std::endl;
 	        return false;
 	    }
-		if(!m_Renderer.init(cfg.m_ResourcesCfg.m_WindowCfg)) {
-			std::cerr << "App::init::m_Renderer.init() failed." << std::endl;
-	        break;
-		}
-		m_ResourceManager.init(m_Renderer.get());
-		if(!m_ResourceManager.loadImg(cfg.m_ResourcesCfg.m_ImgRes)) {
-			std::cerr << "App::init::m_ResourceManager.loadImg() failed." << std::endl;
-	        break;
-		}
-		if(!m_ResourceManager.loadFonts(cfg.m_ResourcesCfg.m_FontRes)) {
-			std::cerr << "App::init::m_ResourceManager.loadFonts() failed." << std::endl;
-	        break;
-		}
-		if(!m_Game.init(cfg.m_GameCfg, &m_ResourceManager)) {
-			std::cerr << "App::init::m_Game.init() failed." << std::endl;
-	        break;
-		}
+		G_pDrawMgr = new DrawMgr;
+	    if(G_pDrawMgr->init(cfg.m_ResourcesCfg.m_DrawMgrCfg)) {
+	        std::cerr << "App::init.G_pDrawMgr->init failed." << std::endl;
+	        return false;
+	    }
+		G_pResMgr = new ResMgr;
+	    if(G_pResMgr->init(cfg.m_ResourcesCfg.m_ResMgrCfg, G_pDrawMgr->getRendered())) {
+	        std::cerr << "App::init.m_ResMgrCfg->init failed." << std::endl;
+	        return false;
+	    }
+	    if(!m_Game.init(cfg.m_GameCfg)) {
+	        std::cerr << "App::init::m_Game.init() failed." << std::endl;
+	        return false;
+	    }
 		rc = true;
 	} while(0);
 	return rc;
@@ -88,27 +88,14 @@ bool App::drawFrame() {
 		return false;
 	}
 	if(update) {
-		if(!m_Renderer.clearScreen()) {
+		if(!G_pDrawMgr->clearScreen()) {
 			std::cerr << "App::drawFrame::m_Renderer.clearScreen() failed." << std::endl;
 			return false;
 		}
 		for(auto e : buffer) {
-			if(WidgetType_t::IMAGE == e.m_WidgetType) {
-				if(!drawImage(e)) {
-					std::cerr << "App::drawFrame::drawImage() failed, id: " << e.m_ResrId << " type: " << static_cast<int>(e.m_WidgetType) << std::endl;
-					return false;
-				}
-			} else if (WidgetType_t::TEXT == e.m_WidgetType) {
-				if(!drawText(e)) {
-					std::cerr << "App::drawFrame::drawText() failed, id: " << e.m_ResrId << " type: " << static_cast<int>(e.m_WidgetType) << std::endl;
-					return false;
-				}
-			} else {
-				std::cerr << "App::drawFrame::drawFrame() failed, unknown widget type: " << static_cast<int>(e.m_WidgetType) << std::endl;
-				return false;
-			}
+			G_pDrawMgr->draw(e);
 		}
-		m_Renderer.finishFrame();
+		G_pDrawMgr->finishFrame();
 	}
 	return true;
 }
@@ -119,54 +106,4 @@ void App::limitFPS(int64_t elapsed_us) {
 	if(FRAME_DURATION_US > elapsed_us) {
 		ThreadUtils::sleep_usec(FRAME_DURATION_US - elapsed_us);
 	}
-}
-
-bool App::drawImage(DrawParams_t & img) {
-	bool rc = false;
-	do {
-		auto p_data = m_ResourceManager.get(img);
-		if(nullptr == p_data) {
-			std::cerr << "App::drawImage::m_ImageContainer.get failed, for image id " << img.m_ResrId  << std::endl;
-			break;
-		}
-		auto p_texture = p_data->m_Texture.get();
-		if (FULL_OPACITY == img.m_Opacity) {
-			if(!m_Renderer.copy(p_texture, img.m_SrcRect, img.m_DstRect)) {
-				std::cerr << "App::drawImage::drawText::m_Renderer.copy() failed, for image id " << img.m_ResrId  << std::endl;
-				break;
-			};
-		} else {
-			if(!Texture::setAlphaTexture(p_data, img.m_Opacity)) {
-				std::cerr << "App::drawImage::Texture::setAlphaTexture() failed, for image id " << img.m_ResrId << std::endl;
-				break;
-			}
-			if(!m_Renderer.copy(p_texture, img.m_SrcRect, img.m_DstRect)) {
-				std::cerr << "App::drawImage::m_Renderer.copy() failed, for image id " << img.m_ResrId << std::endl;
-				break;
-			}
-			if(!Texture::setAlphaTexture(p_data, FULL_OPACITY)) {
-				std::cerr << "App::drawImage::Texture::setAlphaTexture(FULL_OPACITY) failed, for id " << img.m_ResrId << std::endl;
-				break;
-			}
-		}
-		rc = true;
-	} while(0);
-	return rc;
-}
-
-bool App::drawText(DrawParams_t & text) {
-	auto p_data = m_ResourceManager.get(text);
-	if(nullptr == p_data) {
-		std::cerr << "App::drawText::m_ResourceManager.get() failed, Reason: can't find id " << text.m_ResrId << std::endl;
-		return false;
-	}
-	if(!Texture::setAlphaTexture(p_data, text.m_Opacity)) {
-		std::cerr << "App::drawText::Texture::setAlphaTexture() failed, for text id " << text.m_ResrId << std::endl;
-		return false;
-	}
-	if(!m_Renderer.copy(p_data->m_Texture.get(), text.m_SrcRect, text.m_DstRect)) {
-		std::cerr << "App::drawText::m_Renderer.copy() failed, for text id " << text.m_ResrId  << std::endl;
-		return false;
-	};
-	return true;
 }

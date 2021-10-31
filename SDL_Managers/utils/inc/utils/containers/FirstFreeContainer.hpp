@@ -14,8 +14,6 @@
 template<class T>
 class FirstFreeContainer {
 public:
-	FirstFreeContainer() = default;
-
 	const T* get(std::size_t id) const {
 		if(!isValid(id)) {
 			return nullptr;
