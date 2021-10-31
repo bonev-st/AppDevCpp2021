@@ -14,7 +14,7 @@
 #include "utils/thread/ThreadUtils.hpp"
 #include "utils/time/Time.hpp"
 
-#include "manager_utils/managers/DrawMgr.hpp"
+#include "manager_utils/managers/DrawMgrSing.hpp"
 
 bool App::init(const AppConfig& cfg) {
 	bool rc = false;
@@ -73,15 +73,16 @@ bool App::processFrame() {
 }
 
 bool App::drawFrame() {
-	if(!G_pDrawMgr->clearScreen()) {
-		std::cerr << "App::drawFrame::m_Renderer.clearScreen() failed." << std::endl;
+	auto p_draw = DrawMgrSing::getInstance();
+	if(!p_draw->clearScreen()) {
+		std::cerr << "App::drawFrame.G_pDrawMgr->clearScreen() failed." << std::endl;
 		return false;
 	}
 	if(!m_Game.draw()) {
 		std::cerr << "App::drawFrame::m_Game.draw() failed." << std::endl;
 		return false;
 	}
-	G_pDrawMgr->finishFrame();
+	p_draw->finishFrame();
 	return true;
 }
 

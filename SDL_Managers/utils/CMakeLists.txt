@@ -20,6 +20,7 @@ add_library(
 		${_INC_DIR}/thread/ThreadUtils.hpp
 		${_INC_DIR}/NoCopy.hpp
 		${_INC_DIR}/Destroy.hpp
+		${_INC_DIR}/Singleton.hpp
 	
 		${_SRC_DIR}/drawing/Point.cpp
 		${_SRC_DIR}/drawing/Rectangle.cpp

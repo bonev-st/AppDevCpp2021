@@ -13,8 +13,10 @@ add_library(
 		${_INC_DIR}/config/ResMgrConfig.hpp
 		${_INC_DIR}/config/ResourcesConfig.hpp
 		${_INC_DIR}/managers/ResMgr.hpp
+		${_INC_DIR}/managers/ResMgrSing.hpp
 		${_INC_DIR}/managers/BaseMgr.hpp
 		${_INC_DIR}/managers/DrawMgr.hpp
+		${_INC_DIR}/managers/DrawMgrSing.hpp
 		${_INC_DIR}/managers/Mgrs.hpp
 	
 		${_SRC_DIR}/managers/ResMgr.cpp

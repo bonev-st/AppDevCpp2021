@@ -12,11 +12,6 @@
 
 #include "manager_utils/config/ResMgrConfig.hpp"
 
-ResMgr *G_pResMgr = nullptr;
-
-void ResMgr::process() {
-}
-
 bool ResMgr::init(const ResMgrConfig::Config_t &cfg, SDL_Renderer* render) {
 	assert(render);
 	m_Rerender = render;

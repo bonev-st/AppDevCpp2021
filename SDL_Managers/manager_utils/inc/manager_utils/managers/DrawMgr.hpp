@@ -20,8 +20,6 @@ class DrawMgr : public BaseMgr {
 public:
 	bool init(const DrawMgrConfig::Config_t &cfg);
 
-	void process() final;
-
 	bool clearScreen();
 	void finishFrame();
 	void draw(const DrawParams_t & draw);
@@ -34,7 +32,5 @@ private:
 	bool drawImage(const DrawParams_t & img);
 	bool drawText(const DrawParams_t & text);
 };
-
-extern DrawMgr * G_pDrawMgr;
 
 #endif /* MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_DRAWMGR_HPP_ */

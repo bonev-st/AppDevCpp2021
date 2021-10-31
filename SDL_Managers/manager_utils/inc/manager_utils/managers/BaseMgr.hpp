@@ -21,7 +21,8 @@ class BaseMgr : private NoCopy {
 public:
 	virtual ~BaseMgr() = default;
 
-	virtual void process() = 0;
+	virtual void process() {
+	}
 };
 
 #endif /* MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_BASEMGR_HPP_ */

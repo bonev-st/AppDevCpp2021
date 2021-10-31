@@ -12,9 +12,7 @@
 #include "utils/drawing/DrawParams.hpp"
 
 #include "manager_utils/config/DrawMgrConfig.hpp"
-#include "manager_utils/managers/ResMgr.hpp"
-
-DrawMgr * G_pDrawMgr = nullptr;
+#include "manager_utils/managers/ResMgrSing.hpp"
 
 bool DrawMgr::init(const DrawMgrConfig::Config_t &cfg) {
 	m_MaxFrameRate = cfg.m_MaxFrameRate;
@@ -23,9 +21,6 @@ bool DrawMgr::init(const DrawMgrConfig::Config_t &cfg) {
         return false;
 	}
 	return true;
-}
-
-void DrawMgr::process() {
 }
 
 bool DrawMgr::clearScreen() {
@@ -57,9 +52,9 @@ void DrawMgr::draw(const DrawParams_t & draw) {
 bool DrawMgr::drawImage(const DrawParams_t & img) {
 	bool rc = false;
 	do {
-		auto p_data = G_pResMgr->get(img);
+		auto p_data = ResMgrSing::getInstance()->get(img);
 		if(nullptr == p_data) {
-			std::cerr << "App::drawImage::m_ImageContainer.get failed, for image id " << img.m_ResrId  << std::endl;
+			std::cerr << "App::drawImage::ResMgrSing::getInstance()->get() failed, for image id " << img.m_ResrId  << std::endl;
 			break;
 		}
 		auto p_texture = p_data->m_Texture.get();
@@ -88,9 +83,9 @@ bool DrawMgr::drawImage(const DrawParams_t & img) {
 }
 
 bool DrawMgr::drawText(const DrawParams_t & text) {
-	auto p_data = G_pResMgr->get(text);
+	auto p_data = ResMgrSing::getInstance()->get(text);
 	if(nullptr == p_data) {
-		std::cerr << "App::drawText::G_pResMgr->get() failed, Reason: can't find id " << text.m_ResrId << std::endl;
+		std::cerr << "App::drawText::ResMgrSing::getInstance()->get() failed, Reason: can't find id " << text.m_ResrId << std::endl;
 		return false;
 	}
 	if(!Texture::setAlphaTexture(p_data, text.m_Opacity)) {

@@ -19,8 +19,8 @@
 #include "utils/drawing/Color.hpp"
 #include "common/CommonDefines.hpp"
 
-#include "manager_utils/managers/DrawMgr.hpp"
-#include "manager_utils/managers/ResMgr.hpp"
+#include "manager_utils/managers/DrawMgrSing.hpp"
+#include "manager_utils/managers/ResMgrSing.hpp"
 
 bool Game::init(const GameConfig::Config_t & cfg) {
 	if(!loadKeys(cfg.m_Keys)) {
@@ -108,12 +108,13 @@ bool Game::draw() {
 		return false;
 	}
 
-	G_pDrawMgr->draw(m_Img[IMG_BACKGROUND_INDX]);
-	G_pDrawMgr->draw(m_Img[IMG_L2_INDX]);
-	G_pDrawMgr->draw(m_Text[TEXT_HELLO_INDX]);
-	G_pDrawMgr->draw(m_Text[TEXT_2_INDX]);
-	G_pDrawMgr->draw(m_Text[TEXT_3_INDX]);
-	G_pDrawMgr->draw(m_Text[TEXT_DYNAMIC_INDX]);
+	auto p_draw = DrawMgrSing::getInstance();
+	p_draw->draw(m_Img[IMG_BACKGROUND_INDX]);
+	p_draw->draw(m_Img[IMG_L2_INDX]);
+	p_draw->draw(m_Text[TEXT_HELLO_INDX]);
+	p_draw->draw(m_Text[TEXT_2_INDX]);
+	p_draw->draw(m_Text[TEXT_3_INDX]);
+	p_draw->draw(m_Text[TEXT_DYNAMIC_INDX]);
 	return true;
 }
 
@@ -126,8 +127,8 @@ bool Game::initImgs() {
 	m_Img[IMG_BACKGROUND_INDX].m_ResrId = ResurcesId::IDLE_IMG;
 	m_Img[IMG_L2_INDX].m_ResrId = ResurcesId::L2_IMG;
 	for(auto &e : m_Img) {
-		if(!G_pResMgr->populateImg(e)) {
-			std::cerr << "Game::initImgs.G_pResMgr->populateImg(e) fault" << std::endl;
+		if(!ResMgrSing::getInstance()->populateImg(e)) {
+			std::cerr << "Game::initImgs.ResMgrSing::getInstance()->populateImg(e) fault" << std::endl;
 			return false;
 		}
 	}
@@ -135,30 +136,30 @@ bool Game::initImgs() {
 }
 
 bool Game::createTexts() {
-	if(!G_pResMgr->createText("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF, m_Text[TEXT_HELLO_INDX])) {
-		std::cerr << "Game::createTexts::G_pResMgr->createText() fault"<< std::endl;
+	if(!ResMgrSing::getInstance()->createText("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF, m_Text[TEXT_HELLO_INDX])) {
+		std::cerr << "Game::createTexts::ResMgrSing::getInstance()->createText() fault"<< std::endl;
 		return false;
 	}
-	if(!G_pResMgr->createText("Hello world!!", Colors::BLUE, ResurcesId::ANGELINE_VINTAGE_80_TTF, m_Text[TEXT_2_INDX])) {
-		std::cerr << "Game::createTexts::G_pResMgr->createText() fault"<< std::endl;
+	if(!ResMgrSing::getInstance()->createText("Hello world!!", Colors::BLUE, ResurcesId::ANGELINE_VINTAGE_80_TTF, m_Text[TEXT_2_INDX])) {
+		std::cerr << "Game::createTexts::ResMgrSing::getInstance()->createText() fault"<< std::endl;
 		return false;
 	}
-	if(!G_pResMgr->createText("Hello world!!!", Colors::RED, ResurcesId::ANGELINE_VINTAGE_40_TTF, m_Text[TEXT_3_INDX])) {
-		std::cerr << "Game::createTexts::G_pResMgr->createText() fault"<< std::endl;
+	if(!ResMgrSing::getInstance()->createText("Hello world!!!", Colors::RED, ResurcesId::ANGELINE_VINTAGE_40_TTF, m_Text[TEXT_3_INDX])) {
+		std::cerr << "Game::createTexts::ResMgrSing::getInstance()->createText() fault"<< std::endl;
 		return false;
 	}
-	if(!G_pResMgr->createText("0h", Colors::ORANGE, ResurcesId::ANGELINE_VINTAGE_80_TTF, m_Text[TEXT_DYNAMIC_INDX])) {
-		std::cerr << "Game::createTexts::G_pResMgr->createText() fault"<< std::endl;
+	if(!ResMgrSing::getInstance()->createText("0h", Colors::ORANGE, ResurcesId::ANGELINE_VINTAGE_80_TTF, m_Text[TEXT_DYNAMIC_INDX])) {
+		std::cerr << "Game::createTexts::ResMgrSing::getInstance()->createText() fault"<< std::endl;
 		return false;
 	}
 #if 1
 	// test first free container
-	if(!G_pResMgr->releaseText(m_Text[TEXT_HELLO_INDX])) {
-		std::cerr << "Game::createTexts::G_pResMgr->releaseText() fault"<< std::endl;
+	if(!ResMgrSing::getInstance()->releaseText(m_Text[TEXT_HELLO_INDX])) {
+		std::cerr << "Game::createTexts::ResMgrSing::getInstance()->releaseText() fault"<< std::endl;
 		return false;
 	}
-	if(!G_pResMgr->createText("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF, m_Text[TEXT_HELLO_INDX])) {
-		std::cerr << "Game::createTexts::G_pResMgr->createText() fault"<< std::endl;
+	if(!ResMgrSing::getInstance()->createText("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF, m_Text[TEXT_HELLO_INDX])) {
+		std::cerr << "Game::createTexts::ResMgrSing::getInstance()->createText() fault"<< std::endl;
 		return false;
 	}
 #endif
@@ -185,7 +186,7 @@ bool Game::updateDynamicText(bool &update) {
 		stream_txt << std::hex << m_KeysMask << "h" ;
 		stream_txt.flush();
 		auto hold = m_Text[TEXT_DYNAMIC_INDX].m_DstRect;
-		if(!G_pResMgr->createText(stream_txt.str(),
+		if(!ResMgrSing::getInstance()->createText(stream_txt.str(),
 				Colors::ORANGE, ResurcesId::ANGELINE_VINTAGE_80_TTF,
 				m_Text[TEXT_DYNAMIC_INDX])) {
 
