@@ -1,0 +1,53 @@
+/*
+ * ToggleButton.cpp
+ *
+ *  Created on: Nov 6, 2021
+ *      Author: stanimir
+ */
+
+#include "game/widgets/ToggleButton.hpp"
+
+#include <iostream>
+
+#include "sdl_utils/InputEvent.hpp"
+
+bool ToggleButton::create(std::size_t button_id, std::size_t image_id, const Point &pos) {
+	m_Id = button_id;
+	return ButtonBase::create(image_id, pos);
+}
+
+bool ToggleButton::attachCB(ToggleButtonCB_t * fn) {
+	if(nullptr == fn) {
+		std::cerr << "Callback is null, button ID " << m_Id << std::endl;
+		return false;
+	}
+	m_CB = fn;
+	return true;
+}
+
+void ToggleButton::handleEvent(const InputEvent &e) {
+	const auto state = getState();
+	if(InputStates_t::DISABLED != state) {
+		if(TouchEvent::TOUCH_PRESS == e.m_Type) {
+			if(containsEvent(e)) {
+				m_Touched = true;
+				if(InputStates_t::CLICKED != state) {
+					setState(InputStates_t::CLICKED);
+				}
+			}
+		} else if(TouchEvent::TOUCH_RELEASE == e.m_Type) {
+			if(m_Touched) {
+				m_Touched = false;
+				if(containsEvent(e)) {
+					m_Pressed ^= true;
+					(*m_CB)(m_Id, m_Pressed);
+				}
+				setState(m_Pressed?InputStates_t::CLICKED:InputStates_t::UNCLICKED);
+			}
+		}
+	}
+}
+
+std::size_t ToggleButton::getId() const {
+	return m_Id;
+}

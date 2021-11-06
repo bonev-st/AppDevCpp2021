@@ -1,0 +1,15 @@
+/*
+ * InputState.hpp
+ *
+ *  Created on: Nov 5, 2021
+ *      Author: stanimir
+ */
+
+#ifndef MANAGER_UTILS_INC_MANAGER_UTILS_INPUT_INPUTSTATE_HPP_
+#define MANAGER_UTILS_INC_MANAGER_UTILS_INPUT_INPUTSTATE_HPP_
+
+enum class InputStates_t {
+  UNCLICKED, CLICKED, DISABLED
+};
+
+#endif /* MANAGER_UTILS_INC_MANAGER_UTILS_INPUT_INPUTSTATE_HPP_ */
