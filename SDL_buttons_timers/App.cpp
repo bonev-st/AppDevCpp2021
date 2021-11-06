@@ -15,28 +15,32 @@
 #include "utils/time/Time.hpp"
 
 #include "manager_utils/managers/DrawMgr.hpp"
+#include "manager_utils/managers/TimerMgr.hpp"
 
 bool App::init(const AppConfig& cfg) {
 	bool rc = false;
 	do {
 	    if(!m_Loader.init()) {
-	        std::cerr << "App::init::m_Loader.init() failed." << std::endl;
+	        std::cerr << "m_Loader.init() failed." << std::endl;
 	        return false;
 	    }
 	    if(!m_Managers.init(cfg.m_ResourcesCfg)) {
-	        std::cerr << "App::init.m_Managers.init() failed." << std::endl;
+	        std::cerr << "m_Managers.init() failed." << std::endl;
 	        return false;
 	    }
 	    if(!m_Game.init(cfg.m_GameCfg)) {
-	        std::cerr << "App::init::m_Game.init() failed." << std::endl;
+	        std::cerr << "m_Game.init() failed." << std::endl;
 	        return false;
 	    }
+
+	    m_FrameDuration = (int64_t)1E6/cfg.m_ResourcesCfg.m_DrawMgrCfg.m_MaxFrameRate;
 		rc = true;
 	} while(0);
 	return rc;
 }
 
 bool App::start() {
+	G_pTimerMgr->onStart();
 	return mainLoop();
 }
 
@@ -44,6 +48,7 @@ bool App::mainLoop() {
 	Time time;
 	while(!m_InputEvents.isExitRequest()) {
 		time.start();
+		m_Managers.process();
 		if(!processFrame()) {
 	    	std::cerr << "App::mainLoop::processFrame() failed." << std::endl;
 	    	return false;
@@ -86,9 +91,7 @@ bool App::drawFrame() {
 }
 
 void App::limitFPS(int64_t elapsed_us) {
-	constexpr int64_t MAX_FRAMES_PER_SEC = 60;
-	constexpr int64_t FRAME_DURATION_US = (int64_t)1E6/MAX_FRAMES_PER_SEC;
-	if(FRAME_DURATION_US > elapsed_us) {
-		ThreadUtils::sleep_usec(FRAME_DURATION_US - elapsed_us);
+	if(m_FrameDuration > elapsed_us) {
+		ThreadUtils::sleep_usec(m_FrameDuration - elapsed_us);
 	}
 }

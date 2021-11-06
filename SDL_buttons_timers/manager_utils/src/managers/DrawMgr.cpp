@@ -19,7 +19,6 @@
 DrawMgr *G_pDrawMgr = nullptr;
 
 bool DrawMgr::init(const DrawMgrConfig::Config_t &cfg) {
-	m_MaxFrameRate = cfg.m_MaxFrameRate;
 	if(!m_Renderer.init(cfg.m_WindowCfg)) {
 		std::cerr << "DrawMgr::init::m_Renderer.init() failed." << std::endl;
         return false;

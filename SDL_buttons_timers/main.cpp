@@ -9,11 +9,11 @@
 static bool runApplication() {
 	App app;
     if(!app.init(AppConfigLoader::Loader())) {
-        std::cerr << "runApplication::app.init() failed." << std::endl;
+        std::cerr << "app.init() failed." << std::endl;
     	return false;
     }
     if(!app.start()) {
-    	std::cerr << "runApplication::app.start() failed." << std::endl;
+    	std::cerr << "app.start() failed." << std::endl;
     	return false;
     }
 	return true;

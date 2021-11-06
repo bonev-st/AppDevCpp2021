@@ -16,7 +16,7 @@ class Hero {
 public:
 	bool init(std::size_t id, const Point &pos = Point::ZERO);
 	void draw() const;
-	void HandleEvents(const InputEvent& e);
+	void handleEvent(const InputEvent& e);
 
 private:
 	Image m_Img;

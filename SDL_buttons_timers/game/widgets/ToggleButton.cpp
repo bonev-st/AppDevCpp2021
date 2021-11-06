@@ -18,8 +18,10 @@ bool ToggleButton::create(std::size_t button_id, std::size_t image_id, const Poi
 
 bool ToggleButton::attachCB(ToggleButtonCB_t * fn) {
 	if(nullptr == fn) {
-		std::cerr << "Callback is null, button ID " << m_Id << std::endl;
+		std::cerr << "Try to initialize Callback for button with ID " << m_Id << " with nullptr" << m_Id << std::endl;
 		return false;
+	} else if(m_CB) {
+		std::cerr << "Warning: Callback for button with ID " << m_Id << " is already initialized will be overwritten" << std::endl;
 	}
 	m_CB = fn;
 	return true;

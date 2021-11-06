@@ -17,6 +17,6 @@ void Hero::draw() const {
 	m_Img.draw();
 }
 
-void Hero::HandleEvents([[maybe_unused]]const InputEvent& e) {
+void Hero::handleEvent([[maybe_unused]]const InputEvent& e) {
 
 }

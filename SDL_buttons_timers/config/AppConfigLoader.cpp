@@ -21,7 +21,7 @@ constexpr auto APP_NAME	 				= "Buttons and timers";
 constexpr auto WINDOW_WIDTH				= 1024;
 constexpr auto WINDOW_HEIGHT			= 768;
 
-constexpr std::int64_t MAX_REFRESH_RATE	= 50;
+constexpr std::int64_t MAX_REFRESH_RATE	= 75;
 
 constexpr std::int32_t RUNNING_GIRL_FRAMES	= 6;
 constexpr std::int32_t RUNNING_GIRL_BIG_IMG_H = 256;

@@ -19,16 +19,15 @@
 
 bool Game::init(const GameConfig::Config_t & cfg) {
 	if(!loadKeys(cfg.m_Keys)) {
-		std::cerr << "Game::init.loadKeys() failed." << std::endl;
+		std::cerr << "loadKeys() failed." << std::endl;
 		return false;
 	}
 	if(!m_Hero.init(ResurcesId::RUNNING_GIRL_SMALL_IMG)) {
-		std::cerr << "Game::init.m_Hero.init() failed." << std::endl;
+		std::cerr << "m_Hero.init() failed." << std::endl;
 		return false;
 	}
-
-	if(!initImgs()) {
-		std::cerr << "Game::init.initImgs() failed." << std::endl;
+	if(!m_Wheel.init(ResurcesId::WHEEL_IMG)) {
+		std::cerr << "m_Wheel.init() failed." << std::endl;
 		return false;
 	}
 	if(!createTexts()) {
@@ -52,6 +51,9 @@ bool Game::events(const InputEvent & event, bool & exit) {
 	m_ButtonStopDisabled.handleEvent(event);
 	m_ToggleButtonStart.handleEvent(event);
 	m_ToggleButtonStopDisabled.handleEvent(event);
+	m_Wheel.handleEvent(event);
+	m_Hero.handleEvent(event);
+
 	const auto it = m_Keys.find(event.m_Key);
 	if(m_Keys.end() != it) {
 		setKeyRequest(TouchEvent::KEYBOARD_PRESS == event.m_Type, it->second);
@@ -61,7 +63,7 @@ bool Game::events(const InputEvent & event, bool & exit) {
 }
 
 bool Game::draw() const {
-	m_Img[IMG_WHEEL_INDX].draw();
+	m_Wheel.draw();
 	m_Hero.draw();
 	m_RadioButtonStart.draw();
 	m_RadioButtonStartHidden.draw();
@@ -84,45 +86,7 @@ bool Game::loadKeys(const GameConfig::KeyRes_t & cfg) {
 	return true;
 }
 
-bool Game::initImgs() {
-	if(!m_Img[IMG_WHEEL_INDX].create(ResurcesId::WHEEL_IMG)) {
-		std::cerr << "Game::initImgs.create(ResurcesId::WHEEL_IMG) fault" << std::endl;
-		return false;
-	}
-	m_Img[IMG_WHEEL_INDX].activateAlphaModulation();
-
-	if(!m_Img[IMG_RUNNING_GIRL_BIG_INDX].create(ResurcesId::RUNNING_GIRL_BIG_IMG)) {
-		std::cerr << "Game::initImgs.create(ResurcesId::RUNNING_GIRL_BIG_IMG) fault" << std::endl;
-		return false;
-	}
-	m_Img[IMG_RUNNING_GIRL_BIG_INDX].activateAlphaModulation();
-	if(!m_Img[IMG_RUNNING_GIRL_SMALL_INDX].create(ResurcesId::RUNNING_GIRL_SMALL_IMG)) {
-		std::cerr << "Game::initImgs.create(ResurcesId::RUNNING_GIRL_SMALL_IMG) fault" << std::endl;
-		return false;
-	}
-	m_Img[IMG_RUNNING_GIRL_SMALL_INDX].activateAlphaModulation();
-	return true;
-}
-
 bool Game::createTexts() {
-	if(!m_Text[TEXT_HELLO_INDX].create("Hello world!", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_160_TTF)) {
-		std::cerr << "Game::createTexts.m_Text[TEXT_HELLO_INDX].create() fault"<< std::endl;
-		return false;
-	}
-	if(!m_Text[TEXT_2_INDX].create("Hello world!!", Colors::BLUE, ResurcesId::ANGELINE_VINTAGE_80_TTF)) {
-		std::cerr << "Game::createTexts.m_Text[TEXT_2_INDX].create() fault"<< std::endl;
-		return false;
-	}
-	if(!m_Text[TEXT_3_INDX].create("Hello world!!!", Colors::RED, ResurcesId::ANGELINE_VINTAGE_40_TTF)) {
-		std::cerr << "Game::createTexts.m_Text[TEXT_3_INDX].create() fault"<< std::endl;
-		return false;
-	}
-	if(!m_Text[TEXT_DYNAMIC_INDX].create("0h", Colors::ORANGE, ResurcesId::ANGELINE_VINTAGE_80_TTF)) {
-		std::cerr << "Game::createTexts.m_Text[TEXT_DYNAMIC_INDX].create() fault"<< std::endl;
-		return false;
-	}
-	m_Text[TEXT_DYNAMIC_INDX].activateAlphaModulation();
-
 	if(!m_Text[TEXT_BUTTON_INDX].create(" ", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_40_TTF, Point(50,670))) {
 		std::cerr << "Game::createTexts.m_Text[TEXT_BUTTON_INDX].create() fault"<< std::endl;
 		return false;
@@ -206,28 +170,6 @@ void Game::setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask) {
 	}
 }
 
-bool Game::updateDynamicText() {
-	if(m_KeysMaskHold != m_KeysMask) {
-		m_KeysMaskHold = m_KeysMask;
-		std::ostringstream stream_txt;
-		stream_txt << std::hex << m_KeysMask << "h" ;
-		stream_txt.flush();
-		if(!m_Text[TEXT_DYNAMIC_INDX].setText(stream_txt.str())) {
-			return false;
-		}
-		if(m_KeysMaskHold) {
-			if(!m_Text[TEXT_DYNAMIC_INDX].setColor(Colors::CYAN)) {
-				return false;
-			}
-		} else {
-			if(!m_Text[TEXT_DYNAMIC_INDX].setColor(Colors::ORANGE)) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
-
 void Game::buttonHandler(std::size_t id) {
 	switch(id) {
 	case BTN_RADIO_START_INDX:
@@ -237,6 +179,7 @@ void Game::buttonHandler(std::size_t id) {
 		if(!m_Text[TEXT_BUTTON_INDX].setText("Radio Button START pressed")) {
 			std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setText failed" << std::endl;
 		}
+		m_Wheel.startAnimation();
 		break;
 	case BTN_RADIO_STOP_INDX:
 		if(!m_Text[TEXT_BUTTON_INDX].setColor(Colors::GREEN)) {
@@ -245,6 +188,7 @@ void Game::buttonHandler(std::size_t id) {
 		if(!m_Text[TEXT_BUTTON_INDX].setText("Radio Button STOP pressed")) {
 			std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setText failed" << std::endl;
 		}
+		m_Wheel.stopAnimation();
 		break;
 	case BTN_RADIO_STOP_DISABLED_INDX:
 		if(!m_Text[TEXT_BUTTON_INDX].setColor(Colors::RED)) {
@@ -263,13 +207,17 @@ void Game::buttonHandler(std::size_t id) {
 		}
 		break;
 	case BTN_START_INDX:
-		if(!m_Text[TEXT_BUTTON_INDX].setColor(Colors::GREEN)) {
-			std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setColor failed" << std::endl;
+		{
+			if(!m_Text[TEXT_BUTTON_INDX].setColor(Colors::GREEN)) {
+				std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setColor failed" << std::endl;
+			}
+			std::string text = "Button START pressed ";
+			text += std::to_string(++StartPressCounter);
+			if(!m_Text[TEXT_BUTTON_INDX].setText(text)) {
+				std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setText failed" << std::endl;
+			}
+			break;
 		}
-		if(!m_Text[TEXT_BUTTON_INDX].setText("Button START pressed")) {
-			std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setText failed" << std::endl;
-		}
-		break;
 	case BTN_STOP_DISABLED_INDX:
 		if(!m_Text[TEXT_BUTTON_INDX].setColor(Colors::RED)) {
 			std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setColor failed" << std::endl;

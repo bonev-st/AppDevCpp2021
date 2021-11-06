@@ -17,6 +17,7 @@
 #include "manager_utils/input/RadioContainer.hpp"
 
 #include "widgets/Hero.hpp"
+#include "widgets/Wheel.hpp"
 #include "widgets/Button.hpp"
 #include "widgets/RadioButton.hpp"
 #include "widgets/ToggleButton.hpp"
@@ -46,22 +47,8 @@ private:
 		BTN_ARRAY_SIZE
 	};
 
-	enum ImgIndx_t {
-		IMG_WHEEL_INDX = 0,
-		IMG_RUNNING_GIRL_BIG_INDX,
-		IMG_RUNNING_GIRL_SMALL_INDX,
-		IMG_START_BUTTON_INDX,
-		IMG_STOP_BUTTON_INDX,
-
-		IMG_ARRAY_SIZE
-	};
-
 	enum TextIndx_t {
-		TEXT_HELLO_INDX = 0,
-		TEXT_2_INDX,
-		TEXT_3_INDX,
-		TEXT_DYNAMIC_INDX,
-		TEXT_BUTTON_INDX,
+		TEXT_BUTTON_INDX = 0,
 
 		TEXT_ARRAY_SIZE
 	};
@@ -69,6 +56,7 @@ private:
 	static const int32_t MOVE_STEP = 1;
 
 	Hero m_Hero;
+	Wheel m_Wheel;
 	RadioContainer m_RadioGroup;
 	RadioButton m_RadioButtonStart;
 	RadioButton m_RadioButtonStop;
@@ -79,21 +67,19 @@ private:
 	ToggleButton m_ToggleButtonStart;
 	ToggleButton m_ToggleButtonStopDisabled;
 
-	std::array<Image, IMG_ARRAY_SIZE> m_Img;
 	std::array<Text, TEXT_ARRAY_SIZE> m_Text;
 
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;
 	uint32_t m_KeysMaskHold = 0;
+	std::size_t StartPressCounter = 0;
 
 	std::function<void(std::size_t)> m_ButtonCB;
 	std::function<void(std::size_t, bool)> m_ToggleButtonCB;
 
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
-	bool initImgs();
 	bool createTexts();
 	bool initButtons();
-	bool updateDynamicText();
 
 	void setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask);
 	bool exitRequest() const;

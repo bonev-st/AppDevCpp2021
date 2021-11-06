@@ -27,6 +27,8 @@ public:
 	bool start();
 
 private:
+	std::int64_t m_FrameDuration = 0;
+
 	SDLLoader m_Loader;
 	Mgrs m_Managers;
 	InputEvent m_InputEvents;
