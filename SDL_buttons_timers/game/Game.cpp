@@ -22,10 +22,15 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 		std::cerr << "loadKeys() failed." << std::endl;
 		return false;
 	}
-	if(!m_Hero.init(ResurcesId::RUNNING_GIRL_SMALL_IMG)) {
+	if(!m_Hero.init(ResurcesId::RUNNING_GIRL_SMALL_IMG, Point(500, 350))) {
 		std::cerr << "m_Hero.init() failed." << std::endl;
 		return false;
 	}
+
+	m_Hero.initAnimation(12, 20, true);
+	m_Hero.setSpeed(3);
+	m_Hero.setPosition(Point(0, 700));
+
 	if(!m_Wheel.init(ResurcesId::WHEEL_IMG)) {
 		std::cerr << "m_Wheel.init() failed." << std::endl;
 		return false;
@@ -38,22 +43,20 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 		std::cerr << "Game:::init.initButtons() failed." << std::endl;
 		return false;
 	}
+	if(!initInput()) {
+		std::cerr << "Game:::init.initInput() failed." << std::endl;
+		return false;
+	}
 
 	return true;
 }
 
 bool Game::events(const InputEvent & event, bool & exit) {
-	m_RadioButtonStart.handleEvent(event);
-	m_RadioButtonStartHidden.handleEvent(event);
-	m_RadioButtonStop.handleEvent(event);
-	m_RadioButtonStopDisabled.handleEvent(event);
-	m_ButtonStart.handleEvent(event);
-	m_ButtonStopDisabled.handleEvent(event);
-	m_ToggleButtonStart.handleEvent(event);
-	m_ToggleButtonStopDisabled.handleEvent(event);
-	m_Wheel.handleEvent(event);
-	m_Hero.handleEvent(event);
-
+	for(auto e : m_InputEvetntContainer) {
+		if(e->handleEvent(event)) {
+			break;
+		}
+	}
 	const auto it = m_Keys.find(event.m_Key);
 	if(m_Keys.end() != it) {
 		setKeyRequest(TouchEvent::KEYBOARD_PRESS == event.m_Type, it->second);
@@ -124,6 +127,7 @@ bool Game::initButtons() {
 	m_RadioGroup.add(&m_RadioButtonStart);
 	m_RadioGroup.add(&m_RadioButtonStartHidden);
 	m_RadioGroup.add(&m_RadioButtonStop);
+	m_RadioGroup.select(BTN_RADIO_STOP_INDX);
 
 	p.m_Y += 100;
 	if(!m_ButtonStart.create(BTN_START_INDX, ResurcesId::BUTTON_START_IMG, p)) {
@@ -154,6 +158,20 @@ bool Game::initButtons() {
 	//m_ToggleButtonStopDisabled.setState(InputStates_t::DISABLED);
 	m_ToggleButtonStopDisabled.attachCB(&m_ToggleButtonCB);
 
+	return true;
+}
+
+bool Game::initInput() {
+	m_InputEvetntContainer.push_back(&m_RadioButtonStart);
+	m_InputEvetntContainer.push_back(&m_RadioButtonStartHidden);
+	m_InputEvetntContainer.push_back(&m_RadioButtonStop);
+	m_InputEvetntContainer.push_back(&m_RadioButtonStopDisabled);
+	m_InputEvetntContainer.push_back(&m_ButtonStart);
+	m_InputEvetntContainer.push_back(&m_ButtonStopDisabled);
+	m_InputEvetntContainer.push_back(&m_ToggleButtonStart);
+	m_InputEvetntContainer.push_back(&m_ToggleButtonStopDisabled);
+	m_InputEvetntContainer.push_back(&m_Wheel);
+	m_InputEvetntContainer.push_back(&m_Hero);
 	return true;
 }
 

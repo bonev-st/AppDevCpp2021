@@ -27,13 +27,17 @@ bool Button::attachCB(ButtonCB_t * fn) {
 	return true;
 }
 
-void Button::handleEvent(const InputEvent &e) {
+bool Button::handleEvent(const InputEvent &e) {
+	bool rc = false;
 	const auto state = getState();
 	if(InputStates_t::DISABLED != state) {
 		if(TouchEvent::TOUCH_PRESS == e.m_Type) {
-			if(containsEvent(e) && (InputStates_t::CLICKED != state)) {
-				m_Touched = true;
-				setState(InputStates_t::CLICKED);
+			if(containsEvent(e)) {
+				if((InputStates_t::CLICKED != state)) {
+					m_Touched = true;
+					setState(InputStates_t::CLICKED);
+				}
+				rc = true;
 			}
 		} else if(TouchEvent::TOUCH_RELEASE == e.m_Type) {
 			if(m_Touched) {
@@ -41,10 +45,12 @@ void Button::handleEvent(const InputEvent &e) {
 				setState(InputStates_t::UNCLICKED);
 				if(containsEvent(e)) {
 					(*m_CB)(m_Id);
+					rc = true;
 				}
 			}
 		}
 	}
+	return rc;
 }
 
 std::size_t Button::getId() const {

@@ -18,7 +18,7 @@ class Button : public ButtonBase {
 public:
 	bool create(std::size_t button_id, std::size_t image_id, const Point &pos = Point::ZERO);
 	bool attachCB(ButtonCB_t * fn);
-	void handleEvent(const InputEvent &e) override;
+	bool handleEvent(const InputEvent &e) override;
 	std::size_t getId() const;
 
 private:

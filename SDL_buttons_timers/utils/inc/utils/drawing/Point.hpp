@@ -24,6 +24,8 @@ struct Point {
 		return !operator == (other);
 	}
 
+	Point operator - (const Point& other) const;
+
 	static const Point ZERO;
 	static const Point UNDEFINED;
 };

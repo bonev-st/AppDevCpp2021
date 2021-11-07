@@ -9,6 +9,9 @@ set(_INC_DIR ${_BASE_DIR}/utils)
 #generate project library
 add_library(
 	${PROJECT_NAME} STATIC
+		${_INC_DIR}/NoCopy.hpp
+		${_INC_DIR}/Destroy.hpp
+		${_INC_DIR}/Singleton.hpp
 		${_INC_DIR}/containers/FirstFreeContainer.hpp
 		${_INC_DIR}/drawing/DrawParams.hpp
 		${_INC_DIR}/drawing/Dimention.hpp
@@ -19,11 +22,10 @@ add_library(
 		${_INC_DIR}/drawing/FlipMode.hpp
 		${_INC_DIR}/drawing/WidgetType.hpp
 		${_INC_DIR}/inputs/EventDefines.h
+		${_INC_DIR}/inputs/InputEventIF.hpp
 		${_INC_DIR}/time/Time.hpp
 		${_INC_DIR}/thread/ThreadUtils.hpp
-		${_INC_DIR}/NoCopy.hpp
-		${_INC_DIR}/Destroy.hpp
-		${_INC_DIR}/Singleton.hpp
+		${_INC_DIR}/geometry/Geometry.hpp
 	
 		${_SRC_DIR}/drawing/Point.cpp
 		${_SRC_DIR}/drawing/Rectangle.cpp
@@ -31,6 +33,7 @@ add_library(
 		${_SRC_DIR}/drawing/Color.cpp
 		${_SRC_DIR}/thread/ThreadUtils.cpp		
 		${_SRC_DIR}/time/Time.cpp
+		${_SRC_DIR}/geometry/Geometry.cpp
 )
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)

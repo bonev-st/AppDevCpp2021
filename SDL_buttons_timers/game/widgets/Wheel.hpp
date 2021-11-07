@@ -10,20 +10,19 @@
 
 #include <cstdint>
 
+#include "utils/inputs/InputEventIF.hpp"
 #include "manager_utils/drawing/Image.hpp"
 #include "manager_utils/timer/TimerClient.hpp"
 
 class InputEvent;
 class Point;
 
-class Wheel : public TimerClient {
+class Wheel : public TimerClient, public InputEventIF {
 public:
 	bool init(std::size_t id, const Point &pos = Point::ZERO);
 	void draw() const;
 	void startAnimation();
 	void stopAnimation();
-
-	void handleEvent(const InputEvent& e);
 
 private:
 	Image m_Img;

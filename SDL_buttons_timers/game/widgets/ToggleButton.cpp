@@ -27,7 +27,8 @@ bool ToggleButton::attachCB(ToggleButtonCB_t * fn) {
 	return true;
 }
 
-void ToggleButton::handleEvent(const InputEvent &e) {
+bool ToggleButton::handleEvent(const InputEvent &e) {
+	bool rc = false;
 	const auto state = getState();
 	if(InputStates_t::DISABLED != state) {
 		if(TouchEvent::TOUCH_PRESS == e.m_Type) {
@@ -36,6 +37,7 @@ void ToggleButton::handleEvent(const InputEvent &e) {
 				if(InputStates_t::CLICKED != state) {
 					setState(InputStates_t::CLICKED);
 				}
+				rc = true;
 			}
 		} else if(TouchEvent::TOUCH_RELEASE == e.m_Type) {
 			if(m_Touched) {
@@ -43,11 +45,13 @@ void ToggleButton::handleEvent(const InputEvent &e) {
 				if(containsEvent(e)) {
 					m_Pressed ^= true;
 					(*m_CB)(m_Id, m_Pressed);
+					rc = true;
 				}
 				setState(m_Pressed?InputStates_t::CLICKED:InputStates_t::UNCLICKED);
 			}
 		}
 	}
+	return rc;
 }
 
 std::size_t ToggleButton::getId() const {

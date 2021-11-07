@@ -19,3 +19,7 @@ Point::Point(std::int32_t x, std::int32_t y) :
 bool Point::operator == (const Point& other) const {
 	return (other.m_X == m_X) && (other.m_Y == m_Y);
 }
+
+Point Point::operator - (const Point& other) const {
+	return Point(m_X - other.m_X, m_Y - other.m_Y);
+}

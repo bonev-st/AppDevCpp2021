@@ -42,9 +42,6 @@ void Wheel::stopAnimation() {
 	stopTimer(m_RotationTimerId);
 }
 
-void Wheel::handleEvent([[maybe_unused]]const InputEvent& e) {
-}
-
 void Wheel::onTimeout(std::size_t id) {
 	if(m_RotationTimerId == id) {
 		processAnimation();

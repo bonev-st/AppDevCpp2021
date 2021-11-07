@@ -8,25 +8,18 @@
 #ifndef MANAGER_UTILS_INC_MANAGER_UTILS_DRAWING_BUTTONBASE_HPP_
 #define MANAGER_UTILS_INC_MANAGER_UTILS_DRAWING_BUTTONBASE_HPP_
 
+#include "utils/inputs/InputEventIF.hpp"
 #include "manager_utils/drawing/Image.hpp"
 #include "manager_utils/input/InputState.hpp"
 
 struct InputEvent;
 
-class ButtonBase : public Image {
+class ButtonBase : public Image, public InputEventIF {
 public:
-	virtual ~ButtonBase() = default;
-
-	virtual void handleEvent(const InputEvent &e) = 0;
-
 	virtual void draw() const;
-
 	bool isUnlocked() const;
-
 	bool containsEvent(const InputEvent &e);
-
 	virtual void setState(InputStates_t state);
-
 	InputStates_t getState() const;
 };
 

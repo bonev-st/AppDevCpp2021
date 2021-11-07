@@ -16,6 +16,7 @@
 #include "manager_utils/drawing/Text.hpp"
 #include "manager_utils/input/RadioContainer.hpp"
 
+#include "widgets/MoveAnimation.hpp"
 #include "widgets/Hero.hpp"
 #include "widgets/Wheel.hpp"
 #include "widgets/Button.hpp"
@@ -24,6 +25,7 @@
 #include <functional>
 
 class InputEvent;
+class InputEventIF;
 
 class Game {
 public:
@@ -55,7 +57,7 @@ private:
 
 	static const int32_t MOVE_STEP = 1;
 
-	Hero m_Hero;
+	MoveAnimation<Hero> m_Hero;
 	Wheel m_Wheel;
 	RadioContainer m_RadioGroup;
 	RadioButton m_RadioButtonStart;
@@ -69,6 +71,8 @@ private:
 
 	std::array<Text, TEXT_ARRAY_SIZE> m_Text;
 
+	std::vector<InputEventIF*> m_InputEvetntContainer;
+
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;
 	uint32_t m_KeysMaskHold = 0;
@@ -80,6 +84,7 @@ private:
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
 	bool createTexts();
 	bool initButtons();
+	bool initInput();
 
 	void setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask);
 	bool exitRequest() const;
