@@ -12,6 +12,10 @@
 
 class TimerClient;
 
+typedef std::size_t TimerHandler_t;
+
+static constexpr TimerHandler_t INVALID_TIMER_HANDLER = -1;
+
 enum class TimerType_t : uint8_t {
 	ONESHOT,
 	RELOAD

@@ -8,64 +8,53 @@
 
 #include "utils/geometry/Geometry.hpp"
 
-#include <iostream>
 #include <cmath>
 
 #include "utils/drawing/Point.hpp"
+#include "utils/drawing/Dimention.hpp"
 
-double Geometry::getDistance(const Point & start, const Point & end) {
-	double rc = 0;
-	do {
-		if(Point::UNDEFINED == start) {
-			std::cerr << "Geometry::getDistance() invalid start point" << std::endl;
-			break;
-		}
-		if(Point::UNDEFINED == end) {
-			std::cerr << "Geometry::getDistance() invalid end point" << std::endl;
-			break;
-		}
-		Point delta = end - start;
-		rc = delta.m_X*delta.m_X + delta.m_Y * delta.m_Y;
-		rc = std::sqrt(rc);
-	} while(0);
+#include "utils/geometry/PointR.hpp"
+
+namespace Geometry {
+
+Point getPosToCenter(const Point & pos, const Dimention & dimention) {
+	Point rc = pos;
+	rc.m_X -= dimention.m_H/2;
+	rc.m_Y -= dimention.m_H/2;
 	return rc;
 }
 
-double Geometry::getAngle(const Point & start, const Point & end) {
-	double rc = 0;
-	do {
-		if(Point::UNDEFINED == start) {
-			std::cerr << "Geometry::getDistance() invalid start point" << std::endl;
-			break;
-		}
-		if(Point::UNDEFINED == end) {
-			std::cerr << "Geometry::getDistance() invalid end point" << std::endl;
-			break;
-		}
-		Point delta = end - start;
-		rc = rad2deg(std::atan2(delta.m_Y, delta.m_X));
-	} while(0);
+double getDistance(PointR start, PointR end) {
+	auto delta = end - start;
+	auto rc = delta.m_X*delta.m_X + delta.m_Y * delta.m_Y;
+	rc = std::sqrt(rc);
 	return rc;
 }
 
-Point Geometry::getPoint(const Point & start, const Point & end, double distance) {
+double getAngle(const PointR &  start, const PointR & end) {
+	auto delta = end - start;
+	return rad2deg(std::atan2(delta.m_Y, delta.m_X));
+}
+
+PointR getPoint(const PointR & start, const PointR & end, double distance) {
 	auto lenght = getDistance(start, end);
 	if(distance > lenght) {
-		return end;
+		return PointR(end);
 	}
 	const auto ratio = distance / lenght; ;
 	const auto delta = end - start;
-	const auto delta_x = delta.m_X * ratio + start.m_X;
-	const auto delta_y = delta.m_Y * ratio + start.m_Y;
-	return Point(static_cast<int32_t>(std::round(delta_x)),
-				 static_cast<int32_t>(std::round(delta_y)));
+	const double delta_x = delta.m_X * ratio + start.m_X;
+	const double delta_y = delta.m_Y * ratio + start.m_Y;
+	return PointR(delta_x, delta_y);
 }
 
-double Geometry::rad2deg(double rad) {
+double rad2deg(double rad) {
 	return rad*180.0*M_1_PI;
 }
 
-double Geometry::deg2rad(double deg) {
+double deg2rad(double deg) {
 	return deg*M_PI/180.0;
+}
+
 }
 

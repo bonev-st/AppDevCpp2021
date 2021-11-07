@@ -13,30 +13,32 @@
 
 #include "utils/drawing/Point.hpp"
 #include "utils/geometry/Geometry.hpp"
+#include "utils/geometry/PointR.hpp"
 #include "manager_utils/timer/TimerClient.hpp"
 
 template<class T>
 class MoveAnimation : public T, public TimerClient {
 public:
 	void initAnimation(int32_t pix_per_frame, int64_t period, bool left = false, double angle = 0);
-	void setSpeed(int32_t pix_per_step);
+	void setPeriod(int64_t period);
 	bool setPosition(const Point & pos);
-	void attachDone(std::function<void> *fn);
+	void attachDone(std::function<void()> *fn);
 	bool isReady() const;
 	void cancel();
 
 private:
-	Point m_Pos =  Point::UNDEFINED;
-	std::size_t m_TimerId = -1;
+	Geometry::PointR m_CurrentPos;
+	Point m_Pos;
+	TimerHandler_t m_TimerId = INVALID_TIMER_HANDLER;
 	int32_t m_PixFrame = 0;
-	int32_t m_PixStep = 0;
 	int64_t m_Period = 0;
-	int32_t m_Disance = 0;
 	bool m_Left = false;
 	std::function<void()> * m_CB = nullptr;
 
-	void onTimeout(std::size_t id);
+	void onTimeout(TimerHandler_t id);
 	void callCB();
+	void rotation(double angle);
+	void nextFrame();
 };
 
 template<class T>
@@ -47,13 +49,13 @@ void MoveAnimation<T>::initAnimation(int32_t pix_per_frame, int64_t period, bool
 	if(m_Left) {
 		T::setFlipMode(FlipMode_t::HORIZONTAL);
 	}
-	T::setRotation(angle);
+	rotation(angle);
 	m_Pos = T::getPosition();
 }
 
 template<class T>
-void MoveAnimation<T>::setSpeed(int32_t pix_per_step) {
-	m_PixStep = pix_per_step;
+void MoveAnimation<T>::setPeriod(int64_t period) {
+	m_Period = period;
 }
 
 template<class T>
@@ -61,30 +63,22 @@ bool MoveAnimation<T>::setPosition(const Point & pos) {
 	if(!isReady()) {
 		return false;
 	}
-	const auto distance = Geometry::getDistance(T::getPosition(), pos);
+	auto new_posistion = Geometry::getPosToCenter(pos, T::getDimentions());
+	m_CurrentPos = T::getPosition();
+	const auto distance = Geometry::getDistance(m_CurrentPos, new_posistion);
 	if(!distance) {
 		return true;
 	}
 	if(!startTimer(m_TimerId, m_Period, TimerType_t::RELOAD)) {
 		return false;
 	}
-	m_Disance = 0;
-	auto angle = Geometry::getAngle(T::getPosition(), pos);
-	if(90 < angle) {
-		T::setFlipMode(m_Left?FlipMode_t::NONE:FlipMode_t::HORIZONTAL);
-		angle -= 180;
-	} else if(-90 > angle) {
-		T::setFlipMode(m_Left?FlipMode_t::NONE:FlipMode_t::HORIZONTAL);
-		angle += 180;
-	}
-	T::setRotation(angle);
-	T::setNextFrame();
-	m_Pos = pos;
+	rotation(Geometry::getAngle(T::getPosition(), new_posistion));
+	m_Pos = new_posistion;
 	return true;
 }
 
 template<class T>
-void MoveAnimation<T>::attachDone(std::function<void> *fn) {
+void MoveAnimation<T>::attachDone(std::function<void()> *fn) {
 	m_CB = fn;
 }
 
@@ -102,19 +96,18 @@ void MoveAnimation<T>::cancel() {
 }
 
 template<class T>
-void MoveAnimation<T>::onTimeout(std::size_t id) {
-	assert(id == m_TimerId);
-	m_Disance += m_PixStep;
-	if(m_PixFrame < m_Disance) {
-		m_Disance -= m_PixFrame;
-		T::setNextFrame();
+void MoveAnimation<T>::onTimeout(TimerHandler_t id) {
+	if(INVALID_TIMER_HANDLER != id) {
+		assert(id == m_TimerId);
+		const auto distance = Geometry::getDistance(T::getPosition(), m_Pos);
+		if(!distance) {
+			cancel();
+			return;
+		}
+		nextFrame();
+		m_CurrentPos = Geometry::getPoint(m_CurrentPos, m_Pos, m_PixFrame);
+		T::setPosition(m_CurrentPos);
 	}
-	const auto distance = Geometry::getDistance(T::getPosition(), m_Pos);
-	if(!distance) {
-		cancel();
-		return;
-	}
-	T::setPosition(Geometry::getPoint(T::getPosition(), m_Pos, m_PixStep));
 }
 
 template<class T>
@@ -124,6 +117,23 @@ void MoveAnimation<T>::callCB() {
 	}
 }
 
+template<class T>
+void MoveAnimation<T>::rotation(double angle) {
+	if(90 < angle) {
+		T::setFlipMode(m_Left?FlipMode_t::NONE:FlipMode_t::HORIZONTAL);
+		angle -= 180;
+	} else if(-90 > angle) {
+		T::setFlipMode(m_Left?FlipMode_t::NONE:FlipMode_t::HORIZONTAL);
+		angle += 180;
+	} else {
+		T::setFlipMode(m_Left?FlipMode_t::HORIZONTAL:FlipMode_t::NONE);
+	}
+	T::setRotation(angle);
+}
 
+template<class T>
+void MoveAnimation<T>::nextFrame() {
+	m_Left?T::setPrevFrame():T::setNextFrame();
+}
 
 #endif /* GAME_WIDGETS_MOVEANIMATION_HPP_ */

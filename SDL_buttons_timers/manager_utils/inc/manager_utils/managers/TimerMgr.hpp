@@ -23,21 +23,21 @@ class TimerMgr: public BaseMgr {
 public:
 	bool init(int64_t min_period);
 	bool process() final;
-	bool startTimer(std::size_t &id, int64_t interval, TimerClient *client, TimerType_t type);
-	bool stopTimer(std::size_t id);
+	bool startTimer(TimerHandler_t &id, int64_t interval, TimerClient *client, TimerType_t type);
+	bool stopTimer(TimerHandler_t & id);
 	void detachTimerClient(const TimerClient *client);
-	bool isActiveTimerId(std::size_t id) const;
+	bool isActiveTimerId(TimerHandler_t id) const;
 	void onStart();
 
 private:
-	static std::size_t m_TimerID;
+	static TimerHandler_t m_TimerID;
 	Time m_ElapsedTime;
 	std::unordered_map<std::size_t, TimerData> m_TimerMap;
 	std::unordered_set<std::size_t> m_RemoveTimerSet;
 	int64_t m_MinPeriod = 0;
 
 	void removeTimers();
-	void onTimerTimeout(std::size_t id, TimerData & data);
+	void onTimerTimeout(TimerHandler_t id, TimerData & data);
 };
 
 extern TimerMgr * G_pTimerMgr;

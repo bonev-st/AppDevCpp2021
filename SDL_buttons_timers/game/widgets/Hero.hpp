@@ -11,6 +11,8 @@
 #include "utils/inputs/InputEventIF.hpp"
 #include "manager_utils/drawing/Image.hpp"
 
+#include "game/widgets/MoveAnimation.hpp"
+
 class InputEvent;
 
 class Hero : public InputEventIF {
@@ -19,28 +21,8 @@ public:
 	void draw() const;
 	bool handleEvent(const InputEvent& e) final;
 
-	void setNextFrame() {
-		m_Img.setNextFrame();
-	}
-
-	void setPosition(const Point& pos) {
-		m_Img.setPosition(pos);
-	}
-
-	const Point& getPosition() const {
-		return m_Img.getPosition();
-	}
-
-	void setFlipMode(FlipMode_t flip) {
-		m_Img.setFlipMode(flip);
-	}
-
-	void setRotation(double angle) {
-		m_Img.setRotation(angle);
-	}
-
 private:
-	Image m_Img;
+	MoveAnimation<Image> m_Img;
 };
 
 #endif /* GAME_ENTITIES_HERO_HPP_ */

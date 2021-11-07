@@ -9,12 +9,16 @@
 #define UTILS_INC_UTILS_GEOMETRY_GEOMETRY_HPP_
 
 class Point;
+class Dimention;
 
 namespace Geometry {
 
-double getDistance(const Point & start, const Point & end);
-double getAngle(const Point & start, const Point & end);
-Point getPoint(const Point & start, const Point & end, double distance);
+class PointR;
+
+Point getPosToCenter(const Point & pos, const Dimention & dimention);
+double getDistance(PointR start, PointR end);
+double getAngle(const PointR & start, const PointR & end);
+PointR getPoint(const PointR & start, const PointR & end, double distance);
 double rad2deg(double rad);
 double deg2rad(double deg);
 

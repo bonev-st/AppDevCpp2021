@@ -13,7 +13,7 @@
 
 TimerMgr *G_pTimerMgr = nullptr;
 
-std::size_t TimerMgr::m_TimerID;
+TimerHandler_t TimerMgr::m_TimerID;
 
 bool TimerMgr::init(int64_t min_period) {
 	m_MinPeriod = min_period;
@@ -21,6 +21,7 @@ bool TimerMgr::init(int64_t min_period) {
 }
 
 bool TimerMgr::process() {
+	removeTimers();
 	m_ElapsedTime.start();
 	const int64_t elapsed_ms = m_ElapsedTime.toTime<Time::Milliseconds_t>();
 	for(auto& [id, data] : m_TimerMap) {
@@ -29,11 +30,10 @@ bool TimerMgr::process() {
 			onTimerTimeout(id, data);
 		}
 	}
-	removeTimers();
 	return true;
 }
 
-bool TimerMgr::startTimer(std::size_t &id, int64_t interval, TimerClient *client, TimerType_t type) {
+bool TimerMgr::startTimer(TimerHandler_t &id, int64_t interval, TimerClient *client, TimerType_t type) {
 	id = m_TimerID++;
 	if(m_MinPeriod > interval) {
 		std::cerr << "For Timer " << id << ", try to set too small interval "
@@ -44,12 +44,13 @@ bool TimerMgr::startTimer(std::size_t &id, int64_t interval, TimerClient *client
 	return true;
 }
 
-bool TimerMgr::stopTimer(std::size_t id) {
+bool TimerMgr::stopTimer(TimerHandler_t & id) {
 	if(!isActiveTimerId(id)) {
 		std::cerr << "Timer " << id << "not exist" << std::endl;
 		return false;
 	}
 	m_RemoveTimerSet.insert(id);
+	id = INVALID_TIMER_HANDLER;
 	return true;
 }
 
@@ -61,7 +62,7 @@ void TimerMgr::detachTimerClient(const TimerClient *client) {
 	}
 }
 
-bool TimerMgr::isActiveTimerId(std::size_t id) const {
+bool TimerMgr::isActiveTimerId(TimerHandler_t id) const {
 	return (m_RemoveTimerSet.end() == m_RemoveTimerSet.find(id))
 		&& (m_TimerMap.end() != m_TimerMap.find(id));
 }
@@ -82,7 +83,7 @@ void TimerMgr::removeTimers() {
 	m_RemoveTimerSet.clear();
 }
 
-void TimerMgr::onTimerTimeout(std::size_t id, TimerData & data) {
+void TimerMgr::onTimerTimeout(TimerHandler_t id, TimerData & data) {
 	data.m_Client->onTimeout(id);
 	if(TimerType_t::ONESHOT == data.m_Type) {
 		m_RemoveTimerSet.insert(id);

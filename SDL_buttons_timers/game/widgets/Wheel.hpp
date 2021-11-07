@@ -9,29 +9,26 @@
 #define GAME_WIDGETS_WHEEL_HPP_
 
 #include <cstdint>
+#include <functional>
 
 #include "utils/inputs/InputEventIF.hpp"
 #include "manager_utils/drawing/Image.hpp"
-#include "manager_utils/timer/TimerClient.hpp"
+
+#include "game/widgets/RotateAnimation.hpp"
 
 class InputEvent;
 class Point;
 
-class Wheel : public TimerClient, public InputEventIF {
+class Wheel : public InputEventIF {
 public:
 	bool init(std::size_t id, const Point &pos = Point::ZERO);
 	void draw() const;
-	void startAnimation();
+	void startAnimation(double angle, bool infinite);
 	void stopAnimation();
+	void attachDone(std::function<void()> * cb);
 
 private:
-	Image m_Img;
-	bool m_AnimationEna = false;
-	std::size_t m_RotationTimerId = -1;
-
-	void onTimeout(std::size_t id) final;
-
-	void processAnimation();
+	RotateAnimation<Image> m_Img;
 };
 
 #endif /* GAME_WIDGETS_WHEEL_HPP_ */

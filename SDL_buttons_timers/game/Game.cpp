@@ -17,6 +17,8 @@
 #include "utils/drawing/Color.hpp"
 #include "common/CommonDefines.hpp"
 
+const std::string Game::FPS_TEXT = "FPS: ";
+
 bool Game::init(const GameConfig::Config_t & cfg) {
 	if(!loadKeys(cfg.m_Keys)) {
 		std::cerr << "loadKeys() failed." << std::endl;
@@ -27,10 +29,8 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 		return false;
 	}
 
-	m_Hero.initAnimation(12, 20, true);
-	m_Hero.setSpeed(3);
-	m_Hero.setPosition(Point(0, 700));
-
+	m_WheelAnimationDoneCB = std::bind(&Game::wheelAnimationDone, this);
+	m_Wheel.attachDone(&m_WheelAnimationDoneCB);
 	if(!m_Wheel.init(ResurcesId::WHEEL_IMG)) {
 		std::cerr << "m_Wheel.init() failed." << std::endl;
 		return false;
@@ -45,6 +45,10 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 	}
 	if(!initInput()) {
 		std::cerr << "Game:::init.initInput() failed." << std::endl;
+		return false;
+	}
+	if(!initTimers()) {
+		std::cerr << "Game:::init.initTimers() failed." << std::endl;
 		return false;
 	}
 
@@ -77,10 +81,12 @@ bool Game::draw() const {
 	m_ToggleButtonStart.draw();
 	m_ToggleButtonStopDisabled.draw();
 	m_Text[TEXT_BUTTON_INDX].draw();
+	m_Text[TEXT_FPS_INDX].draw();
 	return true;
 }
 
 bool Game::process() {
+	++m_FrameConter;
 	return true;
 }
 
@@ -91,6 +97,10 @@ bool Game::loadKeys(const GameConfig::KeyRes_t & cfg) {
 
 bool Game::createTexts() {
 	if(!m_Text[TEXT_BUTTON_INDX].create(" ", Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_40_TTF, Point(50,670))) {
+		std::cerr << "Game::createTexts.m_Text[TEXT_BUTTON_INDX].create() fault"<< std::endl;
+		return false;
+	}
+	if(!m_Text[TEXT_FPS_INDX].create(FPS_TEXT, Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_40_TTF, Point(15,-25))) {
 		std::cerr << "Game::createTexts.m_Text[TEXT_BUTTON_INDX].create() fault"<< std::endl;
 		return false;
 	}
@@ -175,6 +185,14 @@ bool Game::initInput() {
 	return true;
 }
 
+bool Game::initTimers() {
+	if(!startTimer(m_FPS_TimerId, 1000, TimerType_t::RELOAD)) {
+		std::cerr << "startTimer() failed." << std::endl;
+		return false;
+	}
+	return true;
+}
+
 
 bool Game::exitRequest() const {
 	return !!(GameConfig::KEY_EXIT_MASK & m_KeysMask);
@@ -197,7 +215,7 @@ void Game::buttonHandler(std::size_t id) {
 		if(!m_Text[TEXT_BUTTON_INDX].setText("Radio Button START pressed")) {
 			std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setText failed" << std::endl;
 		}
-		m_Wheel.startAnimation();
+		m_Wheel.startAnimation(1, true);
 		break;
 	case BTN_RADIO_STOP_INDX:
 		if(!m_Text[TEXT_BUTTON_INDX].setColor(Colors::GREEN)) {
@@ -234,6 +252,8 @@ void Game::buttonHandler(std::size_t id) {
 			if(!m_Text[TEXT_BUTTON_INDX].setText(text)) {
 				std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setText failed" << std::endl;
 			}
+			m_Wheel.startAnimation((StartPressCounter & 1)?-25:25, false);
+			m_ButtonStart.setState(InputStates_t::DISABLED);
 			break;
 		}
 	case BTN_STOP_DISABLED_INDX:
@@ -270,6 +290,12 @@ void Game::toggleButtonHandler(std::size_t id, bool state) {
 			if(!m_Text[TEXT_BUTTON_INDX].setText(txt)) {
 				std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setText failed" << std::endl;
 			}
+			if(state) {
+				m_Wheel.startAnimation(-1, true);
+
+			} else {
+				m_Wheel.stopAnimation();
+			}
 		}
 		break;
 	case BTN_TOGGLE_STOP_DISABLED_INDX:
@@ -295,5 +321,21 @@ void Game::toggleButtonHandler(std::size_t id, bool state) {
 				std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setText failed" << std::endl;
 			}
 		}
+	}
+}
+
+void Game::onTimeout(TimerHandler_t id) {
+	if(INVALID_TIMER_HANDLER != m_FPS_TimerId) {
+		assert(id == m_FPS_TimerId);
+		auto txt = FPS_TEXT;
+		txt += std::to_string(m_FrameConter);
+		m_FrameConter = 0;
+		m_Text[TEXT_FPS_INDX].setText(txt);
+	}
+}
+
+void Game::wheelAnimationDone() {
+	if(InputStates_t::DISABLED == m_ButtonStart.getState()) {
+		m_ButtonStart.setState(InputStates_t::UNCLICKED);
 	}
 }

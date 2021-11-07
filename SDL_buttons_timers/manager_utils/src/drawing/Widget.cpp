@@ -67,6 +67,18 @@ void Widget::moveV(int32_t val) {
 	m_DrawParams.m_DstRect.m_Pos.m_Y += val;
 }
 
+Dimention Widget::getDimentions() const {
+	return Dimention(getWidth(), getHeight());
+}
+
+int32_t Widget::getWidth() const {
+	return m_DrawParams.m_DstRect.m_W;
+}
+
+int32_t Widget::getHeight() const {
+	return m_DrawParams.m_DstRect.m_H;
+}
+
 void Widget::setOpacity(int32_t opacity) {
 	if(BlendMode_t::NONE == m_DrawParams.m_BlendMode) {
 		std::cerr << "Widget::setOpacity() failed. Set blend mode first" << std::endl;

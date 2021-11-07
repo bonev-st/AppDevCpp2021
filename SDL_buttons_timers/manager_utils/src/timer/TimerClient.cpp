@@ -13,14 +13,14 @@ TimerClient::~TimerClient() {
 	G_pTimerMgr->detachTimerClient(this);
 }
 
-bool TimerClient::startTimer(std::size_t &id, int64_t interval, TimerType_t type) {
+bool TimerClient::startTimer(TimerHandler_t &id, int64_t interval, TimerType_t type) {
 	return G_pTimerMgr->startTimer(id, interval, this, type);
 }
 
-bool TimerClient::stopTimer(std::size_t id) {
+bool TimerClient::stopTimer(TimerHandler_t & id) {
 	return G_pTimerMgr->stopTimer(id);
 }
 
-bool TimerClient::isActiveTimerId(std::size_t id) const {
+bool TimerClient::isActiveTimerId(TimerHandler_t id) const {
 	return G_pTimerMgr->isActiveTimerId(id);
 }

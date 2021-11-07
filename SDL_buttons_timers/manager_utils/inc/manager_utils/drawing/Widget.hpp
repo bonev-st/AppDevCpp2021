@@ -30,6 +30,7 @@ public:
 	void moveH(int32_t val);
 	void moveV(int32_t val);
 
+	Dimention getDimentions() const;
 	int32_t getWidth() const;
 	int32_t getHeight() const;
 

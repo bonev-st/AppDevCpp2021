@@ -65,6 +65,7 @@ bool App::mainLoop() {
 	    	std::cerr << "App::mainLoop::drawFrame() failed." << std::endl;
 	    	return false;
 	    }
+		time.start();
 	    limitFPS(time.toTime<Time::Microseconds_t>());
 	}
 	return true;
