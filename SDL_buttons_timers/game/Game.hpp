@@ -10,8 +10,10 @@
 
 #include <array>
 #include <vector>
+#include <functional>
 
 #include "game/config/GameConfig.hpp"
+#include "manager_utils/managers/BaseMgr.hpp"
 #include "manager_utils/drawing/Image.hpp"
 #include "manager_utils/drawing/Text.hpp"
 #include "manager_utils/input/RadioContainer.hpp"
@@ -22,17 +24,16 @@
 #include "widgets/Button.hpp"
 #include "widgets/RadioButton.hpp"
 #include "widgets/ToggleButton.hpp"
-#include <functional>
 
 class InputEvent;
 class InputEventIF;
 
-class Game {
+class Game : public BaseMgr {
 public:
 	bool init(const GameConfig::Config_t & cfg);
 	bool events(const InputEvent & event, bool & exit);
 	bool draw() const;
-	bool process();
+	bool process() final;
 
 private:
 	enum ButtonIndx_t {

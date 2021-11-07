@@ -21,8 +21,8 @@ enum ManagersId_t : std::uint32_t {
 class BaseMgr : private NoCopy {
 public:
 	virtual ~BaseMgr() = default;
-
-	virtual void process() {
+	virtual bool process() {
+		return true;
 	}
 };
 

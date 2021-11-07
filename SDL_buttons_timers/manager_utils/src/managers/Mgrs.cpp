@@ -57,10 +57,13 @@ bool Mgrs::init(const ResourcesConfig::Config_t &cfg) {
 	return true;
 }
 
-void Mgrs::process() {
+bool Mgrs::process() {
 	for(auto &e : m_Managers) {
-		e->process();
+		if(!e->process()) {
+			return false;
+		}
 	}
+	return true;
 }
 
 void Mgrs::reset(BaseMgr * const p) {

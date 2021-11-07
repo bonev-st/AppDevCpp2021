@@ -22,7 +22,7 @@ class TimerClient;
 class TimerMgr: public BaseMgr {
 public:
 	bool init(int64_t min_period);
-	void process() final;
+	bool process() final;
 	bool startTimer(std::size_t &id, int64_t interval, TimerClient *client, TimerType_t type);
 	bool stopTimer(std::size_t id);
 	void detachTimerClient(const TimerClient *client);

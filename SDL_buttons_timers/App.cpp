@@ -34,6 +34,9 @@ bool App::init(const AppConfig& cfg) {
 	    }
 
 	    m_FrameDuration = (int64_t)1E6/cfg.m_ResourcesCfg.m_DrawMgrCfg.m_MaxFrameRate;
+
+	    m_ProcessConatainer.push_back(&m_Managers);
+	    m_ProcessConatainer.push_back(&m_Game);
 		rc = true;
 	} while(0);
 	return rc;
@@ -48,7 +51,12 @@ bool App::mainLoop() {
 	Time time;
 	while(!m_InputEvents.isExitRequest()) {
 		time.start();
-		m_Managers.process();
+		for(auto &e : m_ProcessConatainer) {
+			if(!e->process()) {
+		    	std::cerr << "App::mainLoop Mangers process failed." << std::endl;
+				return false;
+			}
+		}
 		if(!processFrame()) {
 	    	std::cerr << "App::mainLoop::processFrame() failed." << std::endl;
 	    	return false;

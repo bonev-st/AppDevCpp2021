@@ -20,7 +20,7 @@ bool TimerMgr::init(int64_t min_period) {
 	return true;
 }
 
-void TimerMgr::process() {
+bool TimerMgr::process() {
 	m_ElapsedTime.start();
 	const int64_t elapsed_ms = m_ElapsedTime.toTime<Time::Milliseconds_t>();
 	for(auto& [id, data] : m_TimerMap) {
@@ -30,6 +30,7 @@ void TimerMgr::process() {
 		}
 	}
 	removeTimers();
+	return true;
 }
 
 bool TimerMgr::startTimer(std::size_t &id, int64_t interval, TimerClient *client, TimerType_t type) {

@@ -13,11 +13,11 @@
 #include "manager_utils/config/ResourcesConfig.hpp"
 #include "manager_utils/managers/BaseMgr.hpp"
 
-class Mgrs {
+class Mgrs : public BaseMgr {
 public:
 	~Mgrs();
 	bool init(const ResourcesConfig::Config_t &cfg);
-	void process();
+	bool process() final;
 
 private:
 	std::array<std::unique_ptr<BaseMgr>, ManagersId_t::MGR_NUMB> m_Managers;

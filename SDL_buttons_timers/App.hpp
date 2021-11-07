@@ -9,6 +9,7 @@
 #define APP_HPP_
 
 #include <cstdint>
+#include <vector>
 
 #include "utils/NoCopy.hpp"
 
@@ -33,6 +34,8 @@ private:
 	Mgrs m_Managers;
 	InputEvent m_InputEvents;
 	Game m_Game;
+
+	std::vector<BaseMgr *> m_ProcessConatainer;
 
 	bool mainLoop();
 	bool drawFrame();
