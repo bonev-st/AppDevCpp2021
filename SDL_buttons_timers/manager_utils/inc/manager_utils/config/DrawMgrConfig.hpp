@@ -13,7 +13,7 @@
 namespace DrawMgrConfig {
 struct Config_t {
 	MainWindow::Config_t m_WindowCfg;
-	std::int64_t m_MaxFrameRate;
+	std::int32_t m_MaxFrameRate;
 };
 }
 

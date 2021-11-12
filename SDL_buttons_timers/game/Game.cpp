@@ -29,8 +29,7 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 		return false;
 	}
 
-	m_WheelAnimationDoneCB = std::bind(&Game::wheelAnimationDone, this);
-	m_Wheel.attachDone(&m_WheelAnimationDoneCB);
+	m_Wheel.attachDone(std::bind(&Game::wheelAnimationDone, this));
 	if(!m_Wheel.init(ResurcesId::WHEEL_IMG)) {
 		std::cerr << "m_Wheel.init() failed." << std::endl;
 		return false;
@@ -130,8 +129,8 @@ bool Game::initButtons() {
 		return false;
 	}
 	m_RadioButtonStopDisabled.setState(InputStates_t::DISABLED);
-	m_ButtonCB = std::bind(&Game::buttonHandler, this, std::placeholders::_1);
-	m_RadioGroup.init(&m_ButtonCB);
+	auto butt_cb = std::bind(&Game::buttonHandler, this, std::placeholders::_1);
+	m_RadioGroup.init(butt_cb);
 
 	m_RadioGroup.add(&m_RadioButtonStopDisabled);
 	m_RadioGroup.add(&m_RadioButtonStart);
@@ -144,30 +143,29 @@ bool Game::initButtons() {
 		std::cerr << "Game::init.m_ButtonStart.init() failed." << std::endl;
 		return false;
 	}
-	m_ButtonStart.attachCB(&m_ButtonCB);
+	m_ButtonStart.attachCB(butt_cb);
 	p.m_Y += 60;
 	if(!m_ButtonStopDisabled.create(BTN_STOP_DISABLED_INDX, ResurcesId::BUTTON_STOP_IMG, p)) {
 		std::cerr << "Game::init.m_ButtonStopDisabled.init() failed." << std::endl;
 		return false;
 	}
 	m_ButtonStopDisabled.setState(InputStates_t::DISABLED);
-	m_ButtonStopDisabled.attachCB(&m_ButtonCB);
+	m_ButtonStopDisabled.attachCB(butt_cb);
 
-	m_ToggleButtonCB = std::bind(&Game::toggleButtonHandler, this, std::placeholders::_1, std::placeholders::_2);
+	auto toggle_cb = std::bind(&Game::toggleButtonHandler, this, std::placeholders::_1, std::placeholders::_2);
 	p.m_Y += 100;
 	if(!m_ToggleButtonStart.create(BTN_TOGGLE_START_INDX, ResurcesId::BUTTON_START_IMG, p)) {
 		std::cerr << "Game::init.m_ToggleButtonStart.init() failed." << std::endl;
 		return false;
 	}
-	m_ToggleButtonStart.attachCB(&m_ToggleButtonCB);
+	m_ToggleButtonStart.attachCB(toggle_cb);
 	p.m_Y += 60;
 	if(!m_ToggleButtonStopDisabled.create(BTN_TOGGLE_STOP_DISABLED_INDX, ResurcesId::BUTTON_STOP_IMG, p)) {
 		std::cerr << "Game::init.m_ToggleButtonStopDisabled.init() failed." << std::endl;
 		return false;
 	}
 	//m_ToggleButtonStopDisabled.setState(InputStates_t::DISABLED);
-	m_ToggleButtonStopDisabled.attachCB(&m_ToggleButtonCB);
-
+	m_ToggleButtonStopDisabled.attachCB(toggle_cb);
 	return true;
 }
 
@@ -186,7 +184,7 @@ bool Game::initInput() {
 }
 
 bool Game::initTimers() {
-	if(!startTimer(m_FPS_TimerId, 1000, TimerType_t::RELOAD)) {
+	if(!startTimer(m_FPS_TimerId, 1000, Timer1::Timer1Mode_t::RELOAD, std::bind(&Game::onTimeout, this, std::placeholders::_1))) {
 		std::cerr << "startTimer() failed." << std::endl;
 		return false;
 	}
@@ -324,8 +322,8 @@ void Game::toggleButtonHandler(std::size_t id, bool state) {
 	}
 }
 
-void Game::onTimeout(TimerHandler_t id) {
-	if(INVALID_TIMER_HANDLER != m_FPS_TimerId) {
+void Game::onTimeout(Timer1::Timer1Handler_t id) {
+	if(Timer1::INVALID_TIMER1_HANDLER != m_FPS_TimerId) {
 		assert(id == m_FPS_TimerId);
 		auto txt = FPS_TEXT;
 		txt += std::to_string(m_FrameConter);

@@ -16,6 +16,7 @@ add_library(
 		${_INC_DIR}/managers/BaseMgr.hpp
 		${_INC_DIR}/managers/DrawMgr.hpp
 		${_INC_DIR}/managers/TimerMgr.hpp
+		${_INC_DIR}/managers/Timer1Mgr.hpp
 		${_INC_DIR}/managers/Mgrs.hpp
 		${_INC_DIR}/drawing/Widget.hpp
 		${_INC_DIR}/drawing/Image.hpp
@@ -25,10 +26,12 @@ add_library(
 		${_INC_DIR}/input/RadioWidget.hpp
 		${_INC_DIR}/timer/TimerData.hpp
 		${_INC_DIR}/timer/TimerClient.hpp
+		${_INC_DIR}/timer/Timer1Client.hpp
 	
 		${_SRC_DIR}/managers/ResMgr.cpp
 		${_SRC_DIR}/managers/DrawMgr.cpp
 		${_SRC_DIR}/managers/TimerMgr.cpp
+		${_SRC_DIR}/managers/Timer1Mgr.cpp
 		${_SRC_DIR}/managers/Mgrs.cpp
 		${_SRC_DIR}/drawing/Widget.cpp
 		${_SRC_DIR}/drawing/Image.cpp
@@ -36,6 +39,7 @@ add_library(
 		${_SRC_DIR}/input/ButtonBase.cpp
 		${_SRC_DIR}/input/RadioContainer.cpp
 		${_SRC_DIR}/timer/TimerClient.cpp
+		${_SRC_DIR}/timer/Timer1Client.cpp
 )
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)

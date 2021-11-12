@@ -10,9 +10,18 @@
 
 #include <cstdint>
 
-namespace Timer {
+namespace Timer1 {
+class Timer1Cfg_t;
+}
 
-void Delay(std::uint32_t ms);
+struct SDL_UserEvent;
+
+namespace SDL_Timer {
+
+void delay(std::uint32_t ms);
+bool createTimer(Timer1::Timer1Cfg_t & cfg);
+bool deleteTimer(int32_t id);
+void eventHandler(const SDL_UserEvent * event);
 
 } /* namespace Timer */
 

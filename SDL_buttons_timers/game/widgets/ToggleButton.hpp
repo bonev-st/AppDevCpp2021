@@ -17,13 +17,13 @@ using ToggleButtonCB_t = std::function<void(std::size_t, bool pressed)>;
 class ToggleButton : public ButtonBase {
 public:
 	bool create(std::size_t button_id, std::size_t image_id, const Point &pos = Point::ZERO);
-	bool attachCB(ToggleButtonCB_t * fn);
+	bool attachCB(const ToggleButtonCB_t & fn);
 	bool handleEvent(const InputEvent &e) override;
 	std::size_t getId() const;
 
 private:
 	std::size_t m_Id = -1;
-	ToggleButtonCB_t * m_CB = nullptr;
+	ToggleButtonCB_t m_CB;
 	bool m_Touched = false;
 	bool m_Pressed = false;
 };

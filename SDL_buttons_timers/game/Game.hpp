@@ -17,7 +17,7 @@
 #include "manager_utils/drawing/Image.hpp"
 #include "manager_utils/drawing/Text.hpp"
 #include "manager_utils/input/RadioContainer.hpp"
-#include "manager_utils/timer/TimerClient.hpp"
+#include "manager_utils/timer/Timer1Client.hpp"
 
 #include "widgets/Hero.hpp"
 #include "widgets/Wheel.hpp"
@@ -28,7 +28,7 @@
 class InputEvent;
 class InputEventIF;
 
-class Game : public BaseMgr, public TimerClient {
+class Game : public BaseMgr, public Timer1Client {
 public:
 	bool init(const GameConfig::Config_t & cfg);
 	bool events(const InputEvent & event, bool & exit);
@@ -72,7 +72,7 @@ private:
 	ToggleButton m_ToggleButtonStart;
 	ToggleButton m_ToggleButtonStopDisabled;
 	uint32_t m_FrameConter = 0;
-	TimerHandler_t m_FPS_TimerId = INVALID_TIMER_HANDLER;
+	Timer1::Timer1Handler_t m_FPS_TimerId = Timer1::INVALID_TIMER1_HANDLER;
 
 	std::array<Text, TEXT_ARRAY_SIZE> m_Text;
 
@@ -82,10 +82,6 @@ private:
 	uint32_t m_KeysMask = 0;
 	uint32_t m_KeysMaskHold = 0;
 	std::size_t StartPressCounter = 0;
-
-	std::function<void(std::size_t)> m_ButtonCB;
-	std::function<void(std::size_t, bool)> m_ToggleButtonCB;
-	std::function<void()> m_WheelAnimationDoneCB;
 
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
 	bool createTexts();
@@ -99,7 +95,7 @@ private:
 	void buttonHandler(std::size_t id);
 	void toggleButtonHandler(std::size_t id, bool state);
 
-	void onTimeout(TimerHandler_t id) final;
+	void onTimeout(Timer1::Timer1Handler_t id);
 	void wheelAnimationDone();
 };
 

@@ -6,6 +6,7 @@
  */
 
 #include "sdl_utils/InputEvent.hpp"
+#include "sdl_utils/Timer.hpp"
 
 #include <SDL_events.h>
 
@@ -46,6 +47,11 @@ void InputEvent::setEventTypeImpl(const SDL_Event &event) {
 	case EventType::QUIT:
 		//X is pressed on the window (or CTRL-C signal is sent)
 		m_ExitRequest = true;
+		break;
+
+	case EventType::TIMER_EXPIRE:
+		SDL_Timer::eventHandler(reinterpret_cast<const SDL_UserEvent *>(&event));
+		m_Type = TouchEvent::UNKNOWN;
 		break;
 
 	default:

@@ -16,13 +16,7 @@ bool Button::create(std::size_t button_id, std::size_t image_id, const Point &po
 	return ButtonBase::create(image_id, pos);
 }
 
-bool Button::attachCB(ButtonCB_t * fn) {
-	if(nullptr == fn) {
-		std::cerr << "Try to initialize Callback for button with ID " << m_Id << " with nullptr" << m_Id << std::endl;
-		return false;
-	} else if(m_CB) {
-		std::cerr << "Warning: Callback for button with ID " << m_Id << " is already initialized will be overwritten" << std::endl;
-	}
+bool Button::attachCB(const ButtonCB_t & fn) {
 	m_CB = fn;
 	return true;
 }
@@ -43,8 +37,8 @@ bool Button::handleEvent(const InputEvent &e) {
 			if(m_Touched) {
 				m_Touched = false;
 				setState(InputStates_t::UNCLICKED);
-				if(containsEvent(e)) {
-					(*m_CB)(m_Id);
+				if(m_CB && containsEvent(e)) {
+					m_CB(m_Id);
 					rc = true;
 				}
 			}

@@ -13,14 +13,14 @@
 
 class RadioContainer {
 public:
-	bool init(RadioCB_t * cb);
+	bool init(const RadioCB_t &cb);
 	void add(RadioWidget * widget);
 	void select(std::size_t id);
 	void deselect();
 
 private:
 	std::vector<RadioWidget *> m_Container;
-	RadioCB_t * m_CB = nullptr;
+	RadioCB_t m_CB;
 	RadioCB_t m_GroupCB;
 
 	void handler(std::size_t id);

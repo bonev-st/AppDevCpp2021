@@ -24,6 +24,9 @@ add_library(
 		${_INC_DIR}/inputs/EventDefines.h
 		${_INC_DIR}/inputs/InputEventIF.hpp
 		${_INC_DIR}/time/Time.hpp
+		${_INC_DIR}/timer/Timer1Def.hpp
+		${_INC_DIR}/timer/Timer1Cfg.hpp
+		${_INC_DIR}/timer/Timer1ClientIF.hpp
 		${_INC_DIR}/thread/ThreadUtils.hpp
 		${_INC_DIR}/geometry/Geometry.hpp
 		${_INC_DIR}/geometry/PointR.hpp

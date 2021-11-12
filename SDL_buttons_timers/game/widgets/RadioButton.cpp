@@ -7,7 +7,7 @@
 
 #include "game/widgets/RadioButton.hpp"
 
-void RadioButton::attachCB(RadioCB_t * fn) {
+void RadioButton::attachCB(const RadioCB_t &fn) {
 	Button::attachCB(fn);
 }
 

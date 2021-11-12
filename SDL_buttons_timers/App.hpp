@@ -31,8 +31,8 @@ private:
 	std::int64_t m_FrameDuration = 0;
 
 	SDLLoader m_Loader;
-	Mgrs m_Managers;
 	InputEvent m_InputEvents;
+	Mgrs m_Managers;
 	Game m_Game;
 
 	std::vector<BaseMgr *> m_ProcessConatainer;

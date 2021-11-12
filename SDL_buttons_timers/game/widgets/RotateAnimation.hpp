@@ -13,16 +13,16 @@
 
 #include "utils/drawing/Point.hpp"
 #include "utils/geometry/Geometry.hpp"
-#include "manager_utils/timer/TimerClient.hpp"
+#include "manager_utils/timer/Timer1Client.hpp"
 
 template<class T>
-class RotateAnimation : public T, public TimerClient {
+class RotateAnimation : public T, public Timer1Client {
 public:
-	void initAnimation(double deg_per_frame, int64_t period, double angle = 0, const Point &rot_center = Point::UNDEFINED);
-	void setPeriod(int64_t period);
+	void initAnimation(double deg_per_frame, int32_t period, double angle = 0, const Point &rot_center = Point::UNDEFINED);
+	void setPeriod(int32_t period);
 	void setRotCenter(const Point &pos);
 	bool setAngle(double angle, bool infinite = false);
-	void attachDone(std::function<void()> *fn);
+	void attachDone(const std::function<void()> &fn);
 	bool isReady() const;
 	void cancel();
 
@@ -30,17 +30,17 @@ private:
 	bool m_Infinite = false;
 	double m_Angle;
 	Point m_RotCenter =  Point::UNDEFINED;
-	TimerHandler_t m_TimerId = INVALID_TIMER_HANDLER;
+	Timer1::Timer1Handler_t m_TimerId = Timer1::INVALID_TIMER1_HANDLER;
 	double m_DegFrame = 0;
-	int64_t m_Period = 0;
-	std::function<void()> * m_CB = nullptr;
+	int32_t m_Period = 0;
+	std::function<void()> m_CB;
 
-	void onTimeout(TimerHandler_t id);
+	void onTimeout(Timer1::Timer1Handler_t id);
 	void callCB();
 };
 
 template<class T>
-void RotateAnimation<T>::initAnimation(double deg_per_frame, int64_t period, double angle, const Point &rot_center) {
+void RotateAnimation<T>::initAnimation(double deg_per_frame, int32_t period, double angle, const Point &rot_center) {
 	m_DegFrame = deg_per_frame;
 	m_Period = period;
 	m_RotCenter = rot_center;
@@ -48,7 +48,7 @@ void RotateAnimation<T>::initAnimation(double deg_per_frame, int64_t period, dou
 }
 
 template<class T>
-void RotateAnimation<T>::setPeriod(int64_t period) {
+void RotateAnimation<T>::setPeriod(int32_t period) {
 	m_Period = period;
 }
 
@@ -57,7 +57,9 @@ bool RotateAnimation<T>::setAngle(double angle, bool infinite) {
 	if(!isReady()) {
 		return false;
 	}
-	if(!startTimer(m_TimerId, m_Period, TimerType_t::RELOAD)) {
+	if(!startTimer(m_TimerId, m_Period, Timer1::Timer1Mode_t::RELOAD, [this] (Timer1::Timer1Handler_t id) {
+		onTimeout(id);
+	})) {
 		return false;
 	}
 	m_Infinite = infinite;
@@ -66,7 +68,7 @@ bool RotateAnimation<T>::setAngle(double angle, bool infinite) {
 }
 
 template<class T>
-void RotateAnimation<T>::attachDone(std::function<void()> *fn) {
+void RotateAnimation<T>::attachDone(const std::function<void()> & fn) {
 	m_CB = fn;
 }
 
@@ -84,8 +86,8 @@ void RotateAnimation<T>::cancel() {
 }
 
 template<class T>
-void RotateAnimation<T>::onTimeout(TimerHandler_t id) {
-	if(INVALID_TIMER_HANDLER != id) {
+void RotateAnimation<T>::onTimeout(Timer1::Timer1Handler_t id) {
+	if(Timer1::INVALID_TIMER1_HANDLER != id) {
 		assert(id == m_TimerId);
 		auto angle = m_DegFrame;
 		if(!m_Infinite) {
@@ -116,7 +118,7 @@ void RotateAnimation<T>::onTimeout(TimerHandler_t id) {
 template<class T>
 void RotateAnimation<T>::callCB() {
 	if(m_CB) {
-		(*m_CB)();
+		m_CB();
 	}
 }
 

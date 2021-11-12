@@ -30,6 +30,7 @@ bool TimerMgr::process() {
 			onTimerTimeout(id, data);
 		}
 	}
+	removeTimers();
 	return true;
 }
 
@@ -45,7 +46,10 @@ bool TimerMgr::startTimer(TimerHandler_t &id, int64_t interval, TimerClient *cli
 }
 
 bool TimerMgr::stopTimer(TimerHandler_t & id) {
-	if(!isActiveTimerId(id)) {
+	if(INVALID_TIMER_HANDLER == id) {
+		return true;
+	}
+	if(m_TimerMap.end() == m_TimerMap.find(id)) {
 		std::cerr << "Timer " << id << "not exist" << std::endl;
 		return false;
 	}

@@ -25,7 +25,7 @@ public:
 	void draw() const;
 	void startAnimation(double angle, bool infinite);
 	void stopAnimation();
-	void attachDone(std::function<void()> * cb);
+	void attachDone(const std::function<void()> & cb);
 
 private:
 	RotateAnimation<Image> m_Img;

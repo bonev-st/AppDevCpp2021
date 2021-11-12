@@ -9,9 +9,12 @@
 
 #include <cassert>
 
+#include "utils/inputs/EventDefines.h"
+
 #include "manager_utils/managers/ResMgr.hpp"
 #include "manager_utils/managers/DrawMgr.hpp"
 #include "manager_utils/managers/TimerMgr.hpp"
+#include "manager_utils/managers/Timer1Mgr.hpp"
 
 #include <iostream>
 Mgrs::~Mgrs() {
@@ -54,6 +57,17 @@ bool Mgrs::init(const ResourcesConfig::Config_t &cfg) {
 		std::cerr << "TimerMgr->init() failed." << std::endl;
         return false;
     }
+
+	m_Managers[MGR_TIMER1] = std::make_unique<Timer1Mgr>();
+	if(nullptr == m_Managers[MGR_TIMER1]) {
+		std::cerr << "std::make_unique<Timer1Mgr>() failed. Bad allocation" << std::endl;
+        return false;
+	}
+	G_pTimer1Mgr = reinterpret_cast<Timer1Mgr*>(m_Managers[MGR_TIMER1].get());
+	if(!G_pTimer1Mgr->init(min_period)) {
+		std::cerr << "Timer1Mgr->init() failed." << std::endl;
+        return false;
+    }
 	return true;
 }
 
@@ -73,6 +87,8 @@ void Mgrs::reset(BaseMgr * const p) {
 		G_pResMgr = nullptr;
 	} else if(p == G_pTimerMgr) {
 		G_pTimerMgr = nullptr;
+	} else if(p == G_pTimer1Mgr) {
+		G_pTimer1Mgr = nullptr;
 	} else {
 		std::cerr << "Try to reset unknown global manger pointer" << std::endl;
 	}

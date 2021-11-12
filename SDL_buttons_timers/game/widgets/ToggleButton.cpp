@@ -16,7 +16,7 @@ bool ToggleButton::create(std::size_t button_id, std::size_t image_id, const Poi
 	return ButtonBase::create(image_id, pos);
 }
 
-bool ToggleButton::attachCB(ToggleButtonCB_t * fn) {
+bool ToggleButton::attachCB(const ToggleButtonCB_t & fn) {
 	if(nullptr == fn) {
 		std::cerr << "Try to initialize Callback for button with ID " << m_Id << " with nullptr" << m_Id << std::endl;
 		return false;
@@ -44,7 +44,9 @@ bool ToggleButton::handleEvent(const InputEvent &e) {
 				m_Touched = false;
 				if(containsEvent(e)) {
 					m_Pressed ^= true;
-					(*m_CB)(m_Id, m_Pressed);
+					if(m_CB) {
+						m_CB(m_Id, m_Pressed);
+					}
 					rc = true;
 				}
 				setState(m_Pressed?InputStates_t::CLICKED:InputStates_t::UNCLICKED);

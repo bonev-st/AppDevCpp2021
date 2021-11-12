@@ -7,7 +7,7 @@
 
 #include "manager_utils/input/RadioContainer.hpp"
 
-bool RadioContainer::init(RadioCB_t * cb) {
+bool RadioContainer::init(const RadioCB_t &cb) {
 	if(!cb) {
 		return false;
 	}
@@ -18,7 +18,7 @@ bool RadioContainer::init(RadioCB_t * cb) {
 
 void RadioContainer::add(RadioWidget * widget) {
 	m_Container.push_back(widget);
-	widget->attachCB(&m_GroupCB);
+	widget->attachCB(m_GroupCB);
 }
 
 void RadioContainer::select(std::size_t id) {
@@ -34,7 +34,9 @@ void RadioContainer::handler(std::size_t id) {
 		if(id == e->getId()) {
 			if(!e->getSelected()) {
 				e->setSelected();
-				(*m_CB)(id);
+				if(m_CB) {
+					m_CB(id);
+				}
 			}
 		} else {
 			e->setDeslected();

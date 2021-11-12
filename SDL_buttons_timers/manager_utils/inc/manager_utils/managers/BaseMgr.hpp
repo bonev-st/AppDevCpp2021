@@ -15,6 +15,7 @@ enum ManagersId_t : std::uint32_t {
 	MGR_DRAW = 0,
 	MGR_RES,
 	MGR_TIMER,
+	MGR_TIMER1,
 	MGR_NUMB
 };
 

@@ -13,7 +13,7 @@
 
 class RadioButton : public RadioWidget, public Button {
 public:
-	void attachCB(RadioCB_t * fn) final;
+	void attachCB(const RadioCB_t & fn) final;
 	bool getSelected() const final;
 	void setSelected() final;
 	void setDeslected() final;

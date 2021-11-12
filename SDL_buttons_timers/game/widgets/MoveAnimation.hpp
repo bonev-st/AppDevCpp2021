@@ -14,35 +14,35 @@
 #include "utils/drawing/Point.hpp"
 #include "utils/geometry/Geometry.hpp"
 #include "utils/geometry/PointR.hpp"
-#include "manager_utils/timer/TimerClient.hpp"
+#include "manager_utils/timer/Timer1Client.hpp"
 
 template<class T>
-class MoveAnimation : public T, public TimerClient {
+class MoveAnimation : public T, public Timer1Client {
 public:
-	void initAnimation(int32_t pix_per_frame, int64_t period, bool left = false, double angle = 0);
-	void setPeriod(int64_t period);
+	void initAnimation(int32_t pix_per_frame, int32_t period, bool left = false, double angle = 0);
+	void setPeriod(int32_t period);
 	bool setPosition(const Point & pos);
-	void attachDone(std::function<void()> *fn);
+	void attachDone(const std::function<void()> &fn);
 	bool isReady() const;
 	void cancel();
 
 private:
 	Geometry::PointR m_CurrentPos;
 	Point m_Pos;
-	TimerHandler_t m_TimerId = INVALID_TIMER_HANDLER;
+	Timer1::Timer1Handler_t m_TimerId = Timer1::INVALID_TIMER1_HANDLER;
 	int32_t m_PixFrame = 0;
-	int64_t m_Period = 0;
+	int32_t m_Period = 0;
 	bool m_Left = false;
-	std::function<void()> * m_CB = nullptr;
+	std::function<void()> m_CB;
 
-	void onTimeout(TimerHandler_t id);
+	void onTimeout(Timer1::Timer1Handler_t id);
 	void callCB();
 	void rotation(double angle);
 	void nextFrame();
 };
 
 template<class T>
-void MoveAnimation<T>::initAnimation(int32_t pix_per_frame, int64_t period, bool left, double angle) {
+void MoveAnimation<T>::initAnimation(int32_t pix_per_frame, int32_t period, bool left, double angle) {
 	m_PixFrame = pix_per_frame;
 	m_Period = period;
 	m_Left = left;
@@ -54,7 +54,7 @@ void MoveAnimation<T>::initAnimation(int32_t pix_per_frame, int64_t period, bool
 }
 
 template<class T>
-void MoveAnimation<T>::setPeriod(int64_t period) {
+void MoveAnimation<T>::setPeriod(int32_t period) {
 	m_Period = period;
 }
 
@@ -69,7 +69,9 @@ bool MoveAnimation<T>::setPosition(const Point & pos) {
 	if(!distance) {
 		return true;
 	}
-	if(!startTimer(m_TimerId, m_Period, TimerType_t::RELOAD)) {
+	if(!startTimer(m_TimerId, m_Period, Timer1::Timer1Mode_t::RELOAD, [this](Timer1::Timer1Handler_t id) {
+		this->onTimeout(id);
+	})) {
 		return false;
 	}
 	rotation(Geometry::getAngle(T::getPosition(), new_posistion));
@@ -78,7 +80,7 @@ bool MoveAnimation<T>::setPosition(const Point & pos) {
 }
 
 template<class T>
-void MoveAnimation<T>::attachDone(std::function<void()> *fn) {
+void MoveAnimation<T>::attachDone(const std::function<void()> &fn) {
 	m_CB = fn;
 }
 
@@ -96,8 +98,8 @@ void MoveAnimation<T>::cancel() {
 }
 
 template<class T>
-void MoveAnimation<T>::onTimeout(TimerHandler_t id) {
-	if(INVALID_TIMER_HANDLER != id) {
+void MoveAnimation<T>::onTimeout(Timer1::Timer1Handler_t id) {
+	if(Timer1::INVALID_TIMER1_HANDLER != id) {
 		assert(id == m_TimerId);
 		const auto distance = Geometry::getDistance(T::getPosition(), m_Pos);
 		if(!distance) {
@@ -113,7 +115,7 @@ void MoveAnimation<T>::onTimeout(TimerHandler_t id) {
 template<class T>
 void MoveAnimation<T>::callCB() {
 	if(m_CB) {
-		(*m_CB)();
+		m_CB();
 	}
 }
 

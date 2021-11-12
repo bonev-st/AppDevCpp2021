@@ -48,27 +48,31 @@ bool App::start() {
 }
 
 bool App::mainLoop() {
+	bool rc = true;
 	Time time;
 	while(!m_InputEvents.isExitRequest()) {
 		time.start();
 		for(auto &e : m_ProcessConatainer) {
 			if(!e->process()) {
 		    	std::cerr << "App::mainLoop Mangers process failed." << std::endl;
-				return false;
+		    	rc = false;
+		    	break;
 			}
 		}
 		if(!processFrame()) {
 	    	std::cerr << "App::mainLoop::processFrame() failed." << std::endl;
-	    	return false;
+	    	rc = false;
+	    	break;
 		}
 	    if(!drawFrame()) {
 	    	std::cerr << "App::mainLoop::drawFrame() failed." << std::endl;
-	    	return false;
+	    	rc = false;
+	    	break;
 	    }
 		time.start();
 	    limitFPS(time.toTime<Time::Microseconds_t>());
 	}
-	return true;
+	return rc;
 }
 
 bool App::processFrame() {

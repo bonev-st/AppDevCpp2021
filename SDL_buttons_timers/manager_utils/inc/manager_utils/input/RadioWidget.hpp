@@ -15,7 +15,7 @@ using RadioCB_t = std::function<void(std::size_t)>;
 class RadioWidget {
 public:
 	virtual ~RadioWidget() = default;
-	virtual void attachCB(RadioCB_t * fn) = 0;
+	virtual void attachCB(const RadioCB_t & fn) = 0;
 	virtual bool getSelected() const = 0;
 	virtual void setSelected() = 0;
 	virtual void setDeslected() = 0;

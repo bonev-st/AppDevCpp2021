@@ -22,7 +22,7 @@ bool Wheel::init(std::size_t id, const Point &pos) {
 	return rc;
 }
 
-void Wheel::attachDone(std::function<void()> * cb) {
+void Wheel::attachDone(const std::function<void()> &cb) {
 	m_Img.attachDone(cb);
 }
 
