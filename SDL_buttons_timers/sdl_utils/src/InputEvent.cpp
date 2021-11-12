@@ -12,15 +12,17 @@
 
 bool InputEvent::pollEvent() {
 	SDL_Event event;
-	if (!SDL_PollEvent(&event)) {
-		return false;
-	}
-	SDL_GetMouseState(&m_Pos.m_X, &m_Pos.m_Y);
-	setEventTypeImpl(event);
+	do {
+		if (!SDL_PollEvent(&event)) {
+			return false;
+		}
+		SDL_GetMouseState(&m_Pos.m_X, &m_Pos.m_Y);
+	} while(setEventTypeImpl(event));
 	return true;
 }
 
-void InputEvent::setEventTypeImpl(const SDL_Event &event) {
+bool InputEvent::setEventTypeImpl(const SDL_Event &event) {
+	bool rc = false;
 	switch (event.type) {
 	case EventType::KEYBOARD_PRESS:
 		m_Key = static_cast<Keyboard::Key>(event.key.keysym.sym);
@@ -52,10 +54,12 @@ void InputEvent::setEventTypeImpl(const SDL_Event &event) {
 	case EventType::TIMER_EXPIRE:
 		SDL_Timer::eventHandler(reinterpret_cast<const SDL_UserEvent *>(&event));
 		m_Type = TouchEvent::UNKNOWN;
+		rc = true;
 		break;
 
 	default:
 		m_Type = TouchEvent::UNKNOWN;
 		break;
 	}
+	return rc;
 }
