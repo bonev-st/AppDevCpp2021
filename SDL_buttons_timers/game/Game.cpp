@@ -322,7 +322,7 @@ void Game::toggleButtonHandler(std::size_t id, bool state) {
 	}
 }
 
-void Game::onTimeout(Timer1::Timer1Handler_t id) {
+void Game::onTimeout([[maybe_unused]]Timer1::Timer1Handler_t id) {
 	if(Timer1::INVALID_TIMER1_HANDLER != m_FPS_TimerId) {
 		assert(id == m_FPS_TimerId);
 		auto txt = FPS_TEXT;
