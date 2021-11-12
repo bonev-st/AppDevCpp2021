@@ -37,7 +37,7 @@ public:
 private:
 	bool m_ExitRequest = false;
 
-	void setEventTypeImpl(const SDL_Event &event);
+	bool setEventTypeImpl(const SDL_Event &event);
 };
 
 #endif /* UTILS_INPUT_INPUTEVENT_HPP_ */
