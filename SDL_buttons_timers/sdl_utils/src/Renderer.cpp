@@ -20,7 +20,7 @@
 #include "sdl_utils/SDLHelper.hpp"
 
 bool Renderer::init(const MainWindow::Config_t &cfg) {
-	m_AppWindow = MainWindow::createMainWindow(cfg);
+	m_AppWindow = std::move(MainWindow::createMainWindow(cfg));
 	if(nullptr == m_AppWindow) {
 		std::cerr << "Renderer::init::MainWindow::createMainWindow() failed." << std::endl;
 		return false;
@@ -30,11 +30,11 @@ bool Renderer::init(const MainWindow::Config_t &cfg) {
 		return false;
 	}
 	constexpr auto UNSPEC_DRIVER_ID = -1;
-	m_Renderer = std::shared_ptr<SDL_Renderer>(SDL_CreateRenderer(m_AppWindow->m_Window.get()
-													, UNSPEC_DRIVER_ID, SDL_RENDERER_ACCELERATED)
+	m_Renderer = std::shared_ptr<SDL_Renderer>( SDL_CreateRenderer(m_AppWindow->m_Window.get()
+												, UNSPEC_DRIVER_ID, SDL_RENDERER_ACCELERATED)
 					, Destroy::free<SDL_Renderer, SDL_DestroyRenderer>);
 #ifdef SHOW_MEM_ALLOC_INFO
-	std::cout << "+ Renderer::init() create SDL_Renderer " << m_Renderer << std::endl;
+	std::cout << "+ Renderer::init() create SDL_Renderer " << m_Renderer.get() << std::endl;
 #endif
 	if (nullptr == m_Renderer) {
 		SDLHelper::print_SDL_Error("Renderer::init::SDL_CreateRenderer() failed.");

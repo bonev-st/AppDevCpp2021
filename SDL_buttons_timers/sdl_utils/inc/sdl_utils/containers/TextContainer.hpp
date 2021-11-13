@@ -31,7 +31,7 @@ public:
 	const Texture::Texture_t* get(std::size_t id) const;
 
 private:
-	typedef std::shared_ptr<Texture::Texture_t> Text_t;
+	using Text_t = std::shared_ptr<Texture::Texture_t> ;
 	FontContainer m_Font;
 	FirstFreeContainer<Text_t> m_Text;
 	SDL_Renderer * m_Renderer = nullptr;

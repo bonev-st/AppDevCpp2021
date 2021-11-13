@@ -16,7 +16,7 @@
 
 namespace MainWindow {
 
-std::shared_ptr<MainWindow_t> createMainWindow(const Config_t &cfg) {
+std::unique_ptr<MainWindow_t> createMainWindow(const Config_t &cfg) {
 	Rectangle rect = cfg.m_Rect;
 	if (Point::UNDEFINED == rect.m_Pos) {
 		rect.m_Pos = Point(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
@@ -30,13 +30,13 @@ std::shared_ptr<MainWindow_t> createMainWindow(const Config_t &cfg) {
 		.m_Rect = cfg.m_Rect
 	};
 #ifdef SHOW_MEM_ALLOC_INFO
-	std::cout << "+ SDL_CreateWindow() create SDL_Window " << data.m_Window << std::endl;
+	std::cout << "+ SDL_CreateWindow() create SDL_Window " << data.m_Window.get() << std::endl;
 #endif
 	if(nullptr == data.m_Window) {
 		SDLHelper::print_SDL_Error("MainWindow::createMainWindow::SDL_CreateWindow() fault.");
-		return std::shared_ptr<MainWindow_t>(nullptr);
+		return std::unique_ptr<MainWindow_t>(nullptr);
 	}
-	return std::make_shared<MainWindow_t>(data);
+	return std::make_unique<MainWindow_t>(data);
 }
 
 }

@@ -37,7 +37,7 @@ struct Config_t {
 	WindowFlags_t m_Flags = WINDOW_NONE;
 };
 
-std::shared_ptr<MainWindow_t> createMainWindow(const Config_t &cfg);
+std::unique_ptr<MainWindow_t> createMainWindow(const Config_t &cfg);
 
 }
 

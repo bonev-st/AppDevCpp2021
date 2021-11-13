@@ -31,7 +31,7 @@ public:
 	}
 
 private:
-	std::shared_ptr<MainWindow::MainWindow_t> m_AppWindow;
+	std::unique_ptr<MainWindow::MainWindow_t> m_AppWindow;
 	std::shared_ptr<SDL_Renderer> m_Renderer;
 };
 
