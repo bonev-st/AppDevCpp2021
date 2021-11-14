@@ -17,10 +17,10 @@ public:
 	~RAII_Handler();
 
 	RAII_Handler(const RAII_Handler& obj);
-	T& operator = (const RAII_Handler& obj);
+	RAII_Handler& operator = (const RAII_Handler& obj);
 
 	RAII_Handler(RAII_Handler&& obj);
-	T& operator = (RAII_Handler&& obj);
+	RAII_Handler& operator = (RAII_Handler&& obj);
 
 	operator T () const;
 	void set(T handler, const DELETER& deleter);
@@ -49,10 +49,13 @@ RAII_Handler<T, INVALID, DELETER>::RAII_Handler(const RAII_Handler& obj) {
 }
 
 template<class T, T INVALID, class DELETER>
-T& RAII_Handler<T, INVALID, DELETER>::operator = (const RAII_Handler& obj) {
-	del();
-	m_Val = obj.m_Val;
-	m_Deleter = obj.m_Deleter;
+RAII_Handler<T, INVALID, DELETER>& RAII_Handler<T, INVALID, DELETER>::operator = (const RAII_Handler& obj) {
+	if(&obj != this) {
+		del();
+		m_Val = obj.m_Val;
+		m_Deleter = obj.m_Deleter;
+	}
+	return *this;
 }
 
 template<class T, T INVALID, class DELETER>
@@ -63,10 +66,13 @@ RAII_Handler<T, INVALID, DELETER>::RAII_Handler(RAII_Handler&& obj) {
 }
 
 template<class T, T INVALID, class DELETER>
-T& RAII_Handler<T, INVALID, DELETER>::operator = (RAII_Handler&& obj) {
-	del();
-	m_Val = obj.m_Val;
-	m_Deleter = obj.m_Deleter;
+RAII_Handler<T, INVALID, DELETER>& RAII_Handler<T, INVALID, DELETER>::operator = (RAII_Handler&& obj) {
+	if(&obj != this) {
+		del();
+		m_Val = obj.m_Val;
+		m_Deleter = obj.m_Deleter;
+	}
+	return *this;
 }
 
 template<class T, T INVALID, class DELETER>
