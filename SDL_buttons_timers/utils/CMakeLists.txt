@@ -30,6 +30,7 @@ add_library(
 		${_INC_DIR}/thread/ThreadUtils.hpp
 		${_INC_DIR}/geometry/Geometry.hpp
 		${_INC_DIR}/geometry/PointR.hpp
+		${_INC_DIR}/Filter/ExpFilter.hpp
 	
 		${_SRC_DIR}/drawing/Point.cpp
 		${_SRC_DIR}/drawing/Rectangle.cpp
@@ -39,6 +40,7 @@ add_library(
 		${_SRC_DIR}/time/Time.cpp
 		${_SRC_DIR}/geometry/Geometry.cpp
 		${_SRC_DIR}/geometry/PointR.cpp
+		${_SRC_DIR}/Filter/ExpFilter.cpp
 )
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)

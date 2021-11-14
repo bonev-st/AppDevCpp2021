@@ -17,6 +17,8 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Wheel.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/MoveAnimation.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/RotateAnimation.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/FPS.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/FPS.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfig.hpp

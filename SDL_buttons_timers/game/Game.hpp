@@ -24,6 +24,7 @@
 #include "widgets/Button.hpp"
 #include "widgets/RadioButton.hpp"
 #include "widgets/ToggleButton.hpp"
+#include "widgets/FPS.hpp"
 
 class InputEvent;
 class InputEventIF;
@@ -76,11 +77,9 @@ private:
 	Button m_ButtonStopDisabled;
 	ToggleButton m_ToggleButtonStart;
 	ToggleButton m_ToggleButtonStopDisabled;
-	uint32_t m_FrameConter = 0;
-
+	FPS m_FPS;
 
 	std::array<Text, TEXT_ARRAY_SIZE> m_Text;
-
 	std::vector<InputEventIF*> m_InputEvetntContainer;
 
 	GameConfig::KeyRes_t m_Keys;
@@ -88,7 +87,7 @@ private:
 	uint32_t m_KeysMaskHold = 0;
 	std::size_t m_StartPressCounter = 0;
 
-	Timer2Client m_FPS_Timer;
+	Timer2Client m_RefreshTimer;
 
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
 	bool createTexts();

@@ -17,8 +17,6 @@
 #include "manager_utils/managers/Timer2Mgr.hpp"
 
 bool Mgrs::init(const ResourcesConfig::Config_t &cfg) {
-
-
 	auto * drawing_manager = DrawMgrInst::getInstance();
 	auto * resources_manager = ResMgrInst::getInstance();
 	auto * timer_manager = Timer2MgrInst::getInstance();

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <iomanip>
 
 #include "sdl_utils/InputEvent.hpp"
 
@@ -20,7 +21,7 @@
 const std::string Game::FPS_TEXT = "FPS: ";
 const std::string Game::ACTIVE_TIMERS = "T: ";
 const std::string Game::MAX_TIMERS = "Max T: ";
-const uint32_t Game::REFRESH_RATE = 1000;	// ms
+const uint32_t Game::REFRESH_RATE = 333;	// ms
 
 bool Game::init(const GameConfig::Config_t & cfg) {
 	if(!loadKeys(cfg.m_Keys)) {
@@ -54,6 +55,7 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 		return false;
 	}
 
+	m_FPS.init();
 	return true;
 }
 
@@ -89,7 +91,7 @@ bool Game::draw() const {
 }
 
 bool Game::new_frame() {
-	++m_FrameConter;
+	m_FPS.newFrame();
 	return true;
 }
 
@@ -204,7 +206,7 @@ bool Game::initInput() {
 }
 
 bool Game::initTimers() {
-	if(!m_FPS_Timer.start(REFRESH_RATE, Timer2::TimerMode_t::RELOAD, std::bind(&Game::onFPS_Timeout, this, std::placeholders::_1))) {
+	if(!m_RefreshTimer.start(REFRESH_RATE, Timer2::TimerMode_t::RELOAD, std::bind(&Game::onFPS_Timeout, this, std::placeholders::_1))) {
 		std::cerr << "startTimer() failed." << std::endl;
 		return false;
 	}
@@ -345,14 +347,14 @@ void Game::toggleButtonHandler(std::size_t id, bool state) {
 #include "manager_utils/managers/Timer2Mgr.hpp"
 
 void Game::onFPS_Timeout([[maybe_unused]]Timer2::TimerHandler_t id) {
-	assert(m_FPS_Timer.isRunning());
-	assert(m_FPS_Timer == id);
-
-	auto fps = (m_FrameConter * 1000)/REFRESH_RATE;
-	m_FrameConter = 0;
+	assert(m_RefreshTimer.isRunning());
 
 	auto text = FPS_TEXT;
-	text += std::to_string(fps);
+	std::ostringstream oss;
+	oss.setf(std::ios::fixed);
+	oss << std::setprecision(1) << m_FPS;
+
+	text += oss.str();
 	m_Text[TEXT_FPS_INDX].setText(text);
 
 	text = ACTIVE_TIMERS;
