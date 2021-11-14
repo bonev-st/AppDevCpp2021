@@ -19,9 +19,8 @@
 
 #include "sdl_utils/SDLHelper.hpp"
 
-bool Renderer::init(const MainWindow::Config_t &cfg) {
-	m_AppWindow = std::move(MainWindow::createMainWindow(cfg));
-	if(nullptr == m_AppWindow) {
+bool Renderer::init(const MainWindowCfg::Config_t &cfg) {
+	if(!m_AppWindow.init(cfg)) {
 		std::cerr << "Renderer::init::MainWindow::createMainWindow() failed." << std::endl;
 		return false;
 	}
@@ -30,17 +29,16 @@ bool Renderer::init(const MainWindow::Config_t &cfg) {
 		return false;
 	}
 	constexpr auto UNSPEC_DRIVER_ID = -1;
-	m_Renderer = std::shared_ptr<SDL_Renderer>( SDL_CreateRenderer(m_AppWindow->m_Window.get()
-												, UNSPEC_DRIVER_ID, SDL_RENDERER_ACCELERATED)
+	m_Renderer.set(SDL_CreateRenderer(m_AppWindow, UNSPEC_DRIVER_ID, SDL_RENDERER_ACCELERATED)
 					, Destroy::free<SDL_Renderer, SDL_DestroyRenderer>);
 #ifdef SHOW_MEM_ALLOC_INFO
-	std::cout << "+ Renderer::init() create SDL_Renderer " << m_Renderer.get() << std::endl;
+	std::cout << "+ Renderer::init() create SDL_Renderer " << m_Renderer << std::endl;
 #endif
 	if (nullptr == m_Renderer) {
 		SDLHelper::print_SDL_Error("Renderer::init::SDL_CreateRenderer() failed.");
 		return false;
 	}
-	if(EXIT_SUCCESS != SDL_SetRenderDrawColor(m_Renderer.get(), 0, 0, 0, SDL_ALPHA_OPAQUE)) {
+	if(EXIT_SUCCESS != SDL_SetRenderDrawColor(m_Renderer, 0, 0, 0, SDL_ALPHA_OPAQUE)) {
 		SDLHelper::print_SDL_Error("Renderer::init::SDL_SetRenderDrawColor() failed.");
 		return false;
 	}
@@ -48,7 +46,7 @@ bool Renderer::init(const MainWindow::Config_t &cfg) {
 }
 
 bool Renderer::clearScreen() const {
-	if(EXIT_SUCCESS != SDL_RenderClear(m_Renderer.get())) {
+	if(EXIT_SUCCESS != SDL_RenderClear(m_Renderer)) {
 		SDLHelper::print_SDL_Error("Renderer::clearScreen::SDL_RenderClear() failed.");
 		return false;
 	}
@@ -56,7 +54,7 @@ bool Renderer::clearScreen() const {
 }
 
 void Renderer::finishFrame() const {
-	SDL_RenderPresent(m_Renderer.get());
+	SDL_RenderPresent(m_Renderer);
 }
 
 bool Renderer::copy(SDL_Texture * p_texture, const DrawParams_t & params) const {
@@ -80,11 +78,14 @@ bool Renderer::copy(SDL_Texture * p_texture, const DrawParams_t & params) const 
 		p_center = &center;
 	}
 
-	if(EXIT_SUCCESS != SDL_RenderCopyEx(m_Renderer.get(), p_texture, p_srcrect, p_dstrect,
+	if(EXIT_SUCCESS != SDL_RenderCopyEx(m_Renderer, p_texture, p_srcrect, p_dstrect,
 			params.m_Angle, p_center, static_cast<SDL_RendererFlip>(params.m_FlipMode))) {
 		SDLHelper::print_SDL_Error("Renderer::copy::SDL_RenderCopy() failed.");
 		return false;
 	}
 	return true;
+}
 
+Renderer::operator SDL_Renderer *() const {
+	return m_Renderer;
 }

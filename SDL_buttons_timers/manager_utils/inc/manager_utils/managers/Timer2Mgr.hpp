@@ -1,0 +1,45 @@
+/*
+ * Timer2Mgr.hpp
+ *
+ *  Created on: Nov 13, 2021
+ *      Author: stanimir
+ */
+
+#ifndef MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_TIMER2MGR_HPP_
+#define MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_TIMER2MGR_HPP_
+
+#include <unordered_set>
+
+#include "utils/Singleton.hpp"
+#include "utils/timer/Timer2Cfg.hpp"
+#include "utils/containers/FirstFreeContainer.hpp"
+#include "utils/inputs/InputEventIF.hpp"
+#include "manager_utils/managers/BaseMgr.hpp"
+
+class InputEvent;
+
+class Timer2Mgr : public BaseMgr, public InputEventIF {
+public:
+	~Timer2Mgr();
+	bool init(uint32_t min_period);
+	Timer2::TimerHandler_t start(uint32_t period, Timer2::TimerMode_t mode, const Timer2::TimerCB_t& cb);
+	void stop(Timer2::TimerHandler_t handler);
+	bool isRunning(Timer2::TimerHandler_t handler) const;
+
+	std::size_t getActive() const final;
+	std::size_t getMaxActive() const final;
+
+	bool handleEvent(const InputEvent &e) final;
+
+private:
+	uint32_t m_MinPeriod = 0;
+	FirstFreeContainer<std::shared_ptr<Timer2::TimerCfg_t>> m_Container;
+
+	void release_timer_data(const Timer2::TimerCfg_t & data);
+	// XXX: called only in debug configuration
+	bool sanityCheck_IsClean();
+};
+
+using Timer2MgrInst = Singleton<Timer2Mgr>;
+
+#endif /* MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_TIMER2MGR_HPP_ */

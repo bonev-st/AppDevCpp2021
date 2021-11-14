@@ -47,7 +47,7 @@ bool Text::setColor(const Color &color) {
 }
 
 bool Text::create(const Point &pos) {
-	if(!G_pResMgr->createText(m_Text, m_Color, m_FontId, m_DrawParams)) {
+	if(!ResMgrInst::getInstance()->createText(m_Text, m_Color, m_FontId, m_DrawParams)) {
 		std::cerr << "Text::create.createText() fault"<< std::endl;
 		return false;
 	}

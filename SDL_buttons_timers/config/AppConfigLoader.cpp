@@ -21,7 +21,7 @@ constexpr auto APP_NAME	 				= "Buttons and timers";
 constexpr auto WINDOW_WIDTH				= 1024;
 constexpr auto WINDOW_HEIGHT			= 768;
 
-constexpr std::int32_t MAX_REFRESH_RATE	= 100;
+constexpr std::uint32_t MAX_REFRESH_RATE	= 10000;
 
 constexpr std::int32_t RUNNING_GIRL_FRAMES	= 6;
 constexpr std::int32_t RUNNING_GIRL_BIG_IMG_H = 256;
@@ -35,11 +35,11 @@ constexpr std::int32_t BUTTON_IMG_W 	= 150;
 
 }
 
-static void populateAppWindowCfg(MainWindow::Config_t &cfg) {
+static void populateAppWindowCfg(MainWindowCfg::Config_t &cfg) {
 	constexpr auto app_name = APP_NAME;
 	cfg.m_Name = app_name;
 	cfg.m_Rect = Rectangle(Point::UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT);
-	cfg.m_Flags = MainWindow::WINDOW_SHOWN;
+	cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN;
 }
 
 static void populateDrawingCfg(DrawMgrConfig::Config_t &cfg) {

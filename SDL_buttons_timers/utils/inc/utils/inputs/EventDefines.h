@@ -7,7 +7,7 @@
 #include <cstdint>
 
 //Other libraries headers
-
+#include "utils/timer/Timer2Cfg.hpp"
 //Own components headers
 
 /** User provided EventDataTypes enum is created in order not to include
@@ -169,7 +169,10 @@ enum class TouchEvent : uint8_t {
   TOUCH_RELEASE,
   KEYBOARD_PRESS,
   KEYBOARD_RELEASE,
+  TIMER_EXPIRE,
 };
+
+using TimerData_t = const Timer2::TimerCfg_t*;
 
 #endif /* UTILS_INPUT_EVENTDEFINES_H_ */
 

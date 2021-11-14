@@ -14,10 +14,11 @@
 #include "utils/drawing/Point.hpp"
 #include "utils/geometry/Geometry.hpp"
 #include "utils/geometry/PointR.hpp"
-#include "manager_utils/timer/Timer1Client.hpp"
+
+#include "manager_utils/timer/Timer2Client.hpp"
 
 template<class T>
-class MoveAnimation : public T, public Timer1Client {
+class MoveAnimation : public T {
 public:
 	void initAnimation(int32_t pix_per_frame, int32_t period, bool left = false, double angle = 0);
 	void setPeriod(int32_t period);
@@ -29,13 +30,13 @@ public:
 private:
 	Geometry::PointR m_CurrentPos;
 	Point m_Pos;
-	Timer1::Timer1Handler_t m_TimerId = Timer1::INVALID_TIMER1_HANDLER;
+	Timer2Client m_Timer;
 	int32_t m_PixFrame = 0;
 	int32_t m_Period = 0;
 	bool m_Left = false;
 	std::function<void()> m_CB;
 
-	void onTimeout(Timer1::Timer1Handler_t id);
+	void onTimeout(Timer2::TimerHandler_t id);
 	void callCB();
 	void rotation(double angle);
 	void nextFrame();
@@ -69,7 +70,7 @@ bool MoveAnimation<T>::setPosition(const Point & pos) {
 	if(!distance) {
 		return true;
 	}
-	if(!startTimer(m_TimerId, m_Period, Timer1::Timer1Mode_t::RELOAD, [this](Timer1::Timer1Handler_t id) {
+	if(!m_Timer.start(m_Period, Timer2::TimerMode_t::RELOAD, [this](Timer2::TimerHandler_t id) {
 		this->onTimeout(id);
 	})) {
 		return false;
@@ -86,30 +87,29 @@ void MoveAnimation<T>::attachDone(const std::function<void()> &fn) {
 
 template<class T>
 bool MoveAnimation<T>::isReady() const {
-	return !isActiveTimerId(m_TimerId);
+	return !m_Timer.isRunning();
 }
 
 template<class T>
 void MoveAnimation<T>::cancel() {
 	if(!isReady()) {
-		stopTimer(m_TimerId);
+		m_Timer.stop();
 		callCB();
 	}
 }
 
 template<class T>
-void MoveAnimation<T>::onTimeout(Timer1::Timer1Handler_t id) {
-	if(Timer1::INVALID_TIMER1_HANDLER != id) {
-		assert(id == m_TimerId);
-		const auto distance = Geometry::getDistance(T::getPosition(), m_Pos);
-		if(!distance) {
-			cancel();
-			return;
-		}
-		nextFrame();
-		m_CurrentPos = Geometry::getPoint(m_CurrentPos, m_Pos, m_PixFrame);
-		T::setPosition(m_CurrentPos);
+void MoveAnimation<T>::onTimeout([[maybe_unused]]Timer2::TimerHandler_t id) {
+	assert(m_Timer.isRunning());
+	assert(m_Timer == id);
+	const auto distance = Geometry::getDistance(T::getPosition(), m_Pos);
+	if(!distance) {
+		cancel();
+		return;
 	}
+	nextFrame();
+	m_CurrentPos = Geometry::getPoint(m_CurrentPos, m_Pos, m_PixFrame);
+	T::setPosition(m_CurrentPos);
 }
 
 template<class T>

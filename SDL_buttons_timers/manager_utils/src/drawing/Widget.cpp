@@ -11,11 +11,9 @@
 
 #include "manager_utils/managers/DrawMgr.hpp"
 
-DrawMgr *& Widget::m_DrawMgr = G_pDrawMgr;
-
 void Widget::draw() const {
 	if(m_Visible) {
-		m_DrawMgr->draw(m_DrawParams);
+		DrawMgrInst::getInstance()->draw(m_DrawParams);
 	}
 }
 
@@ -79,14 +77,30 @@ int32_t Widget::getHeight() const {
 	return m_DrawParams.m_DstRect.m_H;
 }
 
+int32_t Widget::getX() const {
+	return m_DrawParams.m_DstRect.m_Pos.m_X;
+}
+
+int32_t Widget::getY() const {
+	return m_DrawParams.m_DstRect.m_Pos.m_Y;
+}
+
+int32_t Widget::getBottom() const {
+	return m_DrawParams.m_DstRect.m_Pos.m_Y + m_DrawParams.m_DstRect.m_H;
+}
+
+int32_t Widget::getRight() const {
+	return m_DrawParams.m_DstRect.m_Pos.m_X + m_DrawParams.m_DstRect.m_W;
+}
+
 void Widget::setOpacity(int32_t opacity) {
 	if(BlendMode_t::NONE == m_DrawParams.m_BlendMode) {
 		std::cerr << "Widget::setOpacity() failed. Set blend mode first" << std::endl;
 		return;
 	}
 	m_DrawParams.m_Opacity = opacity;
-	if(!m_DrawMgr->setAlpha(m_DrawParams)) {
-		std::cerr << "Widget::setOpacity().m_DrawMgr->setAlpha() failed." << std::endl;
+	if(!DrawMgrInst::getInstance()->setAlpha(m_DrawParams)) {
+		std::cerr << "Widget::setOpacity().DrawMgrInst::getInstance()->setAlpha() failed." << std::endl;
 	}
 }
 
@@ -97,7 +111,7 @@ int32_t Widget::getOpacity() const {
 void Widget::activateAlphaModulation() {
 	if(BlendMode_t::NONE == m_DrawParams.m_BlendMode) {
 		m_DrawParams.m_BlendMode = BlendMode_t::BLEND;
-		if(!m_DrawMgr->setBlendMode(m_DrawParams)) {
+		if(!DrawMgrInst::getInstance()->setBlendMode(m_DrawParams)) {
 			std::cerr << "Widget::activateAlphaModulation().setBlendMode() failed." << std::endl;
 		}
 	} else {
@@ -108,7 +122,7 @@ void Widget::activateAlphaModulation() {
 void Widget::deactivateAlphaModulation() {
 	if(BlendMode_t::NONE != m_DrawParams.m_BlendMode) {
 		m_DrawParams.m_BlendMode = BlendMode_t::NONE;
-		if(!m_DrawMgr->setBlendMode(m_DrawParams)) {
+		if(!DrawMgrInst::getInstance()->setBlendMode(m_DrawParams)) {
 			std::cerr << "Widget::deactivateAlphaModulation().setBlendMode() failed." << std::endl;
 		}
 	} else {

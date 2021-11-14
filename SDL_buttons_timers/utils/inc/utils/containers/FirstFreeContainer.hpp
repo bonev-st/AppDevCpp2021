@@ -8,6 +8,7 @@
 #ifndef UTILS_INC_UTILS_CONTAINERS_FIRSTFREECONTAINER_HPP_
 #define UTILS_INC_UTILS_CONTAINERS_FIRSTFREECONTAINER_HPP_
 
+#include <cassert>
 #include <vector>
 #include <stack>
 

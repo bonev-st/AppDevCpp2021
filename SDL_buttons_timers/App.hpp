@@ -32,8 +32,6 @@ private:
 	Mgrs m_Managers;
 	Game m_Game;
 
-	std::vector<BaseMgr *> m_ProcessConatainer;
-
 	bool mainLoop();
 	bool drawFrame();
 	bool processFrame();

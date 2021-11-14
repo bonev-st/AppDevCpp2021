@@ -8,20 +8,29 @@
 #ifndef MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_RESMGR_HPP_
 #define MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_RESMGR_HPP_
 
-#include "sdl_utils/containers/ImageContainer.hpp"
-#include "sdl_utils/containers/TextContainer.hpp"
+#include <string>
+
+#include "utils/Singleton.hpp"
 
 #include "manager_utils/managers/BaseMgr.hpp"
+#include "sdl_utils/containers/ImageContainer.hpp"
 
 class SDL_Renderer;
+
 namespace ResMgrConfig {
 struct Config_t;
 }
+namespace Texture {
+struct Texture_t;
+}
+
 class DrawParams_t;
+class Color;
+class TextContainer;
 
 class ResMgr : public BaseMgr {
 public:
-	bool init(const ResMgrConfig::Config_t &cfg, SDL_Renderer* render);
+	bool init(const ResMgrConfig::Config_t &cfg, SDL_Renderer* render, ImageContainer  *img, TextContainer* text);
 
 	const Texture::Texture_t* get(const DrawParams_t & param) const;
 
@@ -31,12 +40,12 @@ public:
 
 private:
 	SDL_Renderer* m_Rerender = nullptr;
-	ImageContainer m_ImageContainer;
-	TextContainer m_TextContainer;
+	ImageContainer* m_ImageContainer = nullptr;
+	TextContainer* m_TextContainer = nullptr;
 
-	void setDimention(DrawParams_t & param, int32_t w, int32_t h, const ImageContainer::Frames_t* frames = nullptr);
+	void setDimention(DrawParams_t & param, int32_t w, int32_t h, const ImageContainer::Frames_t * frames = nullptr);
 };
 
-extern ResMgr * G_pResMgr;
+using ResMgrInst = Singleton<ResMgr>;
 
 #endif /* MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_RESMGR_HPP_ */

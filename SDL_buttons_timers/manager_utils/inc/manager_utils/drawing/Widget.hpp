@@ -33,6 +33,10 @@ public:
 	Dimention getDimentions() const;
 	int32_t getWidth() const;
 	int32_t getHeight() const;
+	int32_t getX() const;
+	int32_t getY() const;
+	int32_t getBottom() const;
+	int32_t getRight() const;
 
 	void activateAlphaModulation();
 	void deactivateAlphaModulation();

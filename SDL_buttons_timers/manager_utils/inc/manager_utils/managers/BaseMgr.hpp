@@ -14,16 +14,18 @@
 enum ManagersId_t : std::uint32_t {
 	MGR_DRAW = 0,
 	MGR_RES,
-	MGR_TIMER,
-	MGR_TIMER1,
+	MGR_TIMER2,
 	MGR_NUMB
 };
 
 class BaseMgr : private NoCopy {
 public:
 	virtual ~BaseMgr() = default;
-	virtual bool process() {
-		return true;
+	virtual std::size_t getActive() const {
+		return 0;
+	}
+	virtual std::size_t getMaxActive() const {
+		return 0;
 	}
 };
 

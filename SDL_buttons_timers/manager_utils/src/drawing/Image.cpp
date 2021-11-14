@@ -18,7 +18,7 @@ bool Image::create(std::size_t image_id, const Point &pos) {
 	}
 	m_DrawParams.m_WidgetType = WidgetType_t::IMAGE;
 	m_DrawParams.m_ResrId = image_id;
-	if(!G_pResMgr->populateImg(m_DrawParams)) {
+	if(!ResMgrInst::getInstance()->populateImg(m_DrawParams)) {
 		std::cerr << "Image::create.G_pResMgr->populateImg() fault" << std::endl;
 		return false;
 	}

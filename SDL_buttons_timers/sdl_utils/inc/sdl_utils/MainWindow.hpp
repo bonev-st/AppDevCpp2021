@@ -9,36 +9,24 @@
 #define SDL_UTILS_MAINWINDOW_HPP_
 
 #include <string>
-#include <memory>
+#include <functional>
 
+#include "utils/drawing/MainWindowCfg.hpp"
 #include "utils/drawing/Rectangle.hpp"
+#include "utils/RAII_Handler.hpp"
+
+#include "utils/NoCopy.hpp"
 
 struct SDL_Window;
-struct SDL_Surface;
 
-namespace MainWindow {
+class MainWindow : private NoCopy {
+public:
+	bool init(const MainWindowCfg::Config_t &cfg);
+	operator SDL_Window *() const;
+	const Rectangle & getRect() const;
 
-typedef struct _MainWindow_t {
-	std::shared_ptr<SDL_Window> m_Window;
-	Rectangle m_Rect;
-} MainWindow_t;
-
-enum WindowFlags_t {
-	WINDOW_NONE = 0,
-	WINDOW_FULLSCREEN = 0x00000001, 	// SDL_WINDOW_FULLSCREEN
-	WINDOW_SHOWN = 0x00000004, 			// SDL_WINDOW_SHOWN
-	WINDOW_BORDERLESS = 0x00000010, 	// SDL_WINDOW_BORDERLESS
-	WINDOW_DESKTOP = 0x00001000,		// SDL_WINDOW_DESKTOP
-};
-
-struct Config_t {
-	std::string m_Name = "";
+private:
+	RAII_Handler<SDL_Window*, nullptr, std::function<void(SDL_Window*)>> m_Window;
 	Rectangle m_Rect = Rectangle::UNDEFINED;
-	WindowFlags_t m_Flags = WINDOW_NONE;
 };
-
-std::unique_ptr<MainWindow_t> createMainWindow(const Config_t &cfg);
-
-}
-
 #endif /* SDL_UTILS_MAINWINDOW_HPP_ */

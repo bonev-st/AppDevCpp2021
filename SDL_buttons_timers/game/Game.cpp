@@ -18,6 +18,9 @@
 #include "common/CommonDefines.hpp"
 
 const std::string Game::FPS_TEXT = "FPS: ";
+const std::string Game::ACTIVE_TIMERS = "T: ";
+const std::string Game::MAX_TIMERS = "Max T: ";
+const uint32_t Game::REFRESH_RATE = 1000;	// ms
 
 bool Game::init(const GameConfig::Config_t & cfg) {
 	if(!loadKeys(cfg.m_Keys)) {
@@ -79,12 +82,13 @@ bool Game::draw() const {
 	m_ButtonStopDisabled.draw();
 	m_ToggleButtonStart.draw();
 	m_ToggleButtonStopDisabled.draw();
-	m_Text[TEXT_BUTTON_INDX].draw();
-	m_Text[TEXT_FPS_INDX].draw();
+	for(auto & t : m_Text) {
+		t.draw();
+	}
 	return true;
 }
 
-bool Game::process() {
+bool Game::new_frame() {
 	++m_FrameConter;
 	return true;
 }
@@ -99,10 +103,26 @@ bool Game::createTexts() {
 		std::cerr << "Game::createTexts.m_Text[TEXT_BUTTON_INDX].create() fault"<< std::endl;
 		return false;
 	}
-	if(!m_Text[TEXT_FPS_INDX].create(FPS_TEXT, Colors::GREEN, ResurcesId::ANGELINE_VINTAGE_40_TTF, Point(15,-25))) {
+
+	const auto x = 800;
+	const auto y = 580;
+	std::string text = FPS_TEXT;
+	if(!m_Text[TEXT_FPS_INDX].create(FPS_TEXT, Colors::WHITE, ResurcesId::ANGELINE_VINTAGE_40_TTF,
+			Point(x, y - 30))) {
 		std::cerr << "Game::createTexts.m_Text[TEXT_BUTTON_INDX].create() fault"<< std::endl;
 		return false;
 	}
+	if(!m_Text[TEXT_ACTIVE_TIMER_INDX].create(ACTIVE_TIMERS, Colors::WHITE, ResurcesId::ANGELINE_VINTAGE_40_TTF,
+			Point(x, m_Text[TEXT_FPS_INDX].getBottom() - 60))) {
+		std::cerr << "Game::createTexts.m_Text[TEXT_BUTTON_INDX].create() fault"<< std::endl;
+		return false;
+	}
+	if(!m_Text[TEXT_MAX_ACTIVE_TIMER_INDX].create(MAX_TIMERS, Colors::WHITE, ResurcesId::ANGELINE_VINTAGE_40_TTF,
+			Point(x, m_Text[TEXT_ACTIVE_TIMER_INDX].getBottom() - 60))) {
+		std::cerr << "Game::createTexts.m_Text[TEXT_BUTTON_INDX].create() fault"<< std::endl;
+		return false;
+	}
+
 	return true;
 }
 
@@ -184,7 +204,7 @@ bool Game::initInput() {
 }
 
 bool Game::initTimers() {
-	if(!startTimer(m_FPS_TimerId, 1000, Timer1::Timer1Mode_t::RELOAD, std::bind(&Game::onTimeout, this, std::placeholders::_1))) {
+	if(!m_FPS_Timer.start(REFRESH_RATE, Timer2::TimerMode_t::RELOAD, std::bind(&Game::onFPS_Timeout, this, std::placeholders::_1))) {
 		std::cerr << "startTimer() failed." << std::endl;
 		return false;
 	}
@@ -246,11 +266,11 @@ void Game::buttonHandler(std::size_t id) {
 				std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setColor failed" << std::endl;
 			}
 			std::string text = "Button START pressed ";
-			text += std::to_string(++StartPressCounter);
+			text += std::to_string(++m_StartPressCounter);
 			if(!m_Text[TEXT_BUTTON_INDX].setText(text)) {
 				std::cerr << "Game::buttonHandler.m_Text[TEXT_BUTTON_INDX].setText failed" << std::endl;
 			}
-			m_Wheel.startAnimation((StartPressCounter & 1)?-25:25, false);
+			m_Wheel.startAnimation((m_StartPressCounter & 1)?-25:25, false);
 			m_ButtonStart.setState(InputStates_t::DISABLED);
 			break;
 		}
@@ -322,14 +342,26 @@ void Game::toggleButtonHandler(std::size_t id, bool state) {
 	}
 }
 
-void Game::onTimeout([[maybe_unused]]Timer1::Timer1Handler_t id) {
-	if(Timer1::INVALID_TIMER1_HANDLER != m_FPS_TimerId) {
-		assert(id == m_FPS_TimerId);
-		auto txt = FPS_TEXT;
-		txt += std::to_string(m_FrameConter);
-		m_FrameConter = 0;
-		m_Text[TEXT_FPS_INDX].setText(txt);
-	}
+#include "manager_utils/managers/Timer2Mgr.hpp"
+
+void Game::onFPS_Timeout([[maybe_unused]]Timer2::TimerHandler_t id) {
+	assert(m_FPS_Timer.isRunning());
+	assert(m_FPS_Timer == id);
+
+	auto fps = (m_FrameConter * 1000)/REFRESH_RATE;
+	m_FrameConter = 0;
+
+	auto text = FPS_TEXT;
+	text += std::to_string(fps);
+	m_Text[TEXT_FPS_INDX].setText(text);
+
+	text = ACTIVE_TIMERS;
+	text += std::to_string(Timer2MgrInst::getInstance()->getActive());
+	m_Text[TEXT_ACTIVE_TIMER_INDX].setText(text);
+
+	text = MAX_TIMERS;
+	text += std::to_string(Timer2MgrInst::getInstance()->getMaxActive());
+	m_Text[TEXT_MAX_ACTIVE_TIMER_INDX].setText(text);
 }
 
 void Game::wheelAnimationDone() {

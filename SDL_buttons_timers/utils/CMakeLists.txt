@@ -12,7 +12,9 @@ add_library(
 		${_INC_DIR}/NoCopy.hpp
 		${_INC_DIR}/Destroy.hpp
 		${_INC_DIR}/Singleton.hpp
+		${_INC_DIR}/RAII_Handler.hpp
 		${_INC_DIR}/containers/FirstFreeContainer.hpp
+		${_INC_DIR}/drawing/MainWindowCfg.hpp
 		${_INC_DIR}/drawing/DrawParams.hpp
 		${_INC_DIR}/drawing/Dimention.hpp
 		${_INC_DIR}/drawing/Point.hpp
@@ -24,9 +26,7 @@ add_library(
 		${_INC_DIR}/inputs/EventDefines.h
 		${_INC_DIR}/inputs/InputEventIF.hpp
 		${_INC_DIR}/time/Time.hpp
-		${_INC_DIR}/timer/Timer1Def.hpp
-		${_INC_DIR}/timer/Timer1Cfg.hpp
-		${_INC_DIR}/timer/Timer1ClientIF.hpp
+		${_INC_DIR}/timer/Timer2Def.hpp
 		${_INC_DIR}/thread/ThreadUtils.hpp
 		${_INC_DIR}/geometry/Geometry.hpp
 		${_INC_DIR}/geometry/PointR.hpp

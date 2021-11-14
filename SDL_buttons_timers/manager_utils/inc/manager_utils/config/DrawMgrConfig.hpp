@@ -8,12 +8,12 @@
 #ifndef MANAGER_UTILS_INC_MANAGER_UTILS_CONFIG_DRAWMGRCONFIG_HPP_
 #define MANAGER_UTILS_INC_MANAGER_UTILS_CONFIG_DRAWMGRCONFIG_HPP_
 
-#include "sdl_utils/MainWindow.hpp"
+#include "utils/drawing/MainWindowCfg.hpp"
 
 namespace DrawMgrConfig {
 struct Config_t {
-	MainWindow::Config_t m_WindowCfg;
-	std::int32_t m_MaxFrameRate;
+	MainWindowCfg::Config_t m_WindowCfg;
+	std::uint32_t m_MaxFrameRate;
 };
 }
 

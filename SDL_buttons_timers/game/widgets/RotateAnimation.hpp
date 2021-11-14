@@ -13,10 +13,11 @@
 
 #include "utils/drawing/Point.hpp"
 #include "utils/geometry/Geometry.hpp"
-#include "manager_utils/timer/Timer1Client.hpp"
+
+#include "manager_utils/timer/Timer2Client.hpp"
 
 template<class T>
-class RotateAnimation : public T, public Timer1Client {
+class RotateAnimation : public T {
 public:
 	void initAnimation(double deg_per_frame, int32_t period, double angle = 0, const Point &rot_center = Point::UNDEFINED);
 	void setPeriod(int32_t period);
@@ -30,12 +31,12 @@ private:
 	bool m_Infinite = false;
 	double m_Angle;
 	Point m_RotCenter =  Point::UNDEFINED;
-	Timer1::Timer1Handler_t m_TimerId = Timer1::INVALID_TIMER1_HANDLER;
+	Timer2Client m_Timer;
 	double m_DegFrame = 0;
 	int32_t m_Period = 0;
 	std::function<void()> m_CB;
 
-	void onTimeout(Timer1::Timer1Handler_t id);
+	void onTimeout(Timer2::TimerHandler_t id);
 	void callCB();
 };
 
@@ -57,9 +58,7 @@ bool RotateAnimation<T>::setAngle(double angle, bool infinite) {
 	if(!isReady()) {
 		return false;
 	}
-	if(!startTimer(m_TimerId, m_Period, Timer1::Timer1Mode_t::RELOAD, [this] (Timer1::Timer1Handler_t id) {
-		onTimeout(id);
-	})) {
+	if(!m_Timer.start(m_Period, Timer2::TimerMode_t::RELOAD, std::bind(&RotateAnimation::onTimeout, this, std::placeholders::_1))) {
 		return false;
 	}
 	m_Infinite = infinite;
@@ -74,45 +73,44 @@ void RotateAnimation<T>::attachDone(const std::function<void()> & fn) {
 
 template<class T>
 bool RotateAnimation<T>::isReady() const {
-	return !isActiveTimerId(m_TimerId);
+	return !m_Timer.isRunning();
 }
 
 template<class T>
 void RotateAnimation<T>::cancel() {
 	if(!isReady()) {
-		stopTimer(m_TimerId);
+		m_Timer.stop();
 		callCB();
 	}
 }
 
 template<class T>
-void RotateAnimation<T>::onTimeout(Timer1::Timer1Handler_t id) {
-	if(Timer1::INVALID_TIMER1_HANDLER != id) {
-		assert(id == m_TimerId);
-		auto angle = m_DegFrame;
-		if(!m_Infinite) {
-			if(0 > m_Angle) {
-				m_Angle += angle;
-				if(0 < m_Angle) {
-					angle -= m_Angle;
-					m_Angle = 0;
-				}
-				angle = -angle;
-			} else if (0 < m_Angle) {
-				m_Angle -= angle;
-				if(0 > m_Angle) {
-					angle -= m_Angle;
-					m_Angle = 0;
-				}
-			} else {
-				cancel();
-				return;
+void RotateAnimation<T>::onTimeout([[maybe_unused]]Timer2::TimerHandler_t id) {
+	assert(m_Timer.isRunning());
+	assert(m_Timer == id);
+	auto angle = m_DegFrame;
+	if(!m_Infinite) {
+		if(0 > m_Angle) {
+			m_Angle += angle;
+			if(0 < m_Angle) {
+				angle -= m_Angle;
+				m_Angle = 0;
 			}
-		} else if(0 > m_Angle) {
 			angle = -angle;
+		} else if (0 < m_Angle) {
+			m_Angle -= angle;
+			if(0 > m_Angle) {
+				angle -= m_Angle;
+				m_Angle = 0;
+			}
+		} else {
+			cancel();
+			return;
 		}
-		T::rotate(angle);
+	} else if(0 > m_Angle) {
+		angle = -angle;
 	}
+	T::rotate(angle);
 }
 
 template<class T>

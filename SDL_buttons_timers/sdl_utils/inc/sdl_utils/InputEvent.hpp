@@ -32,12 +32,13 @@ public:
 	/* See EventDefines.h for more information */
 	Keyboard::Key m_Key = Keyboard::KEY_UNKNOWN;
 	Mouse::MouseKey m_MouseButton = Mouse::UNKNOWN;
+	TimerData_t m_Timer = nullptr;
 	TouchEvent m_Type = TouchEvent::UNKNOWN;
 
 private:
 	bool m_ExitRequest = false;
 
-	bool setEventTypeImpl(const SDL_Event &event);
+	void setEventTypeImpl(const SDL_Event &event);
 };
 
 #endif /* UTILS_INPUT_INPUTEVENT_HPP_ */

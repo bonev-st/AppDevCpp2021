@@ -15,7 +15,6 @@
 #include "utils/time/Time.hpp"
 
 #include "manager_utils/managers/DrawMgr.hpp"
-#include "manager_utils/managers/TimerMgr.hpp"
 
 bool App::init(const AppConfig& cfg) {
 	bool rc = false;
@@ -35,15 +34,12 @@ bool App::init(const AppConfig& cfg) {
 
 	    m_FrameDuration = (int64_t)1E6/cfg.m_ResourcesCfg.m_DrawMgrCfg.m_MaxFrameRate;
 
-	    m_ProcessConatainer.push_back(&m_Managers);
-	    m_ProcessConatainer.push_back(&m_Game);
 		rc = true;
 	} while(0);
 	return rc;
 }
 
 bool App::start() {
-	G_pTimerMgr->onStart();
 	return mainLoop();
 }
 
@@ -52,13 +48,7 @@ bool App::mainLoop() {
 	Time time;
 	while(!m_InputEvents.isExitRequest()) {
 		time.start();
-		for(auto &e : m_ProcessConatainer) {
-			if(!e->process()) {
-		    	std::cerr << "App::mainLoop Mangers process failed." << std::endl;
-		    	rc = false;
-		    	break;
-			}
-		}
+		m_Game.new_frame();
 		if(!processFrame()) {
 	    	std::cerr << "App::mainLoop::processFrame() failed." << std::endl;
 	    	rc = false;
@@ -78,6 +68,9 @@ bool App::mainLoop() {
 bool App::processFrame() {
     while(m_InputEvents.pollEvent()) {
     	bool exit;
+    	if(m_Managers.handleEvent(m_InputEvents)) {
+    		continue;
+    	}
     	if(!m_Game.events(m_InputEvents, exit)) {
 	    	std::cerr << "App::processFrame::m_Game.events() failed." << std::endl;
 	    	return false;
@@ -91,7 +84,8 @@ bool App::processFrame() {
 }
 
 bool App::drawFrame() {
-	if(!G_pDrawMgr->clearScreen()) {
+	auto * drawing = DrawMgrInst::getInstance();
+	if(!drawing->clearScreen()) {
 		std::cerr << "App::drawFrame.G_pDrawMgr->clearScreen() failed." << std::endl;
 		return false;
 	}
@@ -99,7 +93,7 @@ bool App::drawFrame() {
 		std::cerr << "App::drawFrame::m_Game.draw() failed." << std::endl;
 		return false;
 	}
-	G_pDrawMgr->finishFrame();
+	drawing->finishFrame();
 	return true;
 }
 

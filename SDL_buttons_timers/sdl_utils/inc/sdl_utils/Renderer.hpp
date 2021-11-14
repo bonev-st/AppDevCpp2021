@@ -9,30 +9,27 @@
 #define SDL_UTILS_RENDERER_HPP_
 
 #include <cstdint>
-#include <memory>
+
+#include "utils/RAII_Handler.hpp"
+#include "utils/NoCopy.hpp"
 
 #include "sdl_utils/MainWindow.hpp"
 
-#include "utils/NoCopy.hpp"
-
 struct SDL_Renderer;
 struct SDL_Texture;
-class Rectangle;
 class DrawParams_t;
 
 class Renderer : private NoCopy {
 public:
-	bool init(const MainWindow::Config_t &cfg);
+	bool init(const MainWindowCfg::Config_t &cfg);
 	bool clearScreen() const;
 	void finishFrame() const;
 	bool copy(SDL_Texture *p_texture, const DrawParams_t & params) const;
-	SDL_Renderer* get() const {
-		return m_Renderer.get();
-	}
+	operator SDL_Renderer *() const;
 
 private:
-	std::unique_ptr<MainWindow::MainWindow_t> m_AppWindow;
-	std::shared_ptr<SDL_Renderer> m_Renderer;
+	MainWindow m_AppWindow;
+	RAII_Handler<SDL_Renderer*, nullptr, std::function<void(SDL_Renderer*)>> m_Renderer;
 };
 
 #endif /* SDL_UTILS_RENDERER_HPP_ */
