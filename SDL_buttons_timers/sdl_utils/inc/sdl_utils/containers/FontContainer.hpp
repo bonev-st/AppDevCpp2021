@@ -9,9 +9,10 @@
 #define SDL_UTILS_CONTAINERS_FONTCONTAINER_HPP_
 
 #include <unordered_map>
-#include <memory>
+#include <functional>
 
 #include "sdl_utils/config/FontConfig.hpp"
+#include "utils/RAII_Handler.hpp"
 
 typedef struct _TTF_Font TTF_Font;
 
@@ -21,7 +22,8 @@ public:
 	const TTF_Font* get(std::size_t id) const;
 
 private:
-	std::unordered_map<std::size_t, std::shared_ptr<TTF_Font>> m_Container;
+	using FontHandler_t = RAII_Handler<TTF_Font*, nullptr,  std::function<void(TTF_Font*)>>;
+	std::unordered_map<std::size_t, FontHandler_t> m_Container;
 };
 
 #endif /* SDL_UTILS_CONTAINERS_FONTCONTAINER_HPP_ */
