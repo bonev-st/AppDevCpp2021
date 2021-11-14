@@ -9,6 +9,7 @@
 #define MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_TIMER2MGR_HPP_
 
 #include <unordered_set>
+#include <memory>
 
 #include "utils/Singleton.hpp"
 #include "utils/timer/Timer2Cfg.hpp"

@@ -8,7 +8,6 @@
 #ifndef UTILS_INC_UTILS_TIMER_TIMER2DEF_HPP_
 #define UTILS_INC_UTILS_TIMER_TIMER2DEF_HPP_
 
-#include <memory>
 #include <functional>
 
 namespace Timer2 {
