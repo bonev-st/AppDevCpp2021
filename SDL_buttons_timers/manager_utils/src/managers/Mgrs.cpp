@@ -29,7 +29,8 @@ bool Mgrs::init(const ResourcesConfig::Config_t &cfg) {
 		std::cerr << "DrawMgr->init() failed." << std::endl;
         return false;
     }
-    if(!ResMgrInst::getInstance()->init(cfg.m_ResMgrCfg, drawing_manager->getRendered(), &m_ImageContainer, &m_TextContainer)) {
+    if(!ResMgrInst::getInstance()->init(cfg.m_ResMgrCfg, drawing_manager->getRendered(),
+    		&m_ImageContainer, &m_TextContainer, drawing_manager->getDisplayMode())) {
 		std::cerr << "ResMgr->init() failed." << std::endl;
         return false;
     }

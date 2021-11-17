@@ -23,6 +23,9 @@ struct Config_t;
 namespace Texture {
 struct Texture_t;
 }
+namespace DiplayMode {
+struct Mode_t;
+}
 
 class DrawParams_t;
 class Color;
@@ -30,7 +33,8 @@ class TextContainer;
 
 class ResMgr : public BaseMgr {
 public:
-	bool init(const ResMgrConfig::Config_t &cfg, SDL_Renderer* render, ImageContainer  *img, TextContainer* text);
+	bool init(const ResMgrConfig::Config_t &cfg, SDL_Renderer* render,
+			ImageContainer *img, TextContainer* text, const DiplayMode::Mode_t & display_mode);
 
 	const Texture::Texture_t* get(const DrawParams_t & param) const;
 

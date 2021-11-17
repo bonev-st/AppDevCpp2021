@@ -14,7 +14,7 @@
 
 namespace MainWindowCfg {
 
-enum WindowFlags_t {
+enum WindowFlags_t : uint32_t {
 	WINDOW_NONE = 0,
 	WINDOW_FULLSCREEN = 0x00000001, 	// SDL_WINDOW_FULLSCREEN
 	WINDOW_SHOWN = 0x00000004, 			// SDL_WINDOW_SHOWN
@@ -25,7 +25,7 @@ enum WindowFlags_t {
 struct Config_t {
 	std::string m_Name = "";
 	Rectangle m_Rect = Rectangle::UNDEFINED;
-	WindowFlags_t m_Flags = WINDOW_NONE;
+	uint32_t m_Flags = WINDOW_NONE;
 };
 }
 

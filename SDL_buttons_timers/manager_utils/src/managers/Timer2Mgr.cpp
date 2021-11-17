@@ -18,10 +18,6 @@
 
 using namespace Timer2;
 
-Timer2Mgr::~Timer2Mgr() {
-	assert(sanityCheck_IsClean());
-}
-
 bool Timer2Mgr::init(uint32_t min_period) {
 	m_MinPeriod = min_period;
 	return true;
@@ -113,12 +109,4 @@ std::size_t Timer2Mgr::getActive() const {
 
 std::size_t Timer2Mgr::getMaxActive() const {
 	return m_Container.getMaxValid();
-}
-
-bool Timer2Mgr::sanityCheck_IsClean() {
-	if(m_Container.getValid()) {
-		std::cerr << "Some of timers are no stopped" << std::endl;
-		return false;
-	}
-	return true;
 }

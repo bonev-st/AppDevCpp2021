@@ -39,7 +39,7 @@ static void populateAppWindowCfg(MainWindowCfg::Config_t &cfg) {
 	constexpr auto app_name = APP_NAME;
 	cfg.m_Name = app_name;
 	cfg.m_Rect = Rectangle(Point::UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT);
-	cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN;
+	cfg.m_Flags = MainWindowCfg::WINDOW_DESKTOP | MainWindowCfg::WINDOW_BORDERLESS;
 }
 
 static void populateDrawingCfg(DrawMgrConfig::Config_t &cfg) {

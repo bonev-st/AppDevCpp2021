@@ -29,6 +29,7 @@ bool Renderer::init(const MainWindowCfg::Config_t &cfg) {
 		return false;
 	}
 	constexpr auto UNSPEC_DRIVER_ID = -1;
+	m_Renderer.reset();
 	m_Renderer.set(SDL_CreateRenderer(m_AppWindow, UNSPEC_DRIVER_ID, SDL_RENDERER_ACCELERATED)
 					, Destroy::free<SDL_Renderer, SDL_DestroyRenderer>);
 #ifdef SHOW_MEM_ALLOC_INFO
@@ -88,4 +89,8 @@ bool Renderer::copy(SDL_Texture * p_texture, const DrawParams_t & params) const 
 
 Renderer::operator SDL_Renderer *() const {
 	return m_Renderer;
+}
+
+const DiplayMode::Mode_t & Renderer::getDisplayMode() const {
+	return m_AppWindow.getDisplayMode();
 }

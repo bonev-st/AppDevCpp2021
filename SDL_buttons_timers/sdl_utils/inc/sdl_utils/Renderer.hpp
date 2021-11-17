@@ -26,6 +26,7 @@ public:
 	void finishFrame() const;
 	bool copy(SDL_Texture *p_texture, const DrawParams_t & params) const;
 	operator SDL_Renderer *() const;
+	const DiplayMode::Mode_t & getDisplayMode() const;
 
 private:
 	MainWindow m_AppWindow;

@@ -21,7 +21,6 @@ class InputEvent;
 
 class Timer2Mgr : public BaseMgr, public InputEventIF {
 public:
-	~Timer2Mgr();
 	bool init(uint32_t min_period);
 	Timer2::TimerHandler_t start(uint32_t period, Timer2::TimerMode_t mode, const Timer2::TimerCB_t& cb);
 	void stop(Timer2::TimerHandler_t handler);
@@ -37,8 +36,6 @@ private:
 	FirstFreeContainer<std::shared_ptr<Timer2::TimerCfg_t>> m_Container;
 
 	void release_timer_data(const Timer2::TimerCfg_t & data);
-	// XXX: called only in debug configuration
-	bool sanityCheck_IsClean();
 };
 
 using Timer2MgrInst = Singleton<Timer2Mgr>;

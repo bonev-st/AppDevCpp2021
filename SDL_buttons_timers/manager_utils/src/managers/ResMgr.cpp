@@ -19,7 +19,8 @@
 
 ResMgr * G_pResMgr = nullptr;
 
-bool ResMgr::init(const ResMgrConfig::Config_t &cfg, SDL_Renderer* render, ImageContainer  *img, TextContainer* text) {
+bool ResMgr::init(const ResMgrConfig::Config_t &cfg, SDL_Renderer* render, ImageContainer  *img,
+		TextContainer* text, [[maybe_unused]]const DiplayMode::Mode_t & display_mode) {
 	assert(render);
 	assert(img);
 	assert(text);
