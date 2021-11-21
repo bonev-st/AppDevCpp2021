@@ -42,6 +42,8 @@ private:
 	double m_PathToNext = 0;
 	uint32_t m_GridSize = 0;
 	Point m_RelPos;
+	MoveDirection_t m_CurrentDirection = MoveDirection_t::NONE;
+	MoveDirection_t m_NewDirection = MoveDirection_t::NONE;
 
 	bool process(Action_t action, bool cross_point) final;
 	bool isMoveAllowed(MoveDirection_t dir) const;
@@ -51,6 +53,7 @@ private:
 
 	uint8_t toNeighborhoodType(MoveDirection_t dir) const;
 	ActionCompMove_t comp(MoveDirection_t dir, Action_t action) const;
+	ActionCompMove_t comp(MoveDirection_t current, MoveDirection_t pending) const;
 };
 
 #endif /* GAME_ACTION_UNITACTION_HPP_ */

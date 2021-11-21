@@ -40,36 +40,75 @@ void UnitAction::reset() {
 
 volatile int tt = 0;
 void UnitAction::tick() {
-	const auto current_dir = m_Unit->getDir();
 	bool next_cross_point = true;
-	if(MoveDirection_t::NONE != current_dir) {
+	if((MoveDirection_t::NONE != m_CurrentDirection) || (MoveDirection_t::NONE != m_NewDirection)) {
 		Point move_delta = Point::ZERO;
-		bool n_sing = 0 > m_PathToNext;
-		prepareMoveAction(current_dir, move_delta);
-		next_cross_point = m_GridSize <= std::abs(m_PathToNext);
-		const auto new_cross_point = m_RelPos + move_delta;
-		if(next_cross_point) {
-			std::cout << "New cross point {" << m_RelPos.m_X << ", " << m_RelPos.m_Y << "}" << std::endl;
-			if(0 > m_PathToNext) {
-				m_PathToNext += m_GridSize;
-			} else {
+		if((MoveDirection_t::NONE != m_NewDirection) && (m_NewDirection != m_CurrentDirection)
+		 && isMoveAllowed(m_NewDirection)) {
+			prepareMoveAction(m_NewDirection, move_delta);
+			const auto new_cross_point = m_RelPos + move_delta;
+			if(0 < move_delta.m_X) {
 				m_PathToNext -= m_GridSize;
+			} else if(0 > move_delta.m_X) {
+				m_PathToNext += m_GridSize;
+			} else if(0 < move_delta.m_Y) {
+				m_PathToNext -= m_GridSize;
+			} else if(0 > move_delta.m_Y) {
+				m_PathToNext += m_GridSize;
 			}
 			m_RelPos = new_cross_point;
-			if(!isMoveAllowed(current_dir)) {
-				std::cout << "Stop moving" << std::endl;
-				m_Unit->setPositionCenter(getGridDataEntity(m_RelPos).m_Pos);
-				m_Unit->dir(MoveDirection_t::NONE);
-				reset();
-			}
-		} else if((0 > m_PathToNext) != n_sing) {
-			std::cout << "Reach cross point {" << m_RelPos.m_X << ", " << m_RelPos.m_Y << "}" << std::endl;
-			next_cross_point = true;
-			if(!isMoveAllowed(current_dir)) {
-				std::cout << "Stop moving" << std::endl;
-				m_Unit->setPositionCenter(getGridDataEntity(m_RelPos).m_Pos);
-				m_Unit->dir(MoveDirection_t::NONE);
-				reset();
+			std::cout << "Change cross point to {" << m_RelPos.m_X << ", " << m_RelPos.m_Y << "}" << std::endl;
+			m_CurrentDirection = m_NewDirection;
+			m_NewDirection = MoveDirection_t::NONE;
+		} else {
+			const bool zero_path = 0 == m_PathToNext;
+			bool n_sing = 0 > m_PathToNext;
+			prepareMoveAction(m_CurrentDirection, move_delta);
+			next_cross_point = m_GridSize <= std::abs(m_PathToNext);
+			const auto new_cross_point = m_RelPos + move_delta;
+			if(zero_path) {
+				if(isMoveAllowed(m_CurrentDirection)) {
+					if(0 < move_delta.m_X) {
+						m_PathToNext -= m_GridSize;
+					} else if(0 > move_delta.m_X) {
+						m_PathToNext =  m_GridSize;
+					} else if(0 < move_delta.m_Y) {
+						m_PathToNext -= m_GridSize;
+					} else if(0 > move_delta.m_Y) {
+						m_PathToNext =  m_GridSize;
+					}
+					m_RelPos = new_cross_point;
+					std::cout << "Change cross point to {" << m_RelPos.m_X << ", " << m_RelPos.m_Y << "}" << std::endl;
+				}
+			} else if(next_cross_point) {
+				std::cout << "New cross point {" << m_RelPos.m_X << ", " << m_RelPos.m_Y << "}" << std::endl;
+				if(0 > m_PathToNext) {
+					m_PathToNext += m_GridSize;
+				} else {
+					m_PathToNext -= m_GridSize;
+				}
+				m_RelPos = new_cross_point;
+				const auto act_move = comp(m_CurrentDirection, m_NewDirection);
+				if(!isMoveAllowed(m_CurrentDirection)) {
+					std::cout << "Stop moving - reach cross point" << std::endl;
+					m_Unit->setPositionCenter(getGridDataEntity(m_RelPos).m_Pos);
+					m_CurrentDirection = MoveDirection_t::NONE;
+					reset();
+				} else if((ActionCompMove_t::SAME_LINE == act_move) && !isMoveAllowed(m_NewDirection)){
+					std::cout << "Stop moving - reach cross point by pending command" << std::endl;
+					m_Unit->setPositionCenter(getGridDataEntity(m_RelPos).m_Pos);
+					m_NewDirection = m_CurrentDirection = MoveDirection_t::NONE;
+					reset();
+				}
+			} else if((0 > m_PathToNext) != n_sing) {
+				std::cout << "Reach cross point {" << m_RelPos.m_X << ", " << m_RelPos.m_Y << "}" << std::endl;
+				next_cross_point = true;
+				if(!isMoveAllowed(m_CurrentDirection)) {
+					std::cout << "Stop moving - change of sing" << std::endl;
+					m_Unit->setPositionCenter(getGridDataEntity(m_RelPos).m_Pos);
+					m_CurrentDirection = MoveDirection_t::NONE;
+					reset();
+				}
 			}
 		}
 		m_Unit->setPositionCenter(getGridDataEntity(m_RelPos).m_Pos);
@@ -87,38 +126,53 @@ void UnitAction::tick() {
 
 bool UnitAction::process(Action_t action, bool cross_point) {
 	bool rc = false;
-	const auto current_dir = m_Unit->getDir();
-	const auto act_move = comp(current_dir, action);
-
+	const auto act_move = comp(m_CurrentDirection, action);
+	cross_point |= MoveDirection_t::NONE == m_CurrentDirection;
 	if(ActionCompMove_t::SAME != act_move) {
 		switch (action) {
 		case Action_t::MOVE_UP:
-			if((ActionCompMove_t::SAME_LINE == act_move)
-			|| (cross_point && isMoveAllowed(MoveDirection_t::UP_DIR))) {
-				m_Unit->dir(MoveDirection_t::UP_DIR);
+			m_NewDirection = MoveDirection_t::UP_DIR;
+			rc = true;
+#if 0
+			if( isMoveAllowed(MoveDirection_t::UP_DIR)
+			&& (cross_point || (ActionCompMove_t::SAME_LINE == act_move))) {
+				m_NewDirection = MoveDirection_t::UP_DIR;
 				rc = true;
 			}
+#endif
 			break;
 		case Action_t::MOVE_DOWN:
-			if((ActionCompMove_t::SAME_LINE == act_move)
-			|| (cross_point && isMoveAllowed(MoveDirection_t::DOWN_DIR))) {
-				m_Unit->dir(MoveDirection_t::DOWN_DIR);
+			m_NewDirection = MoveDirection_t::DOWN_DIR;
+			rc = true;
+#if 0
+			if( isMoveAllowed(MoveDirection_t::DOWN_DIR)
+			&& (cross_point || (ActionCompMove_t::SAME_LINE == act_move))) {
+				m_NewDirection = MoveDirection_t::DOWN_DIR;
 				rc = true;
 			}
+#endif
 			break;
 		case Action_t::MOVE_LEFT:
-			if((ActionCompMove_t::SAME_LINE == act_move)
-			|| (cross_point && isMoveAllowed(MoveDirection_t::LEFT_DIR))) {
-				m_Unit->dir(MoveDirection_t::LEFT_DIR);
+			m_NewDirection = MoveDirection_t::LEFT_DIR;
+			rc = true;
+#if 0
+			if( isMoveAllowed(MoveDirection_t::LEFT_DIR)
+			&& (cross_point || (ActionCompMove_t::SAME_LINE == act_move))) {
+				m_NewDirection = MoveDirection_t::LEFT_DIR;
 				rc = true;
 			}
+#endif
 			break;
 		case Action_t::MOVE_RIGHT:
-			if((ActionCompMove_t::SAME_LINE == act_move)
-			|| (cross_point && isMoveAllowed(MoveDirection_t::RIGHT_DIR))) {
-				m_Unit->dir(MoveDirection_t::RIGHT_DIR);
+			m_NewDirection = MoveDirection_t::RIGHT_DIR;
+			rc = true;
+#if 0
+			if( isMoveAllowed(MoveDirection_t::RIGHT_DIR)
+			&& (cross_point || (ActionCompMove_t::SAME_LINE == act_move))) {
+				m_NewDirection = MoveDirection_t::RIGHT_DIR;
 				rc = true;
 			}
+#endif
 			break;
 		case Action_t::FIRE_UP:
 			if(cross_point || isFireAllowed(VERTICAL)) {
@@ -248,6 +302,43 @@ UnitAction::ActionCompMove_t UnitAction::comp(MoveDirection_t dir, Action_t acti
 		break;
 	case Action_t::NONE:
 		rc = ActionCompMove_t::SAME;
+		break;
+	default:
+		break;
+	}
+	return rc;
+}
+
+UnitAction::ActionCompMove_t UnitAction::comp(MoveDirection_t current, MoveDirection_t pending) const {
+	ActionCompMove_t rc = ActionCompMove_t::NOT_SAME;
+	switch (current) {
+	case MoveDirection_t::UP_DIR:
+		if(MoveDirection_t::UP_DIR == pending) {
+			rc = ActionCompMove_t::SAME;
+		} else if(MoveDirection_t::DOWN_DIR == pending) {
+			rc = ActionCompMove_t::SAME_LINE;
+		}
+		break;
+	case MoveDirection_t::DOWN_DIR:
+		if(MoveDirection_t::DOWN_DIR == pending) {
+			rc = ActionCompMove_t::SAME;
+		} else if(MoveDirection_t::UP_DIR == pending) {
+			rc = ActionCompMove_t::SAME_LINE;
+		}
+		break;
+	case MoveDirection_t::LEFT_DIR:
+		if(MoveDirection_t::LEFT_DIR == pending) {
+			rc = ActionCompMove_t::SAME;
+		} else if(MoveDirection_t::RIGHT_DIR == pending) {
+			rc = ActionCompMove_t::SAME_LINE;
+		}
+		break;
+	case MoveDirection_t::RIGHT_DIR:
+		if(MoveDirection_t::RIGHT_DIR == pending) {
+			rc = ActionCompMove_t::SAME;
+		} else if(MoveDirection_t::LEFT_DIR == pending) {
+			rc = ActionCompMove_t::SAME_LINE;
+		}
 		break;
 	default:
 		break;

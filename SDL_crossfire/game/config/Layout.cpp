@@ -174,7 +174,7 @@ static const GridNeighborhoodData_t GridNeighborhood = {{
 	},
 	//2
 	{
-		Layout::DOWN,
+		Layout::RIGHT | Layout::DOWN,
 		Layout::RIGHT,
 		Layout::DOWN | Layout::RIGHT,
 		Layout::LEFT | Layout::RIGHT,
@@ -224,7 +224,7 @@ static const GridNeighborhoodData_t GridNeighborhood = {{
 		Layout::LEFT | Layout::RIGHT,
 		Layout::UP | Layout::DOWN | Layout::LEFT,
 		Layout::LEFT,
-		Layout::DOWN
+		Layout::LEFT | Layout::DOWN
 	},
 	//5
 	{
@@ -246,7 +246,7 @@ static const GridNeighborhoodData_t GridNeighborhood = {{
 	},
 	//6
 	{
-		Layout::DOWN,
+		Layout::DOWN | Layout::RIGHT,
 		Layout::RIGHT,
 		Layout::UP | Layout::DOWN | Layout::RIGHT,
 		Layout::LEFT | Layout::RIGHT,
@@ -296,7 +296,7 @@ static const GridNeighborhoodData_t GridNeighborhood = {{
 		Layout::LEFT | Layout::RIGHT,
 		Layout::UP | Layout::DOWN | Layout::LEFT,
 		Layout::LEFT,
-		Layout::DOWN
+		Layout::LEFT | Layout::DOWN
 	},
 	//9
 	{
@@ -318,7 +318,7 @@ static const GridNeighborhoodData_t GridNeighborhood = {{
 	},
 	//10
 	{
-		Layout::DOWN,
+		Layout::DOWN | Layout::RIGHT,
 		Layout::RIGHT,
 		Layout::UP | Layout::RIGHT,
 		Layout::LEFT | Layout::RIGHT,

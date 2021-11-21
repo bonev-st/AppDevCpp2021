@@ -34,7 +34,7 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 	}
 	const Layout::GridData_t &motion_grid = Layout::getGridData();
 
-	if(!m_ShipAction.init(&m_Ship, Layout::getShipRelPos(), Layout::getGridSize(), Layout::getShipSpeed(), motion_grid)) {
+	if(!m_ShipAction.init(&m_Ship, Layout::getEnemyRelPos(0), Layout::getGridSize(), Layout::getShipSpeed(), motion_grid)) {
 		std::cerr << "Game::createImages.m_ShipAction.init() failed"<< std::endl;
 		return false;
 	}
