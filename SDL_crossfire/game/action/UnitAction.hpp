@@ -36,10 +36,16 @@ private:
 	Point m_RelPos;
 	Action_t m_CurrentDirection = Action_t::NONE;
 
+	void stop_to_start(const Action_t &action, Point& rel_pos);
+	void forward(Point& rel_pos);
+	void reverse(const Action_t &action, Point& rel_pos);
+	void turn(Action_t &action, Point& rel_pos);
+	void move(const Point &rel_pos);
+
 	bool isMoveAction(Action_t action) const;
 	bool process(Action_t action, bool cross_point);
 	bool isMoveAllowed(Action_t dir) const;
-	void prepareMoveAction(Action_t dir, Point & rel_pos_move);
+	Point prepareMoveAction(Action_t dir);
 	const Layout::GridDataEntity_t& getGridDataEntity(const Point& pos) const;
 
 	uint8_t toNeighborhoodType(Action_t dir) const;
