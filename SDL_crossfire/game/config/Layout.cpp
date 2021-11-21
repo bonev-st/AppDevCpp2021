@@ -14,8 +14,8 @@
 
 using GridNeighborhoodData_t = std::array<std::array<uint8_t, Layout::GRID_RECT_H_NUMB>, Layout::GRID_RECT_V_NUMB>;
 
-static constexpr int32_t X_OFFSET = 79;
-static constexpr int32_t Y_OFFSET = 55;
+static constexpr int32_t X_OFFSET = 80;
+static constexpr int32_t Y_OFFSET = 56;
 
 static constexpr int32_t GRID_SIZE = 32;
 
@@ -30,10 +30,10 @@ static constexpr double SHIP_BULLET_SPEED = SHIP_SPEED * 4.0;
 static const Point POS_SHIP_REL{8, 10};
 
 static const std::array<Point, static_cast<size_t>(BonusId_t::BONUS_NUMB)> BonusPos = {
-	Point{5, 5},
-	Point{5, 9},
-	Point{7, 5},
-	Point{7, 9}
+	Point{5, 7},
+	Point{9, 7},
+	Point{9, 5},
+	Point{5, 5}
 };
 
 static const std::array<Point, static_cast<size_t>(EnemyId_t::ENEMY_NUMB)> EnemyPos = {
@@ -46,8 +46,8 @@ static const std::array<Point, static_cast<size_t>(EnemyId_t::ENEMY_NUMB)> Enemy
 	Point{9, 0},
 	Point{11, 0},
 	Point{13, 0},
-	Point{15, 7},
-	Point{15, 9},
+	Point{14, 5},
+	Point{14, 9},
 };
 
 static const Layout::ImgCfg_t ImgCfg[GameConfig::IMG_ARRAY_SIZE] {
