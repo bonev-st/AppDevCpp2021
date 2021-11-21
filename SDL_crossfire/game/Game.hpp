@@ -19,10 +19,8 @@
 #include "manager_utils/input/RadioContainer.hpp"
 #include "manager_utils/timer/Timer2Client.hpp"
 
-#include "game/widgets/AnimatedImage.hpp"
+#include "game/widgets/Ship.hpp"
 #include "game/widgets/FPS.hpp"
-
-#include "game/action/UnitAction.hpp"
 
 class InputEvent;
 class InputEventIF;
@@ -44,8 +42,7 @@ private:
 	std::array<Text, GameConfig::TEXT_ARRAY_SIZE> m_Text;
 	std::vector<InputEventIF*> m_InputEvetntContainer;
 
-	AnimatedImage m_Ship;
-	UnitAction m_ShipAction;
+	Ship m_Ship;
 
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;

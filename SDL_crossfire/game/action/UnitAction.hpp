@@ -8,52 +8,42 @@
 #ifndef GAME_ACTION_UNITACTION_HPP_
 #define GAME_ACTION_UNITACTION_HPP_
 
-#include "game/action/ActionClientIF.hpp"
-#include "game/action/ActionBuffer.hpp"
+#include "game/action/ActionDef.hpp"
 #include "game/config/Layout.hpp"
-#include "game/widgets/MoveAnimation.hpp"
 
-class AnimatedImage;
+class Widget;
 
-class UnitAction : private ActionClientIF {
+class UnitAction {
 public:
-	bool init(AnimatedImage* unit, const Point& pos, uint32_t grid_size, double speed, const Layout::GridData_t &grid_data);
+	bool init(Widget* unit, const Point& pos, uint32_t grid_size, double speed, const Layout::GridData_t &grid_data);
 	void setSpeed(double speed);
-	void event(Action_t type);
-	void tick();
+	bool event(const Action_t type);
+	bool tick(Action_t pending_action);
 	void reset();
 
 private:
-	enum FireDir_t : uint8_t {
-		VERTICAL = static_cast<uint8_t>(MoveDirection_t::UP_DIR) | static_cast<uint8_t>(MoveDirection_t::DOWN_DIR),
-		HORISONTAL = static_cast<uint8_t>(MoveDirection_t::RIGHT_DIR) | static_cast<uint8_t>(MoveDirection_t::LEFT_DIR)
-	};
-
-	enum class ActionCompMove_t {
+	enum class Action2Dir_t {
 		NOT_SAME,
 		SAME,
 		SAME_LINE
 	};
 
-	ActionBuffer m_ActionBuffer;
-	AnimatedImage* m_Unit = nullptr;
+	Widget* m_Unit = nullptr;
 	const Layout::GridData_t* m_Grid = nullptr;
 	double m_Speed = 0;
 	double m_PathToNext = 0;
 	uint32_t m_GridSize = 0;
 	Point m_RelPos;
-	MoveDirection_t m_CurrentDirection = MoveDirection_t::NONE;
-	MoveDirection_t m_NewDirection = MoveDirection_t::NONE;
+	Action_t m_CurrentDirection = Action_t::NONE;
 
-	bool process(Action_t action, bool cross_point) final;
-	bool isMoveAllowed(MoveDirection_t dir) const;
-	void prepareMoveAction(MoveDirection_t dir, Point & rel_pos_move);
-	bool isFireAllowed(FireDir_t dir) const;
+	bool isMoveAction(Action_t action) const;
+	bool process(Action_t action, bool cross_point);
+	bool isMoveAllowed(Action_t dir) const;
+	void prepareMoveAction(Action_t dir, Point & rel_pos_move);
 	const Layout::GridDataEntity_t& getGridDataEntity(const Point& pos) const;
 
-	uint8_t toNeighborhoodType(MoveDirection_t dir) const;
-	ActionCompMove_t comp(MoveDirection_t dir, Action_t action) const;
-	ActionCompMove_t comp(MoveDirection_t current, MoveDirection_t pending) const;
+	uint8_t toNeighborhoodType(Action_t dir) const;
+	Action2Dir_t comp(const Action_t new_act, const Action_t curr_act) const;
 };
 
 #endif /* GAME_ACTION_UNITACTION_HPP_ */

@@ -8,17 +8,17 @@
 #ifndef GAME_ACTION_ACTIONBUFFER_HPP_
 #define GAME_ACTION_ACTIONBUFFER_HPP_
 
-#include "game/action/ActionClientIF.hpp"
+#include "game/action/ActionDef.hpp"
 
 class ActionBuffer {
 public:
-	bool init(ActionClientIF * client);
 	Action_t operator = (Action_t action);
-	void force();
+	operator Action_t () const;
+	bool empty() const;
+	void clear();
 
 private:
 	Action_t m_ActionBuffer = Action_t::NONE;
-	ActionClientIF * m_Client = nullptr;
 };
 
 #endif /* GAME_ACTION_ACTIONBUFFER_HPP_ */

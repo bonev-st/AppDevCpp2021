@@ -32,12 +32,6 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 		std::cerr << "Game:::init.createImages() failed." << std::endl;
 		return false;
 	}
-	const Layout::GridData_t &motion_grid = Layout::getGridData();
-
-	if(!m_ShipAction.init(&m_Ship, Layout::getEnemyRelPos(0), Layout::getGridSize(), Layout::getShipSpeed(), motion_grid)) {
-		std::cerr << "Game::createImages.m_ShipAction.init() failed"<< std::endl;
-		return false;
-	}
 
 	if(!createTexts(cfg.m_Text)) {
 		std::cerr << "Game:::init.createTexts() failed." << std::endl;
@@ -95,7 +89,7 @@ bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 	for(const auto & [key, data]: cfg) {
 		const auto & config = Layout::getImgData(key);
 		if(GameConfig::IMG_SHIP_INDX == key) {
-			if(!m_Ship.create(data, config.m_Pos, true)) {
+			if(!m_Ship.init(data, Layout::getEnemyRelPos(0), Layout::getGridSize(), Layout::getShipSpeed(), Layout::getGridData())) {
 				std::cerr << "Game::createImages.m_Ship.create() failed"<< std::endl;
 				return false;
 			}
@@ -133,7 +127,7 @@ bool Game::initInput() {
 }
 
 bool Game::initTimers() {
-#if 0
+#if 1
 	if(!m_RefreshTimer.start(REFRESH_RATE, Timer2::TimerMode_t::RELOAD, std::bind(&Game::onFPS_Timeout, this, std::placeholders::_1))) {
 		std::cerr << "startTimer() failed." << std::endl;
 		return false;
@@ -155,35 +149,35 @@ void Game::setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask) {
 		switch(key_mask) {
 		case GameConfig::KEY_UP_MASK:
 			std::cout << "New keyboard event MOVE_UP" << std::endl;
-			m_ShipAction.event(Action_t::MOVE_UP);
+			m_Ship.event(Action_t::MOVE_UP);
 			break;
 		case GameConfig::KEY_DOWN_MASK:
 			std::cout << "New keyboard event MOVE_DOWN" << std::endl;
-			m_ShipAction.event(Action_t::MOVE_DOWN);
+			m_Ship.event(Action_t::MOVE_DOWN);
 			break;
 		case GameConfig::KEY_LEFT_MASK:
 			std::cout << "New keyboard event MOVE_LEFT" << std::endl;
-			m_ShipAction.event(Action_t::MOVE_LEFT);
+			m_Ship.event(Action_t::MOVE_LEFT);
 			break;
 		case GameConfig::KEY_RIGHT_MASK:
 			std::cout << "New keyboard event MOVE_RIGHT" << std::endl;
-			m_ShipAction.event(Action_t::MOVE_RIGHT);
+			m_Ship.event(Action_t::MOVE_RIGHT);
 			break;
 		case GameConfig::KEY_FIRE_UP_MASK:
 			std::cout << "New keyboard event FIRE_UP" << std::endl;
-			m_ShipAction.event(Action_t::FIRE_UP);
+			m_Ship.event(Action_t::FIRE_UP);
 			break;
 		case GameConfig::KEY_FIRE_DOWN_MASK:
 			std::cout << "New keyboard event FIRE_DOWN" << std::endl;
-			m_ShipAction.event(Action_t::FIRE_DOWN);
+			m_Ship.event(Action_t::FIRE_DOWN);
 			break;
 		case GameConfig::KEY_FIRE_LEFT_MASK:
 			std::cout << "New keyboard event FIRE_LEFT" << std::endl;
-			m_ShipAction.event(Action_t::FIRE_LEFT);
+			m_Ship.event(Action_t::FIRE_LEFT);
 			break;
 		case GameConfig::KEY_FIRE_RIGHT_MASK:
 			std::cout << "New keyboard event FIRE_RIGHT" << std::endl;
-			m_ShipAction.event(Action_t::FIRE_RIGHT);
+			m_Ship.event(Action_t::FIRE_RIGHT);
 			break;
 		default:
 			break;
@@ -216,5 +210,5 @@ void Game::onFPS_Timeout([[maybe_unused]]Timer2::TimerHandler_t id) {
 
 void Game::onMotion_Timeout([[maybe_unused]]Timer2::TimerHandler_t id) {
 	assert((m_MotionTimer == id) && m_MotionTimer.isRunning());
-	m_ShipAction.tick();
+	m_Ship.tick();
 }

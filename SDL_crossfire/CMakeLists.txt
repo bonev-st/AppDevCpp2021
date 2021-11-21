@@ -6,17 +6,16 @@ project(crossfire LANGUAGES CXX)
 add_executable(
 	${PROJECT_NAME}
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/SpriteAnimation.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/MoveAnimation.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/RotateAnimation.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/FPS.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/FPS.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/AnimatedImage.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ship.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ship.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionDef.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/UnitAction.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/UnitAction.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionClientIF.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfig.hpp

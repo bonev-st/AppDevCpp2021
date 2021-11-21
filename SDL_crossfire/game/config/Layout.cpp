@@ -22,7 +22,7 @@ static constexpr int32_t GRID_SIZE = 32;
 static const auto & GAME_TEXT_COLOR = Colors::GREEN;
 static const auto & DEBUG_TEXT_COLOR = Colors::WHITE;
 
-static constexpr double ENEMY_SPEED = 0.3;
+static constexpr double ENEMY_SPEED = 0.35;
 static constexpr double ENEMY_BULLET_SPEED = ENEMY_SPEED * 4.0;
 static constexpr double SHIP_SPEED = ENEMY_SPEED*2.0;
 static constexpr double SHIP_BULLET_SPEED = SHIP_SPEED * 4.0;
