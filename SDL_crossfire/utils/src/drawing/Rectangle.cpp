@@ -39,9 +39,16 @@ void Rectangle::scale(double scaling_factor) {
 
 bool Rectangle::isInside(const Point & pos) const {
 	return ( m_Pos.m_X <= pos.m_X)
-		&& ((m_Pos.m_X + m_W) >= pos.m_X)
+		&& ((m_Pos.m_X + m_W) > pos.m_X)
 		&& ( m_Pos.m_Y <= pos.m_Y)
-		&& ((m_Pos.m_Y + m_H) >= pos.m_Y);
+		&& ((m_Pos.m_Y + m_H) > pos.m_Y);
+}
+
+bool Rectangle::isInside(const Rectangle & rec) const {
+	return ( m_Pos.m_X <= rec.m_Pos.m_X)
+		&& ((m_Pos.m_X + m_W) >= rec.m_Pos.m_X)
+		&& ( m_Pos.m_Y <= rec.m_Pos.m_Y)
+		&& ((m_Pos.m_Y + m_H) >= rec.m_Pos.m_Y);
 }
 
 bool Rectangle::isToched(const Rectangle & rec) const {
@@ -50,3 +57,13 @@ bool Rectangle::isToched(const Rectangle & rec) const {
 		|| isInside(Point(rec.m_Pos.m_X,           rec.m_Pos.m_Y + rec.m_H))
 		|| isInside(Point(rec.m_Pos.m_X + rec.m_W, rec.m_Pos.m_Y + rec.m_H));
 }
+
+Point Rectangle::getCenter() const {
+	return Point(m_Pos.m_X + m_W/2, m_Pos.m_Y + m_H/2);
+}
+
+void Rectangle::setToCenter(const Point & pos) {
+	const Point point {m_W/2, m_H/2};
+	m_Pos = pos - point;
+}
+

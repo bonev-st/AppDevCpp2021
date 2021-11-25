@@ -29,7 +29,11 @@ struct Rectangle {
 	void scale(double scaling_factor);
 
 	bool isInside(const Point & pos) const;
+	bool isInside(const Rectangle & rec) const;
 	bool isToched(const Rectangle & rec) const;
+
+	Point getCenter() const;
+	void setToCenter(const Point & point);
 
 	static const Rectangle ZERO;
 	static const Rectangle UNDEFINED;

@@ -9,16 +9,24 @@
 
 #include <iostream>
 
-bool Ship::init(std::size_t ship_img_id, const Point& pos, uint32_t grid_size, double speed, const Layout::GridData_t &grid_data) {
+bool Ship::init(std::size_t ship_img_id, const Point& pos, uint32_t grid_size, double speed) {
 	if(!create(ship_img_id, pos, true)) {
 		std::cerr << "Ship::init().create() failed"<< std::endl;
 		return false;
 	}
-	if(!m_UnitAction.init(this, pos, grid_size, speed, grid_data)) {
+	if(!m_UnitAction.init(this, pos, grid_size, speed)) {
 		std::cerr << "Ship::init().m_UnitAction.init() failed"<< std::endl;
 		return false;
 	}
 	m_ActionBuffer.clear();
+	return true;
+}
+
+bool Ship::init_bullet(std::size_t bullet_img_id, double speed, int8_t max_bullets, uint32_t reload_time, const Rectangle & field) {
+	if(!m_Bullets.init(bullet_img_id, speed, max_bullets, reload_time, field)) {
+		std::cerr << "Ship::init_bullet().m_Bullets.init() failed"<< std::endl;
+		return false;
+	}
 	return true;
 }
 
@@ -29,7 +37,10 @@ bool Ship::event(const Action_t type) {
 			m_ActionBuffer.clear();
 			return true;
 		}
-		// fire action
+		if(m_Bullets.event(m_ActionBuffer, m_UnitAction.getLineOfFire(), getRectangle())) {
+			m_ActionBuffer.clear();
+			return true;
+		}
 	}
 	return false;
 }
@@ -38,4 +49,20 @@ void Ship::tick() {
 	if(m_UnitAction.tick(m_ActionBuffer)) {
 		m_ActionBuffer.clear();
 	}
+	if(m_Bullets.tick(m_ActionBuffer, m_UnitAction.getLineOfFire(), getRectangle())) {
+		m_ActionBuffer.clear();
+	}
+}
+
+void Ship::draw() const {
+	SpriteAnimation<Image>::draw();
+	m_Bullets.draw();
+}
+
+void Ship::setCallback(const Bullets::Callback_t & callback) {
+	m_Bullets.setCallback(callback);
+}
+
+void Ship::reload(int8_t bullets) {
+	m_Bullets.reload(bullets);
 }

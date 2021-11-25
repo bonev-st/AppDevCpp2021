@@ -13,14 +13,17 @@ class Dimention;
 
 namespace Geometry {
 
-Point getPosToCenter(const Point & pos, const Dimention & dimention);
-Point getPosFromCenter(const Point & pos, const Dimention & dimention);
+//Point getPosToCenter(const Point & pos, const Dimention & dimention);
+//Point getPosFromCenter(const Point & pos, const Dimention & dimention);
 double getDistance(const Point & start, const Point & end);
 double getAngle(const Point & start, const Point & end);
 Point getPoint(const Point &start, const Point & end, double distance);
 double rad2deg(double rad);
 double deg2rad(double deg);
 Point toPoint(double x, double y);
+double getSinDeg(double x);
+Point getRotation180(const Point &pos, const Point &center);
+
 
 }
 

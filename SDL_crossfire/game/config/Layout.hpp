@@ -13,6 +13,8 @@
 #include "utils/drawing/Color.hpp"
 #include "utils/drawing/Point.hpp"
 
+struct Rectangle;
+
 enum class BonusId_t {
 	BONUS1  = 0,
 	BONUS2,
@@ -67,7 +69,9 @@ struct ImgCfg_t {
 	uint8_t m_Alpha;
 };
 
-const GridData_t & getGridData();
+const GridDataEntity_t* getGridDataEntity(const Point& rel);
+Point getRel2AbsPosition(const Point& rel);
+
 const ImgCfg_t	 & getImgData(std::size_t id);
 const TextCfg_t	 & getTextData(std::size_t id);
 
@@ -81,6 +85,12 @@ uint32_t getGridSize();
 const Point & getShipRelPos();
 const Point & getBonusRelPos(std::size_t id);
 const Point & getEnemyRelPos(std::size_t id);
+
+Rectangle getFiealdRectangle();
+
+int8_t getOwnMaxBulled();
+uint32_t getOwnReloadTime();
+int8_t getEnemyMaxBulled();
 
 }
 

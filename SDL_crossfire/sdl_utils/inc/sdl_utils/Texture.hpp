@@ -11,14 +11,14 @@
 #include <string>
 #include <memory>
 
-#include "utils/drawing/Rectangle.hpp"
-#include "utils/drawing/BlendMode.hpp"
-
 struct SDL_Surface;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct Color;
 struct Dimention;
+struct Rectangle;
+
+enum class BlendMode_t : uint8_t;
 
 typedef struct _TTF_Font TTF_Font;
 

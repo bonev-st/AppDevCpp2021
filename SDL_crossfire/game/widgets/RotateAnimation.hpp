@@ -68,6 +68,7 @@ bool RotateAnimation<T>::setAngle(double angle, bool infinite) {
 
 template<class T>
 void RotateAnimation<T>::attachDone(const std::function<void()> & fn) {
+	assert(fn)
 	m_CB = fn;
 }
 

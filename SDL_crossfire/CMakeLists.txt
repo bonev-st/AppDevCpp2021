@@ -7,15 +7,27 @@ add_executable(
 	${PROJECT_NAME}
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/SpriteAnimation.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/RotateAnimation.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/BlinkingAnimation.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/FPS.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/FPS.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ship.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ship.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionDef.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bullets.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bullets.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ammunition.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ammunition.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/UnitAction.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/UnitAction.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/action/BulletAction.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/ProcessorIF.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollisionDetect.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollisionDetect.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CD_Through.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CD_Through.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfig.hpp

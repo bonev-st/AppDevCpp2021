@@ -18,62 +18,74 @@
 
 using namespace Timer2;
 
-TimerHandler_t Timer2Mgr::start(uint32_t period, TimerMode_t mode, const TimerCB_t& cb) {
+const std::shared_ptr<std::size_t> Timer2Mgr::start(uint32_t period, TimerMode_t mode, const TimerCB_t& cb) {
 	if(!period) {
-		std::cerr << "Timer2Mgr::start failed. Invalid timer period " << period << std::endl;
-		return false;
+		std::cerr << "Invalid timer period " << period << std::endl;
+		return nullptr;
 	}
 	if(TimerMode_t::INVALID == mode) {
-		std::cerr << "Timer2Mgr::start failed. Invalid timer mode " << static_cast<int32_t>(mode) << std::endl;
-		return false;
+		std::cerr << "Invalid timer mode " << static_cast<int32_t>(mode) << std::endl;
+		return nullptr;
 	}
-	TimerCfg_t data;
+	std::shared_ptr<TimerCfg_t> cfg(new TimerCfg_t, [](const TimerCfg_t * data) {
+		SDL_Timer::deleteTimer(data->m_TimerSDL_Handler);
+		delete data;
+	});
+	if(!cfg) {
+		std::cerr << "Bad allocation" << std::endl;
+		return nullptr;
+	}
+	auto &data = *cfg;
 	data.m_Period = period;
 	data.m_Mode = mode;
 	data.m_CB = cb;
-	auto cfg = std::make_shared<TimerCfg_t>(data);
 	if(nullptr == cfg) {
 		std::cerr << "std::make_unique<TimerCfg_t>(() failed. Bad allocation" << std::endl;
-        return false;
+        return nullptr;
 	}
-	cfg->m_Handler = m_Container.add(cfg);
 	if(!SDL_Timer::createTimer(*cfg)) {
 		std::cerr << "SDL_Timer::createTimer() failed" << std::endl;
-		return INVALID_TIMER_HANDLER;
+		return nullptr;
 	}
-	return cfg->m_Handler;
+	m_Container.push_front(cfg);
+	const auto size = m_Container.size();
+	if(size > m_MaxSize) {
+		m_MaxSize = size;
+	}
+	cfg->m_Handler = m_Container.begin();
+	return *reinterpret_cast<std::shared_ptr<std::size_t>*>(&cfg);
 }
 
 void Timer2Mgr::stop(TimerHandler_t handler) {
 	if(INVALID_TIMER_HANDLER == handler) {
+		std::cerr << "Stop timer with invalid handler" << std::endl;
 		return;
 	}
-	auto &cfg = **m_Container.get(handler);
-	SDL_Timer::deleteTimer(cfg.m_TimerSDL_Hadler);
-	cfg.m_Mode = TimerMode_t::INVALID;
-	release_timer_data(cfg);
+	auto &it = getIterator(handler);
+	release_timer_data(it);
 }
 
 bool Timer2Mgr::isRunning(TimerHandler_t handler) const {
 	if(INVALID_TIMER_HANDLER == handler) {
 		return false;
 	}
-	return TimerMode_t::INVALID != (*m_Container.get(handler))->m_Mode;
+	Timer2::Iterator_t &it = getIterator(handler);
+	assert(*it);
+	return Timer2::INVALID_TIMER_HANDLER != (*it)->m_TimerSDL_Handler;
 }
 
 bool Timer2Mgr::changePeriod(Timer2::TimerHandler_t handler, uint32_t period) {
-	if(0 < period) {
+	if(!period) {
 		std::cerr << "Timer2Mgr::changePeriod failed. Invalid timer period " << period << std::endl;
 		return false;
 	}
-	if(INVALID_TIMER_HANDLER == handler) {
+	if((INVALID_TIMER_HANDLER == handler) || !isRunning(handler)) {
+		std::cerr << "Timer2Mgr::changePeriod failed. Timer is inactive" << std::endl;
 		return false;
 	}
-	if(!isRunning(handler)) {
-		std::cerr << "Timer2Mgr::changePeriod failed. Invalid timer handler or timer inactive" << std::endl;
-		return false;
-	}
-	(*m_Container.get(handler))->m_Period = period;
+	Timer2::Iterator_t &it = getIterator(handler);
+	assert(*it);
+	(*it)->m_Period = period;
 	return true;
 }
 
@@ -82,44 +94,49 @@ bool Timer2Mgr::handleEvent(const InputEvent & event) {
 	if(TouchEvent::TIMER_EXPIRE != event.m_Type) {
 		return false;
 	}
-	auto * data = event.m_Timer;
-	const auto handler = data->m_Handler;
-	++(*m_Container.get(handler))->m_CB_Counter;
-	const auto mode = data->m_Mode;
-	if(TimerMode_t::INVALID == mode) {
-		release_timer_data(*data);
+	Timer2::TimerCfg_t &data = const_cast<Timer2::TimerCfg_t &>(*event.m_Timer);
+	++data.m_CB_Counter;
+	const auto mode = data.m_Mode;
+	if(TimerMode_t::INVALID == data.m_Mode) {
+		Timer2::Iterator_t &it = data.m_Handler;
+		assert(*it);
+		release_timer_data(it);
 		return true;
 	}
-	auto & cb = data->m_CB;
-	if(!cb) {
-		std::cerr << "Timer2Mgr::events() failed. Invalid callback function for timer with handler "
-				  << handler << std::endl;
-		return true;
+	auto handler = *reinterpret_cast<Timer2::TimerHandler_t *>(&data.m_Handler);
+	auto & cb = data.m_CB;
+	if(cb) {
+		cb(handler);
+	} else {
+		std::cerr << "Timer2Mgr::events() failed. Invalid callback function" << std::endl;
 	}
-	cb(handler);
 	if(TimerMode_t::ONESHOT == mode) {
-		assert(data->m_CB_Counter == data->m_SDL_CB_Counter);
-		if(!m_Container.release(handler)) {
-			std::cerr << "Timer2Mgr::events() failed, try to release invalid entity with id "
-					  << handler << std::endl;
-		}
+		assert(data.m_CB_Counter == data.m_SDL_CB_Counter);
+		stop(handler);
 	}
 	return true;
 }
 
-void Timer2Mgr::release_timer_data(const Timer2::TimerCfg_t & data) {
-	if(data.m_CB_Counter == data.m_SDL_CB_Counter) {
-		if(!m_Container.release(data.m_Handler)) {
-			std::cerr << "Timer2Mgr::events() failed, try to release invalid entity with id "
-					  << data.m_Handler << std::endl;
-		}
+void Timer2Mgr::release_timer_data(Timer2::Iterator_t & it) {
+	assert(*it);
+	if(Timer2::INVALID_SLD_TIMER_HANDLER != (*it)->m_TimerSDL_Handler) {
+		SDL_Timer::deleteTimer((*it)->m_TimerSDL_Handler);
+		(*it)->m_TimerSDL_Handler = Timer2::INVALID_SLD_TIMER_HANDLER;
+	}
+	(*it)->m_Mode = TimerMode_t::INVALID;
+	if((*it)->m_CB_Counter == (*it)->m_SDL_CB_Counter) {
+		m_Container.erase(it);
 	}
 }
 
 std::size_t Timer2Mgr::getActive() const {
-	return m_Container.getValid();
+	return m_Container.size();
 }
 
 std::size_t Timer2Mgr::getMaxActive() const {
-	return m_Container.getMaxValid();
+	return m_MaxSize;
+}
+
+Timer2::Iterator_t & Timer2Mgr::getIterator(Timer2::TimerHandler_t &handler) const {
+	return *reinterpret_cast<Timer2::Iterator_t *>(&handler);
 }

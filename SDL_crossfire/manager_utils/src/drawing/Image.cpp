@@ -22,8 +22,8 @@ bool Image::create(std::size_t image_id, const Point &pos, bool center) {
 		std::cerr << "Image::create.G_pResMgr->populateImg() fault" << std::endl;
 		return false;
 	}
-	if(Point::ZERO != pos) {
-		m_DrawParams.m_DstRect.m_Pos = center?Geometry::getPosToCenter(pos, m_DrawParams.m_Dimention):pos;
+	if(Point::UNDEFINED != pos) {
+		center?setPositionCenter(pos):setPosition(pos);
 	}
 	m_MaxFrames = 0;
 	if(m_DrawParams.m_Frames) {

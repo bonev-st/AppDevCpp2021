@@ -48,14 +48,23 @@ bool App::mainLoop() {
 	Time time;
 	while(!m_InputEvents.isExitRequest()) {
 		time.start();
-		m_Game.new_frame();
+		if(!m_Game.new_frame()) {
+	    	std::cerr << "m_Game.new_frame() failed." << std::endl;
+	    	rc = false;
+	    	break;
+		}
 		if(!processFrame()) {
-	    	std::cerr << "App::mainLoop::processFrame() failed." << std::endl;
+	    	std::cerr << "processFrame() failed." << std::endl;
+	    	rc = false;
+	    	break;
+		}
+		if(!m_Game.processing()) {
+	    	std::cerr << "m_Game.processing() failed." << std::endl;
 	    	rc = false;
 	    	break;
 		}
 	    if(!drawFrame()) {
-	    	std::cerr << "App::mainLoop::drawFrame() failed." << std::endl;
+	    	std::cerr << "drawFrame() failed." << std::endl;
 	    	rc = false;
 	    	break;
 	    }

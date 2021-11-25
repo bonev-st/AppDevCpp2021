@@ -8,7 +8,7 @@
 #ifndef MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_TIMER2MGR_HPP_
 #define MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_TIMER2MGR_HPP_
 
-#include <unordered_set>
+#include <list>
 #include <memory>
 
 #include "utils/Singleton.hpp"
@@ -21,7 +21,7 @@ class InputEvent;
 
 class Timer2Mgr : public BaseMgr, public InputEventIF {
 public:
-	Timer2::TimerHandler_t start(uint32_t period, Timer2::TimerMode_t mode, const Timer2::TimerCB_t& cb);
+	const std::shared_ptr<Timer2::TimerHandler_t> start(uint32_t period, Timer2::TimerMode_t mode, const Timer2::TimerCB_t& cb);
 	void stop(Timer2::TimerHandler_t handler);
 	bool isRunning(Timer2::TimerHandler_t handler) const;
 	bool changePeriod(Timer2::TimerHandler_t handler, uint32_t period);
@@ -32,9 +32,12 @@ public:
 	bool handleEvent(const InputEvent &e) final;
 
 private:
-	FirstFreeContainer<std::shared_ptr<Timer2::TimerCfg_t>> m_Container;
+	std::size_t m_MaxSize = 0;
+	std::list<std::shared_ptr<Timer2::TimerCfg_t>> m_Container;
 
-	void release_timer_data(const Timer2::TimerCfg_t & data);
+	void release_timer_data(Timer2::Iterator_t & it);
+
+	Timer2::Iterator_t & getIterator(Timer2::TimerHandler_t &handler) const;
 };
 
 using Timer2MgrInst = Singleton<Timer2Mgr>;

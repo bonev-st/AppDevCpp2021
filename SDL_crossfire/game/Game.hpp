@@ -19,8 +19,12 @@
 #include "manager_utils/input/RadioContainer.hpp"
 #include "manager_utils/timer/Timer2Client.hpp"
 
-#include "game/widgets/Ship.hpp"
 #include "game/widgets/FPS.hpp"
+#include "game/widgets/Ship.hpp"
+#include "game/widgets/Ammunition.hpp"
+
+#include "game/gameplay/CollisionDetect.hpp"
+#include "game/gameplay/CD_Through.hpp"
 
 class InputEvent;
 class InputEventIF;
@@ -31,6 +35,7 @@ public:
 	bool events(const InputEvent & event, bool & exit);
 	bool draw() const;
 	bool new_frame();
+	bool processing();
 
 private:
 	static const uint32_t REFRESH_RATE;
@@ -43,6 +48,7 @@ private:
 	std::vector<InputEventIF*> m_InputEvetntContainer;
 
 	Ship m_Ship;
+	Ammunition m_Ammunition;
 
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;
@@ -51,6 +57,9 @@ private:
 
 	Timer2Client m_RefreshTimer;
 	Timer2Client m_MotionTimer;
+
+	CollisionDetect m_ShipReload;
+	CD_Through m_CD_Inside;
 
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
 	bool createImages(const GameConfig::ImgRes_t & cfg);
@@ -64,6 +73,9 @@ private:
 
 	void onFPS_Timeout(Timer2::TimerHandler_t handler);
 	void onMotion_Timeout(Timer2::TimerHandler_t handler);
+
+	void onShipFire(const Point &pos, int8_t rem);
+	void onReloadHit(const std::vector<const Widget *> data);
 };
 
 #endif /* GAME_GAME_HPP_ */

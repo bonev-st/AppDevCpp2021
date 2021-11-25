@@ -21,6 +21,7 @@ public:
 	std::size_t add(const T & val);
 	std::size_t getValid() const;
 	std::size_t getMaxValid() const;
+	bool empty() const;
 
 private:
 	struct Data_t {
@@ -82,6 +83,11 @@ std::size_t FirstFreeContainer<T>::getValid() const {
 template<class T>
 std::size_t FirstFreeContainer<T>::getMaxValid() const {
 	return m_Container.size();
+}
+
+template<class T>
+bool FirstFreeContainer<T>::empty() const {
+	 return 0 == getValid();
 }
 
 template<class T>

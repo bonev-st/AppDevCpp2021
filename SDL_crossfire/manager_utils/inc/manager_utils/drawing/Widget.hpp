@@ -14,7 +14,9 @@ class DrawMgr;
 
 class Widget {
 public:
-	void draw() const;
+	virtual ~Widget() = default;
+
+	virtual void draw() const;
 
 	void setVisible(bool visible);
 	bool getVisible() const;
@@ -39,6 +41,7 @@ public:
 	int32_t getY() const;
 	int32_t getBottom() const;
 	int32_t getRight() const;
+	Rectangle getRectangle() const;
 
 	void activateAlphaModulation();
 	void deactivateAlphaModulation();

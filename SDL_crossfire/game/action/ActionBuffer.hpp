@@ -8,7 +8,7 @@
 #ifndef GAME_ACTION_ACTIONBUFFER_HPP_
 #define GAME_ACTION_ACTIONBUFFER_HPP_
 
-#include "game/action/ActionDef.hpp"
+#include "game/action/Action.hpp"
 
 class ActionBuffer {
 public:

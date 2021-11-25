@@ -31,7 +31,7 @@ void Widget::setPosition(const Point& pos) {
 }
 
 void Widget::setPositionCenter(const Point& pos) {
-	setPosition(Geometry::getPosToCenter(pos, m_DrawParams.m_Dimention));
+	m_DrawParams.m_DstRect.setToCenter(pos);
 }
 
 const Point& Widget::getPosition() const {
@@ -39,7 +39,7 @@ const Point& Widget::getPosition() const {
 }
 
 Point Widget::getPositionCenter() const {
-	return Geometry::getPosFromCenter(m_DrawParams.m_DstRect.m_Pos, m_DrawParams.m_Dimention);
+	return m_DrawParams.m_DstRect.getCenter();
 }
 
 void Widget::setX(int32_t x) {
@@ -100,6 +100,10 @@ int32_t Widget::getBottom() const {
 
 int32_t Widget::getRight() const {
 	return m_DrawParams.m_DstRect.m_Pos.m_X + m_DrawParams.m_DstRect.m_W;
+}
+
+Rectangle Widget::getRectangle() const {
+	return m_DrawParams.m_DstRect;
 }
 
 void Widget::setOpacity(int32_t opacity) {

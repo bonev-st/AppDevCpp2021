@@ -16,6 +16,8 @@
 #include "utils/Destroy.hpp"
 #include "utils/drawing/Color.hpp"
 #include "utils/drawing/Dimention.hpp"
+#include "utils/drawing/BlendMode.hpp"
+#include "utils/drawing/Rectangle.hpp"
 
 #include "sdl_utils/SDLHelper.hpp"
 

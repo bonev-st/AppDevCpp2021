@@ -15,6 +15,7 @@
 
 namespace Geometry {
 
+#if 0
 Point getPosToCenter(const Point & pos, const Dimention & dimention) {
 	Point rc = pos;
 	rc.m_X -= dimention.m_H/2;
@@ -28,7 +29,7 @@ Point getPosFromCenter(const Point & pos, const Dimention & dimention) {
 	rc.m_Y += dimention.m_H/2;
 	return rc;
 }
-
+#endif
 double getDistance(const Point &start, const Point &end) {
 	auto delta = end - start;
 	double rc = delta.m_X*delta.m_X + delta.m_Y * delta.m_Y;
@@ -63,6 +64,16 @@ double deg2rad(double deg) {
 
 Point toPoint(double x, double y) {
 	return {static_cast<int32_t>(std::round(x)), static_cast<int32_t>(std::round(y))};
+}
+
+double getSinDeg(double x) {
+	return std::sin(rad2deg(x));
+}
+
+Point getRotation180(const Point &pos, const Point &center) {
+	const Point dist = pos - center;
+	Point rc {-dist.m_X, -dist.m_Y};
+	return rc + center;
 }
 
 }

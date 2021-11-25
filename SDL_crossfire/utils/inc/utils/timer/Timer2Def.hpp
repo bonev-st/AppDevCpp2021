@@ -13,7 +13,7 @@
 namespace Timer2 {
 
 using TimerHandler_t = std::size_t;
-static constexpr TimerHandler_t INVALID_TIMER_HANDLER = -1;
+static constexpr TimerHandler_t INVALID_TIMER_HANDLER = 0;
 
 using TimerCB_t = std::function<void(const TimerHandler_t &)>;
 

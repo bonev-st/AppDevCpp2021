@@ -87,8 +87,8 @@ void populateGameKeys(GameConfig::KeyRes_t &cfg) {
 	cfg[Keyboard::KEY_L]		= GameConfig::KEY_RIGHT_MASK;
 	cfg[Keyboard::KEY_E]		= GameConfig::KEY_FIRE_UP_MASK;
 	cfg[Keyboard::KEY_D]		= GameConfig::KEY_FIRE_DOWN_MASK;
-	cfg[Keyboard::KEY_F]		= GameConfig::KEY_FIRE_LEFT_MASK;
-	cfg[Keyboard::KEY_S]		= GameConfig::KEY_FIRE_RIGHT_MASK;
+	cfg[Keyboard::KEY_S]		= GameConfig::KEY_FIRE_LEFT_MASK;
+	cfg[Keyboard::KEY_F]		= GameConfig::KEY_FIRE_RIGHT_MASK;
 	cfg[Keyboard::KEY_SPACE]	= GameConfig::KEY_PAUSE_MASK;
 	cfg[Keyboard::KEY_PERIOD]	= GameConfig::KEY_INFO_MASK;
 	cfg[Keyboard::KEY_ENTER]	= GameConfig::KEY_MENU_MASK;
@@ -100,6 +100,14 @@ void populateGameImg(GameConfig::ImgRes_t &cfg) {
 	cfg[GameConfig::IMG_GRID_INDX] = ResurcesId::GRID_IMG;
 	cfg[GameConfig::IMG_CROSSFIRE_INDX] = ResurcesId::CROSSFIRE_TEXT_IMG;
 	cfg[GameConfig::IMG_SHIP_INDX] = ResurcesId::SHIP_IMG;
+	cfg[GameConfig::IMG_ENEMY1_INDX] = ResurcesId::ENEMY1_IMG;
+	cfg[GameConfig::IMG_ENEMY2_INDX] = ResurcesId::ENEMY2_IMG;
+	cfg[GameConfig::IMG_ENEMY3_INDX] = ResurcesId::ENEMY3_IMG;
+	cfg[GameConfig::IMG_ENEMY4_INDX] = ResurcesId::ENEMY4_IMG;
+	cfg[GameConfig::IMG_BONUS_INDX] = ResurcesId::BONUS_IMG;
+	cfg[GameConfig::IMG_AMMU_INDX] = ResurcesId::AMMUN_IMG;
+	cfg[GameConfig::IMG_OWN_BULLED_INDX] = ResurcesId::OWN_BULLET_IMG;
+	cfg[GameConfig::IMG_ENEMY_BULLED_INDX] = ResurcesId::ENEMY_BULLET_IMG;
 }
 
 void populateGameText(GameConfig::TextRes_t &cfg) {
