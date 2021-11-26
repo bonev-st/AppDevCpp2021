@@ -22,6 +22,7 @@ double rad2deg(double rad);
 double deg2rad(double deg);
 Point toPoint(double x, double y);
 double getSinDeg(double x);
+double getCosDeg(double x);
 Point getRotation180(const Point &pos, const Point &center);
 
 

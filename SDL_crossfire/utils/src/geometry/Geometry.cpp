@@ -70,6 +70,10 @@ double getSinDeg(double x) {
 	return std::sin(rad2deg(x));
 }
 
+double getCosDeg(double x) {
+	return std::cos(rad2deg(x));
+}
+
 Point getRotation180(const Point &pos, const Point &center) {
 	const Point dist = pos - center;
 	Point rc {-dist.m_X, -dist.m_Y};
