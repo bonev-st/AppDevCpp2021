@@ -13,11 +13,11 @@
 template<class T, T INVALID, class DELETER>
 class RAII_Handler {
 public:
-	RAII_Handler();
+	RAII_Handler() = default;
 	~RAII_Handler();
 
-	RAII_Handler(const RAII_Handler& obj);
-	RAII_Handler& operator = (const RAII_Handler& obj);
+	RAII_Handler(const RAII_Handler& obj) = delete;
+	RAII_Handler& operator = (const RAII_Handler& obj) = delete;
 
 	RAII_Handler(RAII_Handler&& obj);
 	RAII_Handler& operator = (RAII_Handler&& obj);
@@ -27,50 +27,43 @@ public:
 	void reset();
 
 private:
-	T m_Val;
+	T m_Val = INVALID;
 	DELETER m_Deleter;
 	void del();
 };
-
-template<class T, T INVALID, class DELETER>
-RAII_Handler<T, INVALID, DELETER>::RAII_Handler() : m_Val(INVALID) {
-}
 
 template<class T, T INVALID, class DELETER>
 RAII_Handler<T, INVALID, DELETER>::~RAII_Handler() {
 	del();
 }
 
-template<class T, T INVALID, class DELETER>
-RAII_Handler<T, INVALID, DELETER>::RAII_Handler(const RAII_Handler& obj) {
-	del();
-	m_Val = obj.m_Val;
-	m_Deleter = obj.m_Deleter;
-}
-
-template<class T, T INVALID, class DELETER>
-RAII_Handler<T, INVALID, DELETER>& RAII_Handler<T, INVALID, DELETER>::operator = (const RAII_Handler& obj) {
-	if(&obj != this) {
-		del();
-		m_Val = obj.m_Val;
-		m_Deleter = obj.m_Deleter;
-	}
-	return *this;
-}
 
 template<class T, T INVALID, class DELETER>
 RAII_Handler<T, INVALID, DELETER>::RAII_Handler(RAII_Handler&& obj) {
-	del();
-	m_Val = obj.m_Val;
-	m_Deleter = obj.m_Deleter;
+	assert(obj.m_Deleter);
+#if 0
+		m_Val = obj.m_Val;
+		obj.m_Val = INVALID;
+		m_Deleter = obj.m_Deleter;
+#else
+		std::swap(m_Val, obj.m_Val);
+		std::swap(m_Deleter, obj.m_Deleter);
+#endif
 }
 
 template<class T, T INVALID, class DELETER>
 RAII_Handler<T, INVALID, DELETER>& RAII_Handler<T, INVALID, DELETER>::operator = (RAII_Handler&& obj) {
 	if(&obj != this) {
 		del();
+		assert(obj.m_Deleter);
+#if 0
 		m_Val = obj.m_Val;
+		obj.m_Val = INVALID;
 		m_Deleter = obj.m_Deleter;
+#else
+		std::swap(m_Val, obj.m_Val);
+		std::swap(m_Deleter, obj.m_Deleter);
+#endif
 	}
 	return *this;
 }
