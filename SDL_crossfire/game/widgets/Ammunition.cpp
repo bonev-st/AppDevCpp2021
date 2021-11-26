@@ -9,39 +9,41 @@
 
 #include <iostream>
 
-const double Ammunition::BLINKNIG_SPEED = 0.05;
-
-bool Ammunition::init(std::size_t image_id) {
+bool Ammunition::init(std::size_t image_id, double scale_factor) {
 	if(!m_Img.create(image_id, Point::ZERO)) {
 		std::cerr << "Ammunition::init() m_Img.create(" << image_id << ") failed." << std::endl;
-		return true;
+		return false;
 	}
-	m_Img.setVisible(false);
 	if(!m_Img.initBlinkingAnimation(BLINKNIG_SPEED)) {
 		std::cerr << "Ammunition::init() m_Img.initBlinkingAnimation() failed." << std::endl;
-		return true;
+		return false;
+	}
+	m_ScaleImage.setVisible(false);
+	if(!m_ScaleImage.init(scale_factor, &m_Img)) {
+		std::cerr << "Ammunition::init() m_ScaleImage.init() failed." << std::endl;
+		return false;
 	}
 	return true;
 }
 
 bool Ammunition::show(const Point &pos) {
-	m_Img.setPositionCenter(pos);
-	m_Img.setVisible(true);
+	m_ScaleImage.setPositionCenter(pos);
+	m_ScaleImage.setVisible(true);
 	return m_Img.start();
 }
 
 void Ammunition::clear() {
-	m_Img.setVisible(false);
+	m_ScaleImage.setVisible(false);
 	m_Img.stop();
 }
 
-void Ammunition::draw() const {
-	m_Img.draw();
+void Ammunition::draw() {
+	m_ScaleImage.draw();
 }
 
 Rectangle Ammunition::getRect() const {
-	if(m_Img.getVisible()) {
-		return m_Img.getRectangle();
+	if(m_ScaleImage.getVisible()) {
+		return m_ScaleImage.getRectangle();
 	}
 	return Rectangle::UNDEFINED;
 }

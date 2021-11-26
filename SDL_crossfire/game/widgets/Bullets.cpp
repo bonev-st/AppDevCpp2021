@@ -68,10 +68,10 @@ bool Bullets::tick(const Action_t pending_action, uint8_t line_of_fire, const Re
 	return rc;
 }
 
-void Bullets::draw() const {
+void Bullets::draw() {
 	if(!m_Bullets.empty()) {
 		for(size_t i = 0; m_Bullets.getMaxValid() > i; ++i) {
-			const auto * e =  m_Bullets.get(i);
+			auto * e =  m_Bullets.get(i);
 			if(e) {
 				e->draw();
 			}

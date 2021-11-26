@@ -9,9 +9,13 @@
 
 #include <iostream>
 
-bool Ship::init(std::size_t ship_img_id, const Point& pos, uint32_t grid_size, double speed) {
-	if(!create(ship_img_id, pos, true)) {
+bool Ship::init(std::size_t ship_img_id, float scale_factor, const Point& pos, uint32_t grid_size, double speed) {
+	if(!m_Image.create(ship_img_id, Point(), true)) {
 		std::cerr << "Ship::init().create() failed"<< std::endl;
+		return false;
+	}
+	if(!init(scale_factor, &m_Image)) {
+		std::cerr << "ScaleTexture::init() failed"<< std::endl;
 		return false;
 	}
 	if(!m_UnitAction.init(this, pos, grid_size, speed)) {
@@ -54,8 +58,8 @@ void Ship::tick() {
 	}
 }
 
-void Ship::draw() const {
-	SpriteAnimation<Image>::draw();
+void Ship::draw() {
+	ScaleTexture::draw();
 	m_Bullets.draw();
 }
 

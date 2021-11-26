@@ -26,7 +26,7 @@ public:
 	void reload(int8_t numb);
 	void setCallback(const Callback_t & callback);
 
-	void draw() const;
+	void draw();
 
 private:
 	std::size_t m_ImgId = -1;
