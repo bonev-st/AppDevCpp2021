@@ -16,14 +16,21 @@ class Widget {
 public:
 	virtual ~Widget() = default;
 
-	virtual void draw() const;
+	static void setDebug(bool ena);
+	static bool getDebug();
+
+	void invalidate();
+	bool isInvalidate() const;
+
+	virtual void draw();
 
 	void setVisible(bool visible);
 	bool getVisible() const;
 
 	void setPosition(const Point& pos);
 	void setPositionCenter(const Point& pos);
-	const Point& getPosition() const;
+	void setPosition(const Point& pos, const Dimention &dim);
+	Point getPosition() const;
 	Point getPositionCenter() const;
 	void setX(int32_t x);
 	void setY(int32_t y);
@@ -42,6 +49,7 @@ public:
 	int32_t getBottom() const;
 	int32_t getRight() const;
 	Rectangle getRectangle() const;
+	void setRectangle(const Rectangle rect);
 
 	void activateAlphaModulation();
 	void deactivateAlphaModulation();
@@ -70,6 +78,7 @@ protected:
 
 private:
 	static DrawMgr *& m_DrawMgr;
+	static bool g_Debug;
 };
 
 #endif /* MANAGER_UTILS_INC_MANAGER_UTILS_DRAWING_WIDGET_HPP_ */

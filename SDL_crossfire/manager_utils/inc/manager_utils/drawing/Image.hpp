@@ -12,7 +12,7 @@
 
 class Image : public Widget {
 public:
-	bool create(std::size_t image_id, const Point &pos = Point::ZERO, bool center = false);
+	bool create(std::size_t image_id, const Point &pos = Point::UNDEFINED, bool center = false);
 	void setFrame(std::size_t n);
 	void setNextFrame();
 	void setPrevFrame();

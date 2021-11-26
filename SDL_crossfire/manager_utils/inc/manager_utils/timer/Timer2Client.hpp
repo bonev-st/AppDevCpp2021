@@ -22,6 +22,7 @@ public:
 	bool isRunning() const;
 	bool changePeriod(uint32_t period);
 	bool operator == (Timer2::TimerHandler_t handler) const;
+	bool operator != (Timer2::TimerHandler_t handler) const;
 
 private:
 	Timer2Mgr &m_Singleton;

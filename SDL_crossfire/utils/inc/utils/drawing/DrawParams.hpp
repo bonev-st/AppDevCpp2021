@@ -31,6 +31,7 @@ struct DrawParams_t {
 	FlipMode_t m_FlipMode = FlipMode_t::NONE;
 	double m_Angle = 0;
 	Point m_RotationCenter = Point::UNDEFINED;
+	bool m_Invalidate = true;
 };
 
 #endif /* UTILS_DRAWING_DRAWPARAMS_HPP_ */

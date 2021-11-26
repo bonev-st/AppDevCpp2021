@@ -16,6 +16,7 @@ template<class T>
 class FirstFreeContainer {
 public:
 	const T* get(std::size_t id) const;
+	T* get(std::size_t id);
 	bool replace(std::size_t id, const T & val);
 	bool release(std::size_t id);
 	std::size_t add(const T & val);
@@ -37,6 +38,14 @@ private:
 
 template<class T>
 const T* FirstFreeContainer<T>::get(std::size_t id) const {
+	if(!isValid(id)) {
+		return nullptr;
+	}
+	return &m_Container[id].m_Val;
+}
+
+template<class T>
+T* FirstFreeContainer<T>::get(std::size_t id) {
 	if(!isValid(id)) {
 		return nullptr;
 	}

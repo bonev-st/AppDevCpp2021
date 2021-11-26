@@ -21,6 +21,8 @@ add_library(
 		${_INC_DIR}/drawing/Image.hpp
 		${_INC_DIR}/drawing/Text.hpp
 		${_INC_DIR}/drawing/RGB_Texture.hpp
+		${_INC_DIR}/drawing/RGB_Texture.hpp
+
 		${_INC_DIR}/input/ButtonBase.hpp
 		${_INC_DIR}/input/RadioContainer.hpp
 		${_INC_DIR}/input/RadioWidget.hpp

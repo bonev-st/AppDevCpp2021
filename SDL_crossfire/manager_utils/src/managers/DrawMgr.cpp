@@ -50,6 +50,10 @@ void DrawMgr::draw(const DrawParams_t & draw) const {
 		if(!drawText(draw)) {
 			std::cerr << "DrawMgr::drawFrame::drawText() failed, id: " << draw.m_ResrId << " type: " << static_cast<int>(draw.m_WidgetType) << std::endl;
 		}
+	} else if (WidgetType_t::RGB_TEXTURE == draw.m_WidgetType) {
+		if(!drawImage(draw)) {
+			std::cerr << "DrawMgr::drawFrame::drawText() failed, id: " << draw.m_ResrId << " type: " << static_cast<int>(draw.m_WidgetType) << std::endl;
+		}
 	} else {
 		std::cerr << "DrawMgr::drawFrame::drawFrame() failed, unknown widget type: " << static_cast<int>(draw.m_WidgetType) << std::endl;
 	}

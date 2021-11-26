@@ -9,7 +9,7 @@
 
 #include "sdl_utils/InputEvent.hpp"
 
-void ButtonBase::draw() const {
+void ButtonBase::draw() {
 	Image::draw();
 }
 

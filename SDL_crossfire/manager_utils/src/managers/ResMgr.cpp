@@ -75,13 +75,13 @@ bool ResMgr::populateImg(DrawParams_t & param) {
 
 bool ResMgr::createText(const std::string &str, const Color & color, std::size_t font_id, DrawParams_t & param) {
 	if(WidgetType_t::UNKNOWN == param.m_WidgetType) {
-		if(!m_TextContainer->createText(str, color, font_id, param.m_ResrId)) {
+		if(!m_TextContainer->create(str, color, font_id, param.m_ResrId)) {
 			std::cerr << "ResMgr::createTexts::m_TextContainer->createText() failed" << std::endl;
 			return false;
 		}
 		param.m_WidgetType = WidgetType_t::TEXT;
 	} else if (WidgetType_t::TEXT == param.m_WidgetType) {
-		if(!m_TextContainer->reloadText(str, color, font_id, param.m_ResrId)) {
+		if(!m_TextContainer->reload(str, color, font_id, param.m_ResrId)) {
 			std::cerr << "ResMgr::createTexts::m_TextContainer->reloadText() failed" << std::endl;
 			return false;
 		}
@@ -98,7 +98,7 @@ bool ResMgr::createText(const std::string &str, const Color & color, std::size_t
 }
 
 bool ResMgr::releaseText(DrawParams_t & param) {
-	if(!m_TextContainer->unloadText(param.m_ResrId)) {
+	if(!m_TextContainer->unload(param.m_ResrId)) {
 		std::cerr << "ResMgr::releaseText(" << param.m_ResrId <<") failed" << std::endl;
 		return false;
 	}
@@ -114,7 +114,7 @@ bool ResMgr::createTexture(const Color & color, DrawParams_t & param) {
 		}
 		param.m_WidgetType = WidgetType_t::RGB_TEXTURE;
 	} else if (WidgetType_t::RGB_TEXTURE == param.m_WidgetType) {
-		if(!m_TextureContainer->reload(color, param.m_ResrId)) {
+		if(!m_TextureContainer->reload(param.m_Dimention, color, param.m_ResrId)) {
 			std::cerr << "ResMgr::createTexts::m_TextureContainer->reload() failed" << std::endl;
 			return false;
 		}
@@ -137,6 +137,10 @@ bool ResMgr::releaseTexture(DrawParams_t & param) {
 	}
 	param.m_WidgetType = WidgetType_t::UNKNOWN;
 	return true;
+}
+
+std::shared_ptr<SDL_Texture> ResMgr::getTextureRenderLock(const DrawParams_t & param) {
+	return m_TextureContainer->getLock(param.m_ResrId);
 }
 
 void ResMgr::setDimention(DrawParams_t & param, int32_t w, int32_t h, const ImageContainer::Frames_t * frames) {

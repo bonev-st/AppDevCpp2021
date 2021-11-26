@@ -22,9 +22,9 @@ struct Color;
 class TextContainer {
 public:
 	bool init(const FontConfig::FontRes_t & cfg, SDL_Renderer *p_renderer);
-	bool createText(const std::string &text, const Color &color, std::size_t font_id, std::size_t &out_text_id);
-	bool reloadText(const std::string &text, const Color &color, std::size_t font_id, std::size_t out_text_id);
-	bool unloadText(std::size_t out_text_id);
+	bool create(const std::string &text, const Color &color, std::size_t font_id, std::size_t &out_id);
+	bool reload(const std::string &text, const Color &color, std::size_t font_id, std::size_t id);
+	bool unload(std::size_t out_text_id);
 
 	const Texture::Texture_t* get(std::size_t id) const;
 

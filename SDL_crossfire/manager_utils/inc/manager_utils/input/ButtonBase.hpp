@@ -16,7 +16,7 @@ struct InputEvent;
 
 class ButtonBase : public Image, public InputEventIF {
 public:
-	virtual void draw() const;
+	virtual void draw() override;
 	bool isUnlocked() const;
 	bool containsEvent(const InputEvent &e);
 	virtual void setState(InputStates_t state);

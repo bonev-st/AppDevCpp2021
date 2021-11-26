@@ -32,6 +32,7 @@ extern const Color YELLOW;
 extern const Color ORANGE;
 extern const Color PURPLE;
 extern const Color FULL_TRANSPARENT;
+extern const Color DEBUG_BACKGROUND;
 }
 
 struct Color {

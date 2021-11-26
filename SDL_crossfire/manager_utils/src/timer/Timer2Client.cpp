@@ -53,3 +53,7 @@ bool Timer2Client::operator == (Timer2::TimerHandler_t handler) const {
 	auto p_data = m_Handler.lock();
 	return p_data && (*p_data == handler);
 }
+
+bool Timer2Client::operator != (Timer2::TimerHandler_t handler) const {
+	return !operator == (handler);
+}

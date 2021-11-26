@@ -12,7 +12,26 @@
 #include "manager_utils/managers/DrawMgr.hpp"
 #include "utils/geometry/Geometry.hpp"
 
-void Widget::draw() const {
+bool Widget::g_Debug = false;
+
+void Widget::setDebug(bool ena) {
+	g_Debug = ena;
+}
+
+bool Widget::getDebug() {
+	return g_Debug;
+}
+
+void Widget::invalidate() {
+	m_DrawParams.m_Invalidate = true;
+}
+
+bool Widget::isInvalidate() const {
+	return m_DrawParams.m_Invalidate;
+}
+
+void Widget::draw() {
+	m_DrawParams.m_Invalidate = false;
 	if(m_Visible) {
 		DrawMgrInst::getInstance()->draw(m_DrawParams);
 	}
@@ -20,6 +39,7 @@ void Widget::draw() const {
 
 void Widget::setVisible(bool visible) {
 	m_Visible = visible;
+	invalidate();
 }
 
 bool Widget::getVisible() const {
@@ -30,11 +50,18 @@ void Widget::setPosition(const Point& pos) {
 	m_DrawParams.m_DstRect.m_Pos = pos;
 }
 
+void Widget::setPosition(const Point& pos, const Dimention &dim) {
+	m_DrawParams.m_DstRect.m_Pos = pos;
+	m_DrawParams.m_DstRect.m_W = dim.m_W;
+	m_DrawParams.m_DstRect.m_H = dim.m_H;
+	invalidate();
+}
+
 void Widget::setPositionCenter(const Point& pos) {
 	m_DrawParams.m_DstRect.setToCenter(pos);
 }
 
-const Point& Widget::getPosition() const {
+Point Widget::getPosition() const {
 	return m_DrawParams.m_DstRect.m_Pos;
 }
 
@@ -106,6 +133,10 @@ Rectangle Widget::getRectangle() const {
 	return m_DrawParams.m_DstRect;
 }
 
+void Widget::setRectangle(const Rectangle rect) {
+	m_DrawParams.m_DstRect = rect;
+}
+
 void Widget::setOpacity(int32_t opacity) {
 	if(BlendMode_t::NONE == m_DrawParams.m_BlendMode) {
 		std::cerr << "Widget::setOpacity() failed. Set blend mode first" << std::endl;
@@ -115,6 +146,7 @@ void Widget::setOpacity(int32_t opacity) {
 	if(!DrawMgrInst::getInstance()->setAlpha(m_DrawParams)) {
 		std::cerr << "Widget::setOpacity().DrawMgrInst::getInstance()->setAlpha() failed." << std::endl;
 	}
+	invalidate();
 }
 
 int32_t Widget::getOpacity() const {
@@ -144,15 +176,20 @@ void Widget::deactivateAlphaModulation() {
 }
 
 void Widget::scale(double val) {
+	m_DrawParams.m_DstRect.m_H = m_DrawParams.m_Dimention.m_H;
+	m_DrawParams.m_DstRect.m_W = m_DrawParams.m_Dimention.m_W;
 	m_DrawParams.m_DstRect.scale(val);
+	invalidate();
 }
 
 void Widget::setFlipMode(FlipMode_t flip) {
 	m_DrawParams.m_FlipMode	= flip;
+	invalidate();
 }
 
 void Widget::setRotation(double angle) {
 	m_DrawParams.m_Angle = angle;
+	invalidate();
 }
 
 double Widget::getRotation() const {
@@ -161,6 +198,7 @@ double Widget::getRotation() const {
 
 void Widget::rotate(double delta) {
 	m_DrawParams.m_Angle += delta;
+	invalidate();
 }
 
 void Widget::rotateRight(double delta) {
@@ -173,6 +211,7 @@ void Widget::rotateLeft(double delta) {
 
 void Widget::setRotationCenter(const Point& point) {
 	m_DrawParams.m_RotationCenter = point;
+	invalidate();
 }
 
 const Point& Widget::getRotationCenter() const {

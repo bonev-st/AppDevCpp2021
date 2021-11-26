@@ -19,25 +19,25 @@ bool TextContainer::init(const FontConfig::FontRes_t & cfg, SDL_Renderer *p_rend
 	return m_Font.init(cfg);
 }
 
-bool TextContainer::createText(const std::string &text, const Color &color, std::size_t font_id, std::size_t &out_text_id) {
+bool TextContainer::create(const std::string &text, const Color &color, std::size_t font_id, std::size_t &out_id) {
 	auto font = m_Font.get(font_id);
 	if(nullptr == font) {
-		std::cerr << "TextContainer::createText::m_Font.get() failed. Reason: Font with id " << font_id << " not found" << std::endl;
+		std::cerr << "TextContainer::create() m_Font.get() failed. Reason: Font with id " << font_id << " not found" << std::endl;
 		return false;
 	}
 	Text_t texture = Texture::createTextureFromFont(text, color, font, m_Renderer);
 	if(nullptr == texture) {
-		std::cerr << "TextContainer::createText::Texture::createTextureFromFont() failed."  << " for text: " << text << std::endl;
+		std::cerr << "TextContainer::create() Texture::createTextureFromFont() failed."  << " for text: " << text << std::endl;
         return false;
 	}
-	out_text_id = m_Text.add(texture);
+	out_id = m_Text.add(texture);
     return true;
 }
 
-bool TextContainer::reloadText(const std::string &text, const Color &color, std::size_t font_id, std::size_t out_text_id) {
+bool TextContainer::reload(const std::string &text, const Color &color, std::size_t font_id, std::size_t id) {
 	auto font = m_Font.get(font_id);
 	if(nullptr == font) {
-		std::cerr << "TextContainer::reloadText::m_Font.get() failed. Reason: Font with id " << font_id << " not found" << std::endl;
+		std::cerr << "TextContainer::reload() m_Font.get() failed. Reason: Font with id " << font_id << " not found" << std::endl;
 		return false;
 	}
 	Text_t texture = Texture::createTextureFromFont(text, color, font, m_Renderer);
@@ -45,10 +45,16 @@ bool TextContainer::reloadText(const std::string &text, const Color &color, std:
 		std::cerr << "TextContainer::reloadText::Texture::createTextureFromFont() failed." << " for text: " << text << std::endl;
         return false;
 	}
-    return m_Text.replace(out_text_id, texture);
+	const auto rc = m_Text.replace(id, texture);
+	if(!rc) {
+		std::cerr << "TextContainer::reload() m_Text.replace() failed." << std::endl;
+        return false;
+	}
+
+    return m_Text.replace(id, texture);
 }
 
-bool TextContainer::unloadText(std::size_t out_text_id) {
+bool TextContainer::unload(std::size_t out_text_id) {
     return m_Text.release(out_text_id);
 }
 

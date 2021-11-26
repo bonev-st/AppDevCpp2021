@@ -20,6 +20,7 @@ const Color YELLOW(255, 255, 0, 255);
 const Color ORANGE(255, 128, 0, 255);
 const Color PURPLE(128, 0, 128, 255);
 const Color FULL_TRANSPARENT(0, 0, 0, 0);
+const Color DEBUG_BACKGROUND(255, 0, 0, 150);
 } //namespace Colors
 
 Color::Color(const uint8_t red,  const uint8_t green,

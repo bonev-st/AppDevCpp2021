@@ -46,6 +46,7 @@ public:
 
 	bool createTexture(const Color & color, DrawParams_t & param);
 	bool releaseTexture(DrawParams_t & param);
+	std::shared_ptr<SDL_Texture> getTextureRenderLock(const DrawParams_t & param);
 
 private:
 	SDL_Renderer* m_Rerender = nullptr;
