@@ -53,22 +53,25 @@ void Bonuses::reset() {
 
 void Bonuses::enable(BonusId_t id) {
 	if(BONUS_NUMB > m_Current) {
-		setDisable(m_Current);
+		setDisable();
 	}
-	m_Current = static_cast<uint8_t>(id);
-	setEnable(m_Current);
+	auto index = static_cast<uint8_t>(id);
+	if(BONUS_NUMB > index) {
+		m_Current = index;
+		setEnable();
+	}
 }
 
 void Bonuses::disable() {
 	if(BONUS_NUMB > m_Current) {
-		setDisable(m_Current);
+		setDisable();
 		m_Current = BONUS_NUMB;
 	}
 }
 
 void Bonuses::hide(uint32_t points) {
 	if(BONUS_NUMB > m_Current) {
-		setHide(m_Current, points);
+		setHide(points);
 	}
 }
 
@@ -79,22 +82,19 @@ void Bonuses::draw() {
 	m_ScalePointsText.draw();
 }
 
-void Bonuses::setEnable(std::size_t id) {
-	assert(BONUS_NUMB > id);
+void Bonuses::setEnable() {
 	auto & widget = m_BonusContaner[m_Current].m_Widget.m_Scaled;
 	widget.start();
 	widget.setPositionCenter(m_BonusContaner[m_Current].m_Position.m_EnablePos);
 }
 
-void Bonuses::setDisable(std::size_t id) {
-	assert(BONUS_NUMB > id);
+void Bonuses::setDisable() {
 	auto & widget = m_BonusContaner[m_Current].m_Widget.m_Scaled;
 	widget.stop();
 	widget.setPositionCenter(m_BonusContaner[m_Current].m_Position.m_DisablePos);
 }
 
-void Bonuses::setHide(std::size_t id, uint32_t number) {
-	assert(BONUS_NUMB > id);
+void Bonuses::setHide(uint32_t number) {
 	auto & widget = m_BonusContaner[m_Current].m_Widget.m_Scaled;
 	if(widget.getVisible()) {
 		const auto text = std::to_string(number);
@@ -106,6 +106,6 @@ void Bonuses::setHide(std::size_t id, uint32_t number) {
 		}
 		widget.setVisible(false);
 		widget.stop();
-		widget.setPositionCenter(m_BonusContaner[id].m_Position.m_DisablePos);
+		widget.setPositionCenter(m_BonusContaner[m_Current].m_Position.m_DisablePos);
 	}
 }

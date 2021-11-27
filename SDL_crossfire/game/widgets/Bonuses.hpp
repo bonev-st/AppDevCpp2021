@@ -47,16 +47,15 @@ private:
 		BonusWidget_t m_Widget;
 	};
 
-	uint8_t m_Count = 0;
 	uint8_t m_Current = BONUS_NUMB;
 
 	std::array<Bonus_t, BONUS_NUMB> m_BonusContaner;
 	Text m_PointsText;
 	WidgetTO<ScaleTexture> m_ScalePointsText;
 
-	void setEnable(std::size_t id);
-	void setDisable(std::size_t id);
-	void setHide(std::size_t id, uint32_t number);
+	void setEnable();
+	void setDisable();
+	void setHide(uint32_t number);
 };
 
 #endif /* GAME_WIDGETS_BONUSES_HPP_ */

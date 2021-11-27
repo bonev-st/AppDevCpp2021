@@ -17,35 +17,29 @@ struct RGBA {
 	uint8_t a { 255 };
 };
 
-struct Color;
-
-namespace Colors {
-extern const Color RED;
-extern const Color GREEN;
-extern const Color BLUE;
-extern const Color BLACK;
-extern const Color WHITE;
-extern const Color GRAY;
-extern const Color CYAN;
-extern const Color MAGENTA;
-extern const Color YELLOW;
-extern const Color ORANGE;
-extern const Color PURPLE;
-extern const Color FULL_TRANSPARENT;
-extern const Color DEBUG_BACKGROUND;
-}
-
 struct Color {
 	Color(const uint8_t red,  const uint8_t green,
 		  const uint8_t blue, const uint8_t alpha = 255);
-	Color() {
-		*this = Colors::FULL_TRANSPARENT;
-	}
+	Color();
 
 	bool operator == (const Color& other) const;
 	bool operator != (const Color& other) const;
 
 	RGBA m_RGBA;
+
+	static const Color RED;
+	static const Color GREEN;
+	static const Color BLUE;
+	static const Color BLACK;
+	static const Color WHITE;
+	static const Color GRAY;
+	static const Color CYAN;
+	static const Color MAGENTA;
+	static const Color YELLOW;
+	static const Color ORANGE;
+	static const Color PURPLE;
+	static const Color FULL_TRANSPARENT;
+	static const Color DEBUG_BACKGROUND;
 };
 
 #endif /* UTILS_DRAWING_COLOR_HPP_ */

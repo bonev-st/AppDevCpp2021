@@ -149,7 +149,6 @@ bool ResMgr::setTextureColor(const Color & color, DrawParams_t & param) {
 		std::cerr << "setColor(" << param.m_ResrId <<") failed" << std::endl;
 		return false;
 	}
-	param.m_WidgetType = WidgetType_t::UNKNOWN;
 	return true;
 }
 

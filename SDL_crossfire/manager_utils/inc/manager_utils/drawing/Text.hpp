@@ -20,7 +20,7 @@ public:
 	bool setColor(const Color &color);
 
 private:
-	Color m_Color = Colors::BLACK;
+	Color m_Color = Color::BLACK;
 	std::string m_Text;
 	std::size_t m_FontId = -1;
 

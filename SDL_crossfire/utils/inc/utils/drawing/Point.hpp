@@ -19,10 +19,7 @@ struct Point {
 	std::int32_t m_Y = UNDEF_VAL;
 
 	bool operator == (const Point& other) const;
-
-	bool operator != (const Point& other) const {
-		return !operator == (other);
-	}
+	bool operator != (const Point& other) const;
 
 	Point operator - (const Point& other) const;
 	Point operator + (const Point& other) const;

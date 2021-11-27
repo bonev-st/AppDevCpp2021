@@ -9,7 +9,7 @@
 #include "utils/drawing/Rectangle.hpp"
 
 const Rectangle Rectangle::ZERO(0, 0, 0, 0);
-const Rectangle Rectangle::UNDEFINED(1e6, 1e6, 1e6, 1e6);
+const Rectangle Rectangle::UNDEFINED(Point::UNDEF_VAL, Point::UNDEF_VAL, Point::UNDEF_VAL, Point::UNDEF_VAL);
 
 Rectangle::Rectangle(std::int32_t x, std::int32_t y, std::int32_t w, std::int32_t h) :
 	m_Pos(x,y)
@@ -32,11 +32,9 @@ bool Rectangle::operator == (const Rectangle& other) const {
 		;
 }
 
-void Rectangle::scale(double scaling_factor) {
-	m_W = static_cast<int32_t>(std::round(m_W * scaling_factor));
-	m_H = static_cast<int32_t>(std::round(m_H * scaling_factor));
+bool Rectangle::operator != (const Rectangle& other) const {
+	return !operator == (other);
 }
-
 bool Rectangle::isInside(const Point & pos) const {
 	return ( m_Pos.m_X <= pos.m_X)
 		&& ((m_Pos.m_X + m_W) > pos.m_X)
@@ -46,9 +44,9 @@ bool Rectangle::isInside(const Point & pos) const {
 
 bool Rectangle::isInside(const Rectangle & rec) const {
 	return ( m_Pos.m_X <= rec.m_Pos.m_X)
-		&& ((m_Pos.m_X + m_W) >= rec.m_Pos.m_X)
+		&& ((m_Pos.m_X + m_W) > rec.m_Pos.m_X)
 		&& ( m_Pos.m_Y <= rec.m_Pos.m_Y)
-		&& ((m_Pos.m_Y + m_H) >= rec.m_Pos.m_Y);
+		&& ((m_Pos.m_Y + m_H) > rec.m_Pos.m_Y);
 }
 
 bool Rectangle::isToched(const Rectangle & rec) const {

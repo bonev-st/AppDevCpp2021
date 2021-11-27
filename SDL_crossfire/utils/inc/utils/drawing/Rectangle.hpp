@@ -21,12 +21,7 @@ struct Rectangle {
 	std::int32_t m_H = 0;
 
 	bool operator == (const Rectangle& other) const;
-
-	bool operator != (const Rectangle& other) const {
-		return !operator == (other);
-	}
-
-	void scale(double scaling_factor);
+	bool operator != (const Rectangle& other) const;
 
 	bool isInside(const Point & pos) const;
 	bool isInside(const Rectangle & rec) const;

@@ -55,7 +55,7 @@ void DrawMgr::draw(const DrawParams_t & draw) const {
 			std::cerr << "DrawMgr::drawFrame::drawText() failed, id: " << draw.m_ResrId << " type: " << static_cast<int>(draw.m_WidgetType) << std::endl;
 		}
 	} else {
-		std::cerr << "DrawMgr::drawFrame::drawFrame() failed, unknown widget type: " << static_cast<int>(draw.m_WidgetType) << std::endl;
+		std::cerr << "DrawMgr::drawFrame() failed, unknown widget type: " << static_cast<int>(draw.m_WidgetType) << std::endl;
 	}
 }
 

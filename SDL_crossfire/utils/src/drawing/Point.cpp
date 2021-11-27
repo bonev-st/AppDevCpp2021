@@ -8,7 +8,7 @@
 #include "utils/drawing/Point.hpp"
 
 const Point Point::ZERO = Point(0, 0);
-const Point Point::UNDEFINED  = Point(1e6, 1e6);
+const Point Point::UNDEFINED  = Point(UNDEF_VAL, UNDEF_VAL);
 
 Point::Point(std::int32_t x, std::int32_t y) :
 	m_X(x)
@@ -18,6 +18,10 @@ Point::Point(std::int32_t x, std::int32_t y) :
 
 bool Point::operator == (const Point& other) const {
 	return (other.m_X == m_X) && (other.m_Y == m_Y);
+}
+
+bool Point::operator != (const Point& other) const {
+	return !operator == (other);
 }
 
 Point Point::operator - (const Point& other) const {

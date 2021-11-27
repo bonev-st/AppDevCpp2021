@@ -117,7 +117,7 @@ bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 			}
 		} else if(GameConfig::IMG_BONUS_INDX == key) {
 			if(!m_Bonuses.init(data, m_Scale, Layout::getBonusRelPosEna(), Layout::getBonusRelPosDis(),
-					0, Colors::GREEN)) {
+					0, Color::GREEN)) {
 				std::cerr << "Game::createImages() m_Bonuses.init() failed"<< std::endl;
 				return false;
 			}

@@ -19,6 +19,7 @@ bool RGB_Texture::create(const Dimention &dim, const Color &color, const Point &
 	}
 	activateAlphaModulation();
 	setPosition(pos);
+	invalidate();
 	return true;
 }
 
@@ -27,6 +28,7 @@ bool RGB_Texture::setColor(const Color &color) {
 		std::cerr << "RGB_Texture::setColor() createTexture() failed"<< std::endl;
 		return false;
 	}
+	invalidate();
 	return true;
 }
 

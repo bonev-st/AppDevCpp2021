@@ -29,6 +29,7 @@ bool Image::create(std::size_t image_id, const Point &pos, bool center) {
 	if(m_DrawParams.m_Frames) {
 		m_MaxFrames = m_DrawParams.m_Frames->size();
 	}
+	invalidate();
 	return true;
 }
 
