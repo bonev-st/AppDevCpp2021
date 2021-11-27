@@ -50,7 +50,6 @@ void CollisionDetect::processing() {
 		if(data.empty()) {
 			return;
 		}
-		assert(2 <= data.size());
 		if(m_CB) {
 			m_CB(data);
 		}

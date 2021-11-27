@@ -37,27 +37,39 @@ bool Rectangle::operator != (const Rectangle& other) const {
 }
 bool Rectangle::isInside(const Point & pos) const {
 	return ( m_Pos.m_X <= pos.m_X)
-		&& ((m_Pos.m_X + m_W) > pos.m_X)
+		&& ( getRigth().m_X > pos.m_X)
 		&& ( m_Pos.m_Y <= pos.m_Y)
-		&& ((m_Pos.m_Y + m_H) > pos.m_Y);
+		&& (getBottom().m_Y > pos.m_Y);
 }
 
 bool Rectangle::isInside(const Rectangle & rec) const {
-	return ( m_Pos.m_X <= rec.m_Pos.m_X)
-		&& ((m_Pos.m_X + m_W) > rec.m_Pos.m_X)
-		&& ( m_Pos.m_Y <= rec.m_Pos.m_Y)
-		&& ((m_Pos.m_Y + m_H) > rec.m_Pos.m_Y);
+	return isInside(rec.m_Pos)
+		&& isInside(rec.getRigth())
+		&& isInside(rec.getBottom())
+		&& isInside(rec.getBottomRigth());
 }
 
 bool Rectangle::isToched(const Rectangle & rec) const {
 	return isInside(rec.m_Pos)
-		|| isInside(Point(rec.m_Pos.m_X + rec.m_W, rec.m_Pos.m_Y))
-		|| isInside(Point(rec.m_Pos.m_X,           rec.m_Pos.m_Y + rec.m_H))
-		|| isInside(Point(rec.m_Pos.m_X + rec.m_W, rec.m_Pos.m_Y + rec.m_H));
+		|| isInside(rec.getRigth())
+		|| isInside(rec.getBottom())
+		|| isInside(rec.getBottomRigth());
 }
 
 Point Rectangle::getCenter() const {
 	return Point(m_Pos.m_X + m_W/2, m_Pos.m_Y + m_H/2);
+}
+
+Point Rectangle::getRigth() const {
+	return Point(m_Pos.m_X + m_W, m_Pos.m_Y);
+}
+
+Point Rectangle::getBottom() const {
+	return Point(m_Pos.m_X, m_Pos.m_Y + m_H);
+}
+
+Point Rectangle::getBottomRigth() const {
+	return Point(m_Pos.m_X + m_W, m_Pos.m_Y + m_H);
 }
 
 void Rectangle::setToCenter(const Point & pos) {

@@ -28,7 +28,11 @@ struct Rectangle {
 	bool isToched(const Rectangle & rec) const;
 
 	Point getCenter() const;
+	Point getRigth() const;
+	Point getBottom() const;
+	Point getBottomRigth() const;
 	void setToCenter(const Point & point);
+
 
 	static const Rectangle ZERO;
 	static const Rectangle UNDEFINED;

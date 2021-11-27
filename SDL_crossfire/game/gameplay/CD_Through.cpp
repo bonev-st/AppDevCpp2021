@@ -19,14 +19,15 @@ std::vector<const Widget*> CD_Through::operator ()(const Widget* obj, const std:
 	std::vector<const Widget*> rc;
 	rc.reserve(2);
 	if(obj) {
+		Rectangle rect_obj = m_Tolerance;
+		rect_obj.m_Pos = obj->getRectangle().getCenter();
 		Rectangle rect = m_Tolerance;
 		for(const auto e : others) {
 			if(!e->getVisible()) {
 				continue;
 			}
 			rect.m_Pos = e->getRectangle().getCenter();
-			if(obj->getRectangle().isInside(rect)) {
-				rc.push_back(obj);
+			if(rect_obj.isToched(rect)) {
 				rc.push_back(e);
 				break;
 			}
