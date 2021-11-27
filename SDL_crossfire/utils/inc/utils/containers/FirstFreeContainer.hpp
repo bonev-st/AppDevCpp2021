@@ -30,9 +30,12 @@ public:
 		}
 
 		iterator& operator ++() {
-			if(m_Val) {
+			if(m_Val && m_End) {
 				while(m_End != m_Val) {
 					++m_Val;
+					if(m_End == m_Val) {
+						break;
+					}
 					if(m_Val->m_Valid) {
 						break;
 					}
@@ -153,6 +156,9 @@ bool FirstFreeContainer<T>::isValid(std::size_t id) const {
 
 template<class T>
 typename FirstFreeContainer<T>::iterator FirstFreeContainer<T>::begin() {
+	if(m_Container.empty()) {
+		return iterator(nullptr, nullptr);
+	}
 	for(auto & e : m_Container) {
 		if(e.m_Valid) {
 			return iterator(&e, &m_Container.back()+1);
@@ -163,6 +169,9 @@ typename FirstFreeContainer<T>::iterator FirstFreeContainer<T>::begin() {
 
 template<class T>
 typename FirstFreeContainer<T>::iterator FirstFreeContainer<T>::end() {
+	if(m_Container.empty()) {
+		return iterator(nullptr, nullptr);
+	}
 	return iterator(&m_Container.back()+1, &m_Container.back()+1);
 }
 
