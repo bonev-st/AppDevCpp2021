@@ -82,6 +82,17 @@ void Bonuses::draw() {
 	m_ScalePointsText.draw();
 }
 
+BonusId_t Bonuses::getId() const {
+	return static_cast<BonusId_t>(m_Current);
+}
+
+const Widget* Bonuses::getEnabledWidget() const {
+	if(BONUS_NUMB > m_Current) {
+		return &m_BonusContaner[m_Current].m_Widget.m_Scaled;
+	}
+	return nullptr;
+}
+
 void Bonuses::setEnable() {
 	auto & widget = m_BonusContaner[m_Current].m_Widget.m_Scaled;
 	widget.start();

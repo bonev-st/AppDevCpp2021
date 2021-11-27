@@ -23,8 +23,8 @@ static constexpr int32_t DEBUG_OFFSET_Y = 100;
 
 static constexpr int32_t GRID_SIZE = 32;
 
-static const auto GAME_TEXT_COLOR = Color::GREEN;
-static const auto DEBUG_TEXT_COLOR = Color::WHITE;
+static const auto & GAME_TEXT_COLOR = Color::GREEN;
+static const auto & DEBUG_TEXT_COLOR = Color::WHITE;
 
 static constexpr double ENEMY_SPEED = 0.35;
 static constexpr double ENEMY_BULLET_SPEED = ENEMY_SPEED * 4.0;

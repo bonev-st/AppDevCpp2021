@@ -19,15 +19,16 @@ class CollisionDetect {
 public:
 	using Callback_t = std::function<void(const std::vector<const Widget*> &)>;
 
-	bool init(const Widget* obj, const Callback_t & cb, ProcessorIF * proc);
-	void add(const Widget & widged);
-	bool remove(const Widget & widged);
+	bool init(const Callback_t & cb, ProcessorIF * proc);
+	void setObj(const Widget * widged);
+	void add(const Widget * widged);
+	bool remove(const Widget * widged);
 	void processing();
 
 private:
 	Callback_t m_CB;
 	std::deque<const Widget *> m_Continer;
-	const Widget* m_Obj;
+	const Widget* m_Obj = nullptr;
 	ProcessorIF * m_Processor = nullptr;
 };
 

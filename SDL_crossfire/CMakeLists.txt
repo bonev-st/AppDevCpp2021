@@ -33,8 +33,13 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollisionDetect.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CD_Through.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CD_Through.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CD_Touch.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CD_Touch.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CD_ClientIF.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/BulletsCtrl.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/BulletsCtrl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollitionMgr.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollitionMgr.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfig.hpp

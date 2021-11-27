@@ -25,7 +25,6 @@ const uint32_t Game::MOTION_PERIOD = 15;	// ms
 
 bool Game::init(const GameConfig::Config_t & cfg) {
 	Widget::setDebug(true);
-
 	m_Scale = 2.0;
 	if(!loadKeys(cfg.m_Keys)) {
 		std::cerr << "loadKeys() failed." << std::endl;
@@ -51,19 +50,20 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 		std::cerr << "initTimers() failed." << std::endl;
 		return false;
 	}
-	if(!m_CD_Inside.init(Rectangle(Point::ZERO, 3, 3))) {
-		std::cerr << "m_CD_Inside.init() failed." << std::endl;
-		return false;
-	}
-	if(!m_ShipReload.init(&m_Ship, std::bind(&Game::onReloadHit, this, std::placeholders::_1), &m_CD_Inside)) {
-		std::cerr << "m_CD_Inside.init() failed." << std::endl;
-		return false;
-	}
-	m_ShipReload.add(m_Ammunition.getWidget());
 	m_Ship.reload(5);
 	m_Ship.setCallback(std::bind(&Game::onShipFire, this, std::placeholders::_1, std::placeholders::_2));
 	m_FPS.init();
-	m_Bonuses.enable(BonusId_t::BONUS3);
+
+	if(!m_CollitionMgr.init(std::bind(&Game::onCB_Ammun, this, std::placeholders::_1),
+							std::bind(&Game::onCB_Bonus, this, std::placeholders::_1),
+							std::bind(&Game::onCB_Ship, this, std::placeholders::_1),
+							std::bind(&Game::onCB_Enemy, this, std::placeholders::_1))) {
+		std::cerr << "m_CollitionMgr.init() failed." << std::endl;
+		return false;
+	}
+
+	const std::vector<const Widget*> tmp;
+	m_CollitionMgr.addUnits(&m_Ship, tmp);
 	return true;
 }
 
@@ -96,10 +96,9 @@ bool Game::new_frame() {
 }
 
 bool Game::processing() {
-	m_ShipReload.processing();
+	m_CollitionMgr.processing();
 	return true;
 }
-
 
 bool Game::loadKeys(const GameConfig::KeyRes_t & cfg) {
 	m_Keys = cfg;
@@ -169,7 +168,7 @@ bool Game::initInput() {
 }
 
 bool Game::initTimers() {
-#if 0
+#if 1
 	if(!m_RefreshTimer.start(REFRESH_RATE, Timer2::TimerMode_t::RELOAD, std::bind(&Game::onFPS_Timeout, this, std::placeholders::_1))) {
 		std::cerr << "startTimer() failed." << std::endl;
 		return false;
@@ -260,20 +259,66 @@ void Game::onMotion_Timeout([[maybe_unused]]Timer2::TimerHandler_t id) {
 }
 
 void Game::onShipFire(const Point &pos, int8_t rem) {
+	static uint8_t id = 0;
+	static uint8_t count = 0;
+
 	std::cout << "Shoot start point X " << pos.m_X << " , Y " << pos.m_Y
 			  << ", remaining bullets " << static_cast<int32_t>(rem) << std::endl;
 	if(0 > rem) {
 		return;
 	}
+	++count;
+	if(m_Bonuses.getEnabledWidget() && (4 < count)) {
+		m_CollitionMgr.removeBonus(m_Bonuses.getEnabledWidget());
+		m_Bonuses.disable();
+		count = 0;
+	}
+	if((6 < count) && (static_cast<uint8_t>(BonusId_t::BONUS_NUMB) > id)) {
+		m_Bonuses.enable(static_cast<BonusId_t>(id));
+		m_CollitionMgr.addBonus(m_Bonuses.getEnabledWidget());
+		count = 0;
+		++id;
+	}
 	if(2 == rem) {
 		if(!m_Ammunition.show(Geometry::getRotation180(pos, Layout::getArenaRectangle().getCenter()))) {
 			std::cerr << "Game::createImages() m_Ammunition.show() failed"<< std::endl;
 		}
+		m_CollitionMgr.addAmmun(&m_Ammunition);
 	}
 }
 
-void Game::onReloadHit([[maybe_unused]]const std::vector<const Widget *> data) {
-	m_Ammunition.clear();
+void Game::onCB_Ammun([[maybe_unused]]const std::vector<const Widget *> data) {
+	m_CollitionMgr.removeAmmun(&m_Ammunition);
+	m_Ammunition.collision();
 	m_Ship.reload(5);
-	m_Bonuses.hide(800);
+}
+
+void Game::onCB_Bonus([[maybe_unused]]const std::vector<const Widget *> data) {
+	uint32_t points = 0;
+	switch(m_Bonuses.getId()) {
+	case BonusId_t::BONUS1:
+		points = 100;
+		break;
+	case BonusId_t::BONUS2:
+		points = 200;
+		break;
+	case BonusId_t::BONUS3:
+		points = 400;
+		break;
+	case BonusId_t::BONUS4:
+		points = 800;
+		break;
+	default:
+		assert(0);
+	}
+	m_CollitionMgr.removeBonus(m_Bonuses.getEnabledWidget());
+	m_Bonuses.hide(points);
+}
+
+void Game::onCB_Ship([[maybe_unused]]const std::vector<const Widget *> data) {
+
+}
+
+void Game::onCB_Enemy([[maybe_unused]]const std::vector<const Widget *> data) {
+
 }

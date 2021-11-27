@@ -26,6 +26,8 @@ public:
 	void disable();
 	void hide(uint32_t points);
 	void draw();
+	BonusId_t getId() const;
+	const Widget*  getEnabledWidget() const;
 
 private:
 	static constexpr std::size_t BONUS_NUMB = 4;

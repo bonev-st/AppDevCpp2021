@@ -11,39 +11,28 @@
 
 bool Ammunition::init(std::size_t image_id, double scale_factor) {
 	if(!m_Img.create(image_id, Point::ZERO)) {
-		std::cerr << "Ammunition::init() m_Img.create(" << image_id << ") failed." << std::endl;
+		std::cerr << "m_Img.create(" << image_id << ") failed." << std::endl;
 		return false;
 	}
-	if(!m_ScaleImage.initBlinkingAnimation(BLINKNIG_PERIOD)) {
-		std::cerr << "Ammunition::init() m_Img.initBlinkingAnimation() failed." << std::endl;
+	if(!initBlinkingAnimation(BLINKNIG_PERIOD)) {
+		std::cerr << "initBlinkingAnimation() failed." << std::endl;
 		return false;
 	}
-	m_ScaleImage.setVisible(false);
-	if(!m_ScaleImage.init(scale_factor, &m_Img)) {
-		std::cerr << "Ammunition::init() m_ScaleImage.init() failed." << std::endl;
+	setVisible(false);
+	if(!BlinkingAnimation<ScaleTexture>::init(scale_factor, &m_Img)) {
+		std::cerr << "BlinkingAnimation<ScaleTexture>::init() failed." << std::endl;
 		return false;
 	}
 	return true;
 }
 
 bool Ammunition::show(const Point &pos) {
-	m_ScaleImage.setPositionCenter(pos);
-	m_ScaleImage.setVisible(true);
-	return m_ScaleImage.start();
+	setPositionCenter(pos);
+	setVisible(true);
+	return start();
 }
 
-void Ammunition::clear() {
-	m_ScaleImage.setVisible(false);
-	m_ScaleImage.stop();
-}
-
-void Ammunition::draw() {
-	m_ScaleImage.draw();
-}
-
-Rectangle Ammunition::getRect() const {
-	if(m_ScaleImage.getVisible()) {
-		return m_ScaleImage.getRectangle();
-	}
-	return Rectangle::UNDEFINED;
+void Ammunition::collision() {
+	setVisible(false);
+	stop();
 }

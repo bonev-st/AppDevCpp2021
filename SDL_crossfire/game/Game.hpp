@@ -27,6 +27,8 @@
 
 #include "game/gameplay/CollisionDetect.hpp"
 #include "game/gameplay/CD_Through.hpp"
+#include "game/gameplay/CollitionMgr.hpp"
+
 
 class InputEvent;
 class InputEventIF;
@@ -63,8 +65,7 @@ private:
 	Timer2Client m_RefreshTimer;
 	Timer2Client m_MotionTimer;
 
-	CollisionDetect m_ShipReload;
-	CD_Through m_CD_Inside;
+	CollitionMgr m_CollitionMgr;
 
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
 	bool createImages(const GameConfig::ImgRes_t & cfg);
@@ -80,7 +81,11 @@ private:
 	void onMotion_Timeout(Timer2::TimerHandler_t handler);
 
 	void onShipFire(const Point &pos, int8_t rem);
-	void onReloadHit(const std::vector<const Widget *> data);
+
+	void onCB_Ammun(const std::vector<const Widget *> data);
+	void onCB_Bonus(const std::vector<const Widget *> data);
+	void onCB_Ship(const std::vector<const Widget *> data);
+	void onCB_Enemy(const std::vector<const Widget *> data);
 };
 
 #endif /* GAME_GAME_HPP_ */

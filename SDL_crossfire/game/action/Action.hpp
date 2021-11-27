@@ -14,7 +14,7 @@ namespace Layout {
 enum GridNeighborhoodType_t : uint8_t;
 }
 
-enum class Action_t {
+enum class Action_t : uint8_t {
 	NONE,
 	MOVE_ACTION_START,
 	MOVE_UP = MOVE_ACTION_START, MOVE_RIGHT, MOVE_DOWN, MOVE_LEFT,

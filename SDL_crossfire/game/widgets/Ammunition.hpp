@@ -14,23 +14,17 @@
 
 #include "game/widgets/BlinkingAnimation.hpp"
 #include "game/widgets/ScaleTexture.hpp"
+#include "game/gameplay/CD_ClientIF.hpp"
 
-class Ammunition {
+class Ammunition : public CD_ClientIF, public BlinkingAnimation<ScaleTexture> {
 public:
 	bool init(std::size_t image_id, double scale_factor);
 	bool show(const Point &pos);
-	void clear();
-	void draw();
-	Rectangle getRect() const;
-
-	const Widget & getWidget() const {
-		return m_ScaleImage;
-	}
+	void collision() final;
 
 private:
 	static constexpr double BLINKNIG_PERIOD = 500;
 	Image m_Img;
-	BlinkingAnimation<ScaleTexture> m_ScaleImage;
 };
 
 #endif /* GAME_WIDGETS_AMMUNITION_HPP_ */
