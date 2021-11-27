@@ -67,11 +67,11 @@ Point toPoint(double x, double y) {
 }
 
 double getSinDeg(double x) {
-	return std::sin(rad2deg(x));
+	return std::sin(deg2rad(x));
 }
 
 double getCosDeg(double x) {
-	return std::cos(rad2deg(x));
+	return std::cos(deg2rad(x));
 }
 
 Point getRotation180(const Point &pos, const Point &center) {

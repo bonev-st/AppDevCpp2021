@@ -24,6 +24,9 @@ const uint32_t Game::REFRESH_RATE = 333;	// ms
 const uint32_t Game::MOTION_PERIOD = 15;	// ms
 
 bool Game::init(const GameConfig::Config_t & cfg) {
+	Widget::setDebug(true);
+
+	m_Scale = 2.0;
 	if(!loadKeys(cfg.m_Keys)) {
 		std::cerr << "loadKeys() failed." << std::endl;
 		return false;
@@ -32,7 +35,6 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 		std::cerr << "createImages() failed." << std::endl;
 		return false;
 	}
-
 	if(!createTexts(cfg.m_Text)) {
 		std::cerr << "createTexts() failed." << std::endl;
 		return false;
@@ -61,6 +63,7 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 	m_Ship.reload(5);
 	m_Ship.setCallback(std::bind(&Game::onShipFire, this, std::placeholders::_1, std::placeholders::_2));
 	m_FPS.init();
+	m_Bonuses.enable(BonusId_t::BONUS3);
 	return true;
 }
 
@@ -73,11 +76,12 @@ bool Game::events(const InputEvent & event, bool & exit) {
 	return true;
 }
 
-bool Game::draw() const {
+bool Game::draw() {
 	//m_Img[GameConfig::IMG_BACKGROUND_INDX].draw();
 	m_Img[GameConfig::IMG_GRID_BKGRND_INDX].draw();
 	m_Img[GameConfig::IMG_CROSSFIRE_INDX].draw();
 	m_Img[GameConfig::IMG_GRID_INDX].draw();
+	m_Bonuses.draw();
 	m_Ammunition.draw();
 	m_Ship.draw();
 	for(auto & t : m_Text) {
@@ -107,14 +111,20 @@ bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 	for(const auto & [key, data]: cfg) {
 		const auto & config = Layout::getImgData(key);
 		if(GameConfig::IMG_SHIP_INDX == key) {
-			if(!m_Ship.init(data, Layout::getShipRelPos(), Layout::getGridSize(), Layout::getShipSpeed())) {
+			if(!m_Ship.init(data, m_Scale, Layout::getShipRelPos(), Layout::getGridSize(), Layout::getShipSpeed())) {
 				std::cerr << "Game::createImages.m_Ship.init() failed"<< std::endl;
+				return false;
+			}
+		} else if(GameConfig::IMG_BONUS_INDX == key) {
+			if(!m_Bonuses.init(data, m_Scale, Layout::getBonusRelPosEna(), Layout::getBonusRelPosDis(),
+					0, Colors::GREEN)) {
+				std::cerr << "Game::createImages() m_Bonuses.init() failed"<< std::endl;
 				return false;
 			}
 		} else if(GameConfig::IMG_OWN_BULLED_INDX == key) {
 			bulled_id = data;
 		} else if(GameConfig::IMG_AMMU_INDX == key) {
-			if(!m_Ammunition.init(data)) {
+			if(!m_Ammunition.init(data, m_Scale)) {
 				std::cerr << "Game::createImages() m_Ammunition.init() failed"<< std::endl;
 				return false;
 			}
@@ -132,7 +142,7 @@ bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 	if(INVALID_RESR_ID == bulled_id) {
 		return false;
 	}
-	if(!m_Ship.init_bullet(bulled_id, Layout::getShipBulletSpeed(), Layout::getOwnMaxBulled(), Layout::getOwnReloadTime(), Layout::getFiealdRectangle())) {
+	if(!m_Ship.init_bullet(bulled_id, m_Scale, Layout::getShipBulletSpeed(), Layout::getOwnMaxBulled(), Layout::getOwnReloadTime(), Layout::getArenaRectangle())) {
 		std::cerr << "Game::createImages() m_Ship.init_bullet() failed"<< std::endl;
 		return false;
 	}
@@ -256,7 +266,7 @@ void Game::onShipFire(const Point &pos, int8_t rem) {
 		return;
 	}
 	if(2 == rem) {
-		if(!m_Ammunition.show(Geometry::getRotation180(pos, Layout::getFiealdRectangle().getCenter()))) {
+		if(!m_Ammunition.show(Geometry::getRotation180(pos, Layout::getArenaRectangle().getCenter()))) {
 			std::cerr << "Game::createImages() m_Ammunition.show() failed"<< std::endl;
 		}
 	}
@@ -265,4 +275,5 @@ void Game::onShipFire(const Point &pos, int8_t rem) {
 void Game::onReloadHit([[maybe_unused]]const std::vector<const Widget *> data) {
 	m_Ammunition.clear();
 	m_Ship.reload(5);
+	m_Bonuses.hide(800);
 }

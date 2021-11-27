@@ -24,6 +24,7 @@ public:
 	bool create(const Dimention& dim, const Color& color, std::size_t &out_id);
 	bool reload(const Dimention& dim, const Color& color, std::size_t id);
 	bool unload(std::size_t id);
+	bool setColor(const Color& color, std::size_t id);
 
 	std::shared_ptr<SDL_Texture> getLock(std::size_t id);
 	const Texture::Texture_t* get(std::size_t id) const;

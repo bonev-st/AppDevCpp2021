@@ -13,21 +13,16 @@
 
 using namespace Timer2;
 
-Timer2Client::Timer2Client() :
-	m_Singleton(*Timer2MgrInst::getInstance())
-{
-}
-
 Timer2Client::~Timer2Client() {
 	stop();
 }
 
 bool Timer2Client::start(uint32_t period, TimerMode_t mode, const TimerCB_t& cb) {
 	if(!cb) {
-		std::cerr << "Invalid callback" << std::endl;
+		std::cout << "Warning: invalid callback" << std::endl;
 	}
 	stop();
-	auto p_data = m_Singleton.start(period, mode, cb);
+	auto p_data = Timer2MgrInst::getInstance()->start(period, mode, cb);
 	m_Handler = p_data;
 	return nullptr != p_data;
 }
@@ -35,18 +30,18 @@ bool Timer2Client::start(uint32_t period, TimerMode_t mode, const TimerCB_t& cb)
 void Timer2Client::stop() {
 	auto p_data = m_Handler.lock();
 	if(p_data) {
-		m_Singleton.stop(*p_data);
+		Timer2MgrInst::getInstance()->stop(*p_data);
 	}
 }
 
 bool Timer2Client::isRunning() const {
 	auto p_data = m_Handler.lock();
-	return p_data && m_Singleton.isRunning(*p_data);
+	return p_data && Timer2MgrInst::getInstance()->isRunning(*p_data);
 }
 
 bool Timer2Client::changePeriod(uint32_t period) {
 	auto p_data = m_Handler.lock();
-	return p_data && m_Singleton.changePeriod(*p_data, period);
+	return p_data && Timer2MgrInst::getInstance()->changePeriod(*p_data, period);
 }
 
 bool Timer2Client::operator == (Timer2::TimerHandler_t handler) const {

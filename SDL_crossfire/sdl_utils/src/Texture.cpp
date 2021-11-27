@@ -21,6 +21,40 @@
 
 #include "sdl_utils/SDLHelper.hpp"
 
+static std::shared_ptr<Color> setRenderDrawColor(const Color &color, SDL_Renderer * p_renderer) {
+	Color tmp_color;
+	if(SDL_GetRenderDrawColor(p_renderer, &tmp_color.m_RGBA.r, &tmp_color.m_RGBA.g, &tmp_color.m_RGBA.b, &tmp_color.m_RGBA.a)) {
+		SDLHelper::print_SDL_Error("Texture::setRenderDrawColor() SDL_GetRenderDrawColor() failed.");
+		return nullptr;
+	}
+	std::shared_ptr<Color> rc = std::shared_ptr<Color>(new Color(tmp_color), [p_renderer](const Color * data) {
+		if(data) {
+			if(SDL_SetRenderDrawColor(p_renderer, data->m_RGBA.r, data->m_RGBA.g, data->m_RGBA.b, data->m_RGBA.a)) {
+				SDLHelper::print_SDL_Error("Texture::fillTexture::SDL_SetRenderDrawColor() failed.");
+			}
+			delete data;
+		}
+	});
+	if(SDL_SetRenderDrawColor(p_renderer, color.m_RGBA.r, color.m_RGBA.g, color.m_RGBA.b, color.m_RGBA.a)) {
+		SDLHelper::print_SDL_Error("Texture::fillTexture::SDL_SetRenderDrawColor() failed.");
+		rc = nullptr;
+	}
+	return rc;
+}
+
+static bool fillTexture(Texture::Texture_t *texture, const Color &color, SDL_Renderer * p_renderer) {
+	if(!setBlendModeTexture(texture, BlendMode_t::BLEND)) {
+		std::cerr << "Texture::fillTexture() setBlendModeTexture() failed" << std::endl;
+		return false;
+	}
+	auto lock = Texture::getLockRender(texture->m_Texture.get(), color, p_renderer);
+	if(nullptr == lock) {
+		std::cerr << "Render lock failed" << std::endl;
+		return false;
+	}
+	return true;
+}
+
 namespace Texture {
 
 std::shared_ptr<SDL_Surface> createRGBA32_Surface(const Dimention dim) {
@@ -95,7 +129,7 @@ std::shared_ptr<Texture_t> createTextureFromFont(const std::string &text, const 
 	return createTextureFromSurface(p_surface.get(), p_renderer);
 }
 
-std::shared_ptr<Texture_t> createTextureRGBA32(const Dimention dim, SDL_Renderer * p_renderer) {
+std::shared_ptr<Texture_t> createTextureRGBA32(const Dimention dim, const Color &color, SDL_Renderer * p_renderer) {
 	auto data = Texture_t {
 		.m_Texture = std::shared_ptr<SDL_Texture>(SDL_CreateTexture(p_renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET , dim.m_W, dim.m_H)
 				, Destroy::free<SDL_Texture, SDL_DestroyTexture>),
@@ -109,28 +143,11 @@ std::shared_ptr<Texture_t> createTextureRGBA32(const Dimention dim, SDL_Renderer
 		SDLHelper::print_SDL_Error("SDL_CreateTexture() failed. Reason: ");
 		return std::shared_ptr<Texture_t>(nullptr);
 	}
+	if(!fillTexture(&data, color, p_renderer)) {
+		std::cerr << "Texture::fillTexture( failed" << std::endl;
+		return std::shared_ptr<Texture_t>(nullptr);
+	}
 	return std::make_shared<Texture_t>(data);
-}
-
-
-bool setBlendModeTexture(const Texture_t *texture, BlendMode_t blendMode) {
-	if(EXIT_SUCCESS != SDL_SetTextureBlendMode(texture->m_Texture.get(), static_cast<SDL_BlendMode>(blendMode))) {
-		SDLHelper::print_SDL_Error("Texture::setBlendModeTexture::SDL_SetTextureBlendMode() failed.");
-		return false;
-	}
-	return true;
-}
-
-bool setAlphaTexture(const Texture_t *texture, int32_t alpha) {
-	if((ZERO_OPACITY > alpha) || (FULL_OPACITY < alpha)) {
-		std::cerr << "Texture::setAlphaTexture::setBlendModeTexture() failed, invalid alpha value" << alpha << std::endl;
-		return false;
-	}
-	if(EXIT_SUCCESS != SDL_SetTextureAlphaMod(texture->m_Texture.get(), static_cast<uint8_t>(alpha))) {
-		SDLHelper::print_SDL_Error("Texture::setAlphaTexture::SDL_SetTextureBlendMode() failed.");
-		return false;
-	}
-	return true;
 }
 
 std::shared_ptr<SDL_Texture> getLockRender(SDL_Texture* dst, const Color &color, SDL_Renderer * p_renderer) {
@@ -164,38 +181,22 @@ std::shared_ptr<SDL_Texture> getLockRender(SDL_Texture* dst, const Color &color,
 	return lock;
 }
 
-std::shared_ptr<Color> setRenderDrawColor(const Color &color, SDL_Renderer * p_renderer) {
-	Color tmp_color;
-	if(SDL_GetRenderDrawColor(p_renderer, &tmp_color.m_RGBA.r, &tmp_color.m_RGBA.g, &tmp_color.m_RGBA.b, &tmp_color.m_RGBA.a)) {
-		SDLHelper::print_SDL_Error("Texture::setRenderDrawColor() SDL_GetRenderDrawColor() failed.");
-		return nullptr;
-	}
-	std::shared_ptr<Color> rc = std::shared_ptr<Color>(new Color(tmp_color), [p_renderer](const Color * data) {
-		if(data) {
-			if(SDL_SetRenderDrawColor(p_renderer, data->m_RGBA.r, data->m_RGBA.g, data->m_RGBA.b, data->m_RGBA.a)) {
-				SDLHelper::print_SDL_Error("Texture::fillTexture::SDL_SetRenderDrawColor() failed.");
-			}
-			delete data;
-		}
-	});
-	if(SDL_SetRenderDrawColor(p_renderer, color.m_RGBA.r, color.m_RGBA.g, color.m_RGBA.b, color.m_RGBA.a)) {
-		SDLHelper::print_SDL_Error("Texture::fillTexture::SDL_SetRenderDrawColor() failed.");
-		rc = nullptr;
-	}
-	return rc;
-}
-
-bool fillTexture(Texture_t *texture,  const Color &color, SDL_Renderer * p_renderer) {
-	if(!setBlendModeTexture(texture, (FULL_OPACITY == color.m_RGBA.a)?BlendMode_t::NONE:BlendMode_t::BLEND)) {
-		std::cerr << "Texture::fillTexture() setBlendModeTexture() failed" << std::endl;
+bool setBlendModeTexture(const Texture_t *texture, BlendMode_t blendMode) {
+	if(EXIT_SUCCESS != SDL_SetTextureBlendMode(texture->m_Texture.get(), static_cast<SDL_BlendMode>(blendMode))) {
+		SDLHelper::print_SDL_Error("Texture::setBlendModeTexture::SDL_SetTextureBlendMode() failed.");
 		return false;
 	}
-	{
-		auto lock = getLockRender(texture->m_Texture.get(), color, p_renderer);
-		if(nullptr == lock) {
-			std::cerr << "Texture::fillTexture() render lock failed" << std::endl;
-			return false;
-		}
+	return true;
+}
+
+bool setAlphaTexture(const Texture_t *texture, int32_t alpha) {
+	if((ZERO_OPACITY > alpha) || (FULL_OPACITY < alpha)) {
+		std::cerr << "Texture::setAlphaTexture::setBlendModeTexture() failed, invalid alpha value" << alpha << std::endl;
+		return false;
+	}
+	if(EXIT_SUCCESS != SDL_SetTextureAlphaMod(texture->m_Texture.get(), static_cast<uint8_t>(alpha))) {
+		SDLHelper::print_SDL_Error("Texture::setAlphaTexture::SDL_SetTextureBlendMode() failed.");
+		return false;
 	}
 	return true;
 }

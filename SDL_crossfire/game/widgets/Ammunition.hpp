@@ -28,10 +28,9 @@ public:
 	}
 
 private:
-	static constexpr double BLINKNIG_SPEED = 0.05;
-
-	ScaleTexture m_ScaleImage;
-	BlinkingAnimation<Image> m_Img;
+	static constexpr double BLINKNIG_PERIOD = 500;
+	Image m_Img;
+	BlinkingAnimation<ScaleTexture> m_ScaleImage;
 };
 
 #endif /* GAME_WIDGETS_AMMUNITION_HPP_ */

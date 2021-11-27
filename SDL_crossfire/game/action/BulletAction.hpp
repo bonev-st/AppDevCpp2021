@@ -19,8 +19,7 @@
 template <class T>
 class BulletAction : public T {
 public:
-	bool init(std::size_t img_id, const Rectangle &shooter_rec,
-			double speed, Action_t dir, const Rectangle & field);
+	bool initBulletAction(const Rectangle &shooter_rec, double speed, Action_t dir, const Rectangle & field);
 	bool tick();
 
 private:
@@ -32,11 +31,7 @@ private:
 };
 
 template <class T>
-bool BulletAction<T>::init(std::size_t img_id, const Rectangle &shooter_rec,
-				double speed, Action_t dir, const Rectangle & field) {
-	if(!T::create(img_id, Point::ZERO)) {
-		return false;
-	}
+bool BulletAction<T>::initBulletAction(const Rectangle &shooter_rec, double speed, Action_t dir, const Rectangle & field) {
 	m_Path = 0;
 	m_Dir = dir;
 	m_StartPos = shooter_rec.getCenter();

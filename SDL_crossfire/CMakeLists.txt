@@ -20,6 +20,7 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/ScaleTexture.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bonuses.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bonuses.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/WidgetTO.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.hpp

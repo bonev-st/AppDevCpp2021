@@ -39,13 +39,13 @@ public:
 			const DiplayMode::Mode_t & display_mode);
 
 	const Texture::Texture_t* get(const DrawParams_t & param) const;
+	bool release(DrawParams_t & param);
 
 	bool populateImg(DrawParams_t & param);
 	bool createText(const std::string &str, const Color & color, std::size_t font_id, DrawParams_t & param);
-	bool releaseText(DrawParams_t & param);
 
-	bool createTexture(const Color & color, DrawParams_t & param);
-	bool releaseTexture(DrawParams_t & param);
+	bool createTexture(const Dimention &dim, const Color & color, DrawParams_t & param);
+	bool setTextureColor(const Color & color, DrawParams_t & param);
 	std::shared_ptr<SDL_Texture> getTextureRenderLock(const DrawParams_t & param);
 
 private:

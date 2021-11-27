@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-bool Ship::init(std::size_t ship_img_id, float scale_factor, const Point& pos, uint32_t grid_size, double speed) {
+bool Ship::init(std::size_t ship_img_id, double scale_factor, const Point& pos, uint32_t grid_size, double speed) {
 	if(!m_Image.create(ship_img_id, Point(), true)) {
 		std::cerr << "Ship::init().create() failed"<< std::endl;
 		return false;
@@ -26,8 +26,8 @@ bool Ship::init(std::size_t ship_img_id, float scale_factor, const Point& pos, u
 	return true;
 }
 
-bool Ship::init_bullet(std::size_t bullet_img_id, double speed, int8_t max_bullets, uint32_t reload_time, const Rectangle & field) {
-	if(!m_Bullets.init(bullet_img_id, speed, max_bullets, reload_time, field)) {
+bool Ship::init_bullet(std::size_t bullet_img_id, double scale_factor, double speed, int8_t max_bullets, uint32_t reload_time, const Rectangle & field) {
+	if(!m_Bullets.init(bullet_img_id, scale_factor, speed, max_bullets, reload_time, field)) {
 		std::cerr << "Ship::init_bullet().m_Bullets.init() failed"<< std::endl;
 		return false;
 	}

@@ -77,4 +77,5 @@ std::size_t Image::getMaxFrames() const {
 void Image::setFrame() {
 	const auto & rec = (*m_DrawParams.m_Frames)[m_CurrFrame];
 	m_DrawParams.m_SrcRect = rec;
+	invalidate();
 }

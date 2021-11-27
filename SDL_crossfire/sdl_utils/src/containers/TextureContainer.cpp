@@ -52,6 +52,15 @@ bool TextureContainer::unload(std::size_t id) {
     return m_Texture.release(id);
 }
 
+bool TextureContainer::setColor(const Color& color, std::size_t id) {
+	auto rgb = m_Texture.get(id);
+	if(nullptr == rgb) {
+		return false;
+	}
+	rgb->m_Color = color;
+	return true;
+}
+
 std::shared_ptr<SDL_Texture> TextureContainer::getLock(std::size_t id) {
 	auto texture = getTexture(id);
 	if(!texture) {
@@ -76,13 +85,9 @@ const Texture::Texture_t* TextureContainer::get(std::size_t id) const {
 
 TextureContainer::RGB_Texture_t TextureContainer::create(const Dimention& dim, const Color& color) {
 	RGB_Texture_t texture;
-	texture.m_Texture = Texture::createTextureRGBA32(dim, m_Renderer);
+	texture.m_Texture = Texture::createTextureRGBA32(dim, color, m_Renderer);
 	if(nullptr == texture.m_Texture) {
 		std::cerr << "TextureContainer::create() Texture::createTextureRGBA32() failed." << std::endl;
-        return RGB_Texture_t();
-	}
-	if(!Texture::fillTexture(texture.m_Texture.get(), color, m_Renderer)) {
-		std::cerr << "TextureContainer::create() Texture::fillTexture() failed." << std::endl;
         return RGB_Texture_t();
 	}
 	texture.m_Color = color;

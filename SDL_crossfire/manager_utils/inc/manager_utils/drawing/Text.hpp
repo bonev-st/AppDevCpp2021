@@ -15,8 +15,8 @@
 
 class Text : public Widget {
 public:
-	bool create(const std::string &text, const Color &color, std::size_t font_id, const Point &pos = Point::ZERO);
-	bool setText(const std::string &text, const Point &pos = Point::ZERO);
+	bool create(const std::string &text, const Color &color, std::size_t font_id, const Point &pos = Point::UNDEFINED);
+	bool setText(const std::string &text, const Point &pos = Point::UNDEFINED);
 	bool setColor(const Color &color);
 
 private:

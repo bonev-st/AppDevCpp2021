@@ -14,7 +14,7 @@ bool Ammunition::init(std::size_t image_id, double scale_factor) {
 		std::cerr << "Ammunition::init() m_Img.create(" << image_id << ") failed." << std::endl;
 		return false;
 	}
-	if(!m_Img.initBlinkingAnimation(BLINKNIG_SPEED)) {
+	if(!m_ScaleImage.initBlinkingAnimation(BLINKNIG_PERIOD)) {
 		std::cerr << "Ammunition::init() m_Img.initBlinkingAnimation() failed." << std::endl;
 		return false;
 	}
@@ -29,12 +29,12 @@ bool Ammunition::init(std::size_t image_id, double scale_factor) {
 bool Ammunition::show(const Point &pos) {
 	m_ScaleImage.setPositionCenter(pos);
 	m_ScaleImage.setVisible(true);
-	return m_Img.start();
+	return m_ScaleImage.start();
 }
 
 void Ammunition::clear() {
 	m_ScaleImage.setVisible(false);
-	m_Img.stop();
+	m_ScaleImage.stop();
 }
 
 void Ammunition::draw() {

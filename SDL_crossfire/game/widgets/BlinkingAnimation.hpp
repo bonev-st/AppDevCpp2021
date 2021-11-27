@@ -16,13 +16,13 @@
 template <class T>
 class BlinkingAnimation : public T {
 public:
-	bool initBlinkingAnimation(double speed);
+	bool initBlinkingAnimation(double period);
 	bool start();
 	void stop();
 
 private:
 	static constexpr uint32_t TIMER_PERIOD = 50;	// ms
-	double m_Speed = 0;
+	double m_Delta = 0;
 	double m_State = 0;
 	Timer2Client m_RefreshTimer;
 
@@ -31,9 +31,10 @@ private:
 };
 
 template <class T>
-bool BlinkingAnimation<T>::initBlinkingAnimation(double speed) {
-	assert(0 < speed);
-	m_Speed  = speed;
+bool BlinkingAnimation<T>::initBlinkingAnimation(double period) {
+	assert(0 < period);
+	period /= TIMER_PERIOD;
+	m_Delta  = 180.0/period;
 	return true;
 }
 
@@ -42,22 +43,24 @@ bool BlinkingAnimation<T>::start() {
 	if(m_RefreshTimer.isRunning()) {
 		return false;
 	}
-	T::activateAlphaModulation();
-	m_State = 0;
-	updateAlpha();
 	if(!m_RefreshTimer.start(TIMER_PERIOD, Timer2::TimerMode_t::RELOAD, [this](Timer2::TimerHandler_t handler) {
-		this->onMotion_Timeout(handler);
+		this->onTimeout(handler);
 	})) {
 		return false;
 	}
+	if(!T::isAlphaModulationActivate()) {
+		T::activateAlphaModulation();
+	}
+	m_State = 0;
+	updateAlpha();
 	return true;
 }
 
 template <class T>
 void BlinkingAnimation<T>::stop() {
-	m_RefreshTimer.stop();
 	m_State = 0;
-	updateAlpha();
+	m_RefreshTimer.stop();
+	T::setOpacity(FULL_OPACITY);
 }
 
 template <class T>
@@ -70,7 +73,7 @@ template <class T>
 void BlinkingAnimation<T>::updateAlpha() {
 	auto opacity = std::abs(FULL_OPACITY * Geometry::getCosDeg(m_State));
 	T::setOpacity(static_cast<int32_t>(opacity));
-	m_State += m_Speed*90.0;
+	m_State += m_Delta;
 }
 
 #endif /* GAME_WIDGETS_BLINKINGANIMATION_HPP_ */

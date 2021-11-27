@@ -18,6 +18,9 @@ using GridNeighborhoodData_t = std::array<std::array<uint8_t, Layout::GRID_RECT_
 static constexpr int32_t X_OFFSET = 80;
 static constexpr int32_t Y_OFFSET = 56;
 
+static constexpr int32_t DEBUG_OFFSET_X = 0;
+static constexpr int32_t DEBUG_OFFSET_Y = 100;
+
 static constexpr int32_t GRID_SIZE = 32;
 
 static const auto & GAME_TEXT_COLOR = Colors::GREEN;
@@ -38,11 +41,18 @@ static constexpr int8_t ENEMY_MAX_BULLED = -1;
 
 static constexpr uint32_t OWN_RELOAD_TIME = 800;
 
-static const std::array<Point, static_cast<size_t>(BonusId_t::BONUS_NUMB)> BonusPos = {
+static const std::array<Point, static_cast<size_t>(BonusId_t::BONUS_NUMB)> BonusPosDis = {
 	Point{5, 7},
 	Point{9, 7},
 	Point{9, 5},
 	Point{5, 5}
+};
+
+static const std::array<Point, static_cast<size_t>(BonusId_t::BONUS_NUMB)> BonusPosEna = {
+	Point{5, 8},
+	Point{9, 8},
+	Point{9, 4},
+	Point{5, 4}
 };
 
 static const std::array<Point, static_cast<size_t>(EnemyId_t::ENEMY_NUMB)> EnemyPos = {
@@ -166,19 +176,19 @@ static const Layout::TextCfg_t TextCfg[GameConfig::TEXT_ARRAY_SIZE] {
 	},
 	// TEXT_FPS_INDX,
 	{
-		.m_Pos = {0, 0},
+		.m_Pos = {0+DEBUG_OFFSET_X, 0+DEBUG_OFFSET_Y},
 		.m_Color = DEBUG_TEXT_COLOR,
 		.m_Text = "FPS: ",
 	},
 	// TEXT_ACTIVE_TIMER_INDX,
 	{
-		.m_Pos = {0, 20},
+		.m_Pos = {0+DEBUG_OFFSET_X, 20+DEBUG_OFFSET_Y},
 		.m_Color = DEBUG_TEXT_COLOR,
 		.m_Text = "Tim: ",
 	},
 	// TEXT_MAX_ACTIVE_TIMER_INDX,
 	{
-		.m_Pos = {0, 40},
+		.m_Pos = {0+DEBUG_OFFSET_X, 40+DEBUG_OFFSET_Y},
 		.m_Color = DEBUG_TEXT_COLOR,
 		.m_Text = "MaxT: ",
 	}
@@ -478,9 +488,12 @@ const Point & Layout::getShipRelPos() {
 	return POS_SHIP_REL;
 }
 
-const Point & Layout::getBonusRelPos(std::size_t id) {
-	assert(static_cast<std::size_t>(BonusId_t::BONUS_NUMB) > id);
-	return BonusPos[id];
+const Point * Layout::getBonusRelPosDis() {
+	return BonusPosDis.begin();
+}
+
+const Point * Layout::getBonusRelPosEna() {
+	return BonusPosEna.begin();
 }
 
 const Point & Layout::getEnemyRelPos(std::size_t id) {
@@ -488,7 +501,7 @@ const Point & Layout::getEnemyRelPos(std::size_t id) {
 	return EnemyPos[id];
 }
 
-Rectangle Layout::getFiealdRectangle() {
+Rectangle Layout::getArenaRectangle() {
 	return Rectangle(ImgCfg[GameConfig::IMG_GRID_INDX].m_Pos , FIELD_H, FIELD_V);
 }
 

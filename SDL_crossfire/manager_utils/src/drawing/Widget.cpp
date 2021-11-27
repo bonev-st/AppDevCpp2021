@@ -54,7 +54,6 @@ void Widget::setPosition(const Point& pos, const Dimention &dim) {
 	m_DrawParams.m_DstRect.m_Pos = pos;
 	m_DrawParams.m_DstRect.m_W = dim.m_W;
 	m_DrawParams.m_DstRect.m_H = dim.m_H;
-	invalidate();
 }
 
 void Widget::setPositionCenter(const Point& pos) {
@@ -153,6 +152,10 @@ int32_t Widget::getOpacity() const {
 	return m_DrawParams.m_Opacity;
 }
 
+bool Widget::isAlphaModulationActivate() const {
+	return BlendMode_t::NONE != m_DrawParams.m_BlendMode;
+}
+
 void Widget::activateAlphaModulation() {
 	if(BlendMode_t::NONE == m_DrawParams.m_BlendMode) {
 		m_DrawParams.m_BlendMode = BlendMode_t::BLEND;
@@ -173,13 +176,6 @@ void Widget::deactivateAlphaModulation() {
 	} else {
 		std::cerr << "Widget::deactivateAlphaModulation() failed. BlendMode already disabled" << std::endl;
 	}
-}
-
-void Widget::scale(double val) {
-	m_DrawParams.m_DstRect.m_H = m_DrawParams.m_Dimention.m_H;
-	m_DrawParams.m_DstRect.m_W = m_DrawParams.m_Dimention.m_W;
-	m_DrawParams.m_DstRect.scale(val);
-	invalidate();
 }
 
 void Widget::setFlipMode(FlipMode_t flip) {

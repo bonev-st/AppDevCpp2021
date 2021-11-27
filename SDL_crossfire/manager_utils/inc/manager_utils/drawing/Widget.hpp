@@ -28,7 +28,7 @@ public:
 	bool getVisible() const;
 
 	void setPosition(const Point& pos);
-	void setPositionCenter(const Point& pos);
+	virtual void setPositionCenter(const Point& pos);
 	void setPosition(const Point& pos, const Dimention &dim);
 	Point getPosition() const;
 	Point getPositionCenter() const;
@@ -51,12 +51,11 @@ public:
 	Rectangle getRectangle() const;
 	void setRectangle(const Rectangle rect);
 
+	bool isAlphaModulationActivate() const;
 	void activateAlphaModulation();
 	void deactivateAlphaModulation();
 	void setOpacity(int32_t opacity);
 	int32_t getOpacity() const;
-
-	void scale(double val);
 
 	void setFlipMode(FlipMode_t flip);
 

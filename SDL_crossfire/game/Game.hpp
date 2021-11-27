@@ -22,6 +22,8 @@
 #include "game/widgets/FPS.hpp"
 #include "game/widgets/Ship.hpp"
 #include "game/widgets/Ammunition.hpp"
+#include "game/widgets/ScaleTexture.hpp"
+#include "game/widgets/Bonuses.hpp"
 
 #include "game/gameplay/CollisionDetect.hpp"
 #include "game/gameplay/CD_Through.hpp"
@@ -33,13 +35,15 @@ class Game {
 public:
 	bool init(const GameConfig::Config_t & cfg);
 	bool events(const InputEvent & event, bool & exit);
-	bool draw() const;
+	bool draw();
 	bool new_frame();
 	bool processing();
 
 private:
 	static const uint32_t REFRESH_RATE;
 	static const uint32_t MOTION_PERIOD;
+
+	double m_Scale = 1;
 
 	FPS m_FPS;
 
@@ -49,6 +53,7 @@ private:
 
 	Ship m_Ship;
 	Ammunition m_Ammunition;
+	Bonuses m_Bonuses;
 
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;

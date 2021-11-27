@@ -108,7 +108,7 @@ bool Timer2Mgr::handleEvent(const InputEvent & event) {
 	if(cb) {
 		cb(handler);
 	} else {
-		std::cerr << "Timer2Mgr::events() failed. Invalid callback function" << std::endl;
+		std::cout << "Warning: Timer2Mgr::events() callback is nullptr" << std::endl;
 	}
 	if(TimerMode_t::ONESHOT == mode) {
 		assert(data.m_CB_Counter == data.m_SDL_CB_Counter);

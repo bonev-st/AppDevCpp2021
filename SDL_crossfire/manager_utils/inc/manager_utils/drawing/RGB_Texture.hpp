@@ -20,7 +20,6 @@ public:
 	bool create(const Dimention &dim, const Color &color, const Point &pos = Point::ZERO);
 	bool setColor(const Color &color);
 	std::shared_ptr<SDL_Texture> getLock();
-	bool copy(Widget * src);
 };
 
 #endif /* MANAGER_UTILS_INC_MANAGER_UTILS_DRAWING_RGB_TEXTURE_HPP_ */

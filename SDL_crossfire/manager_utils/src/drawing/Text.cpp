@@ -24,14 +24,14 @@ bool Text::create(const std::string &text, const Color &color, std::size_t font_
 
 bool Text::setText(const std::string &text, const Point &pos) {
 	if(text == m_Text) {
-		if(Point::ZERO != pos) {
-			m_DrawParams.m_DstRect.m_Pos = pos;
+		if(Point::UNDEFINED != pos) {
+			setPosition(pos);
 		}
 		return true;
 	}
 	m_Text = text;
-	auto position = m_DrawParams.m_DstRect.m_Pos;
-	if(Point::ZERO != pos) {
+	auto position = getPosition();
+	if(Point::UNDEFINED != pos) {
 		position = pos;
 	}
 	return create(position);
@@ -42,7 +42,7 @@ bool Text::setColor(const Color &color) {
 		return true;
 	}
 	m_Color = color;
-	auto position = m_DrawParams.m_DstRect.m_Pos;
+	auto position = getPosition();
 	return create(position);
 }
 
@@ -51,16 +51,9 @@ bool Text::create(const Point &pos) {
 		std::cerr << "Text::create.createText() failed"<< std::endl;
 		return false;
 	}
-	if(Point::ZERO != pos) {
-		m_DrawParams.m_DstRect.m_Pos = pos;
+	if(Point::UNDEFINED != pos) {
+		setPosition(pos);
 	}
-	if(BlendMode_t::NONE != m_DrawParams.m_BlendMode) {
-		m_DrawParams.m_BlendMode = BlendMode_t::NONE;
-		activateAlphaModulation();
-		auto opacity = getOpacity();
-		if(FULL_OPACITY != opacity) {
-			setOpacity(opacity);
-		}
-	}
+	invalidate();
 	return true;
 }

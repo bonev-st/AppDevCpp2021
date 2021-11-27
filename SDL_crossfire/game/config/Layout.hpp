@@ -15,7 +15,7 @@
 
 struct Rectangle;
 
-enum class BonusId_t {
+enum class BonusId_t : uint8_t {
 	BONUS1  = 0,
 	BONUS2,
 	BONUS3,
@@ -83,10 +83,11 @@ double getEnemyBulletSpeed();
 uint32_t getGridSize();
 
 const Point & getShipRelPos();
-const Point & getBonusRelPos(std::size_t id);
+const Point * getBonusRelPosDis();
+const Point * getBonusRelPosEna();
 const Point & getEnemyRelPos(std::size_t id);
 
-Rectangle getFiealdRectangle();
+Rectangle getArenaRectangle();
 
 int8_t getOwnMaxBulled();
 uint32_t getOwnReloadTime();
