@@ -55,7 +55,7 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 		std::cerr << "m_CD_Inside.init() failed." << std::endl;
 		return false;
 	}
-	if(!m_ShipReload.init(&m_Ship,  std::bind(&Game::onReloadHit, this, std::placeholders::_1), &m_CD_Inside)) {
+	if(!m_ShipReload.init(&m_Ship, std::bind(&Game::onReloadHit, this, std::placeholders::_1), &m_CD_Inside)) {
 		std::cerr << "m_CD_Inside.init() failed." << std::endl;
 		return false;
 	}

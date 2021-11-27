@@ -10,6 +10,7 @@
 
 #include <functional>
 #include <deque>
+#include <vector>
 
 class Widget;
 class ProcessorIF;
