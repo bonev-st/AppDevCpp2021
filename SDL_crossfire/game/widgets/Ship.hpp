@@ -11,10 +11,10 @@
 #include "manager_utils/drawing/Image.hpp"
 #include "game/config/Layout.hpp"
 #include "game/widgets/SpriteAnimation.hpp"
-#include "game/widgets/Bullets.hpp"
 #include "game/widgets/ScaleTexture.hpp"
 #include "game/action/ActionBuffer.hpp"
 #include "game/action/UnitAction.hpp"
+#include "game/gameplay/BulletsCtrl.hpp"
 
 class Ship : public ScaleTexture {
 public:
@@ -23,14 +23,14 @@ public:
 	bool event(const Action_t type);
 	void tick();
 	void draw() override;
-	void setCallback(const Bullets::Callback_t & callback);
+	void setCallback(const BulletsCtrl::Callback_t & callback);
 	void reload(int8_t bullets);
 
 private:
 	ActionBuffer m_ActionBuffer;
 	UnitAction m_UnitAction;
-	Bullets m_Bullets;
 	SpriteAnimation<Image> m_Image;
+	BulletsCtrl m_BulletsCtrl;
 
 	using ScaleTexture::init;
 };
