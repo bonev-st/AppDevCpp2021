@@ -16,6 +16,7 @@ public:
 	bool init(double scale_factor, Widget * scaled);
 	void setPositionCenter(const Point& pos) override;
 	void draw() override;
+	bool isInvalidate() const override;
 
 private:
 	static constexpr uint32_t DEBUG_TIMER_PERIOD = 1000;

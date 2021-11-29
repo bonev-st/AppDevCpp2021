@@ -10,10 +10,18 @@
 
 #include <cstdint>
 
+struct Point;
+
+struct Points {
+	static const Point ZERO;
+	static const Point UNDEFINED;
+};
+
 struct Point {
 	Point() = default;
 
-	Point(std::int32_t x, std::int32_t y);
+	constexpr Point(std::int32_t x, std::int32_t y) : m_X(x), m_Y(y) {
+	}
 
 	std::int32_t m_X = UNDEF_VAL;
 	std::int32_t m_Y = UNDEF_VAL;
@@ -28,8 +36,6 @@ struct Point {
 	Point & move (int32_t x, int32_t y);
 
 	static constexpr int32_t UNDEF_VAL = 1e6;
-	static const Point ZERO;
-	static const Point UNDEFINED;
 };
 
 #endif /* UTILS_DRAWING_POINT_HPP_ */

@@ -15,7 +15,7 @@
 namespace DrawMgrConfig {
 struct Config_t;
 }
-namespace DiplayMode {
+namespace DisplayMode {
 struct Mode_t;
 }
 
@@ -36,7 +36,7 @@ public:
 
 	bool setBlendMode(const DrawParams_t & draw);
 	bool setAlpha(const DrawParams_t & draw);
-	const DiplayMode::Mode_t & getDisplayMode() const;
+	const DisplayMode::Mode_t & getDisplayMode() const;
 
 private:
 	Renderer * m_Renderer = nullptr;

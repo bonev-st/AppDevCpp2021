@@ -10,7 +10,7 @@
 #include <iostream>
 
 bool Ammunition::init(std::size_t image_id, double scale_factor) {
-	if(!m_Img.create(image_id, Point::ZERO)) {
+	if(!m_Img.create(image_id, Points::ZERO)) {
 		std::cerr << "m_Img.create(" << image_id << ") failed." << std::endl;
 		return false;
 	}

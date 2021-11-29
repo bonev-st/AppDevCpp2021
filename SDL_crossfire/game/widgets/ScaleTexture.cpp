@@ -49,13 +49,17 @@ void ScaleTexture::draw() {
 			return;
 		}
 	}
-	if(invalidate ||  isInvalidate()) {
+	if(invalidate ||  RGB_Texture::isInvalidate()) {
 		if(!redraw()) {
 			std::cerr << "ScaleTexture::draw() redraw() failed" << std::endl;
 			return;
 		}
 	}
 	RGB_Texture::draw();
+}
+
+bool ScaleTexture::isInvalidate() const {
+	return m_Scaled->isInvalidate() || isInvalidate();
 }
 
 void ScaleTexture::dim_update() {
@@ -71,7 +75,7 @@ void ScaleTexture::dim_update() {
 bool ScaleTexture::createTexture() {
 	dim_update();
 	Dimention dim = getDimentions();
-	auto color = m_DebugTimer.isRunning()?Color::DEBUG_BACKGROUND:Color::FULL_TRANSPARENT;
+	auto color = m_DebugTimer.isRunning()?Colors::DEBUG_BACKGROUND:Colors::FULL_TRANSPARENT;
 	if(!create(dim, color, getPosition())){
 		std::cerr << "ScaleTexture::draw() RGB_Texture::create() failed" << std::endl;
 	}
@@ -80,13 +84,13 @@ bool ScaleTexture::createTexture() {
 
 bool ScaleTexture::resetTimer() {
 	if(!m_DebugTimer.isRunning()) {
-		setColor(Color::DEBUG_BACKGROUND);
+		setColor(Colors::DEBUG_BACKGROUND);
 	}
 	if(!m_DebugTimer.start(DEBUG_TIMER_PERIOD, Timer2::TimerMode_t::ONESHOT, [this](Timer2::TimerHandler_t handler) {
 		if(this->m_DebugTimer != handler) {
 			std::cerr << "Handler and m_DebugTimer not match" << std::endl;
 		}
-		this->setColor(Color::FULL_TRANSPARENT);
+		this->setColor(Colors::FULL_TRANSPARENT);
 	})) {
 		std::cerr << "Timer start() failed" << std::endl;
 		return false;
@@ -102,7 +106,7 @@ bool ScaleTexture::redraw() {
 	}
 	Rectangle rect_tmp = m_Scaled->getRectangle();
 	const Dimention dim_scale = getDimentions();
-	m_Scaled->setPosition(Point::ZERO, dim_scale);
+	m_Scaled->setPosition(Points::ZERO, dim_scale);
 	m_Scaled->draw();
 	m_Scaled->setRectangle(rect_tmp);
 	return true;

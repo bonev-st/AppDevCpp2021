@@ -29,28 +29,28 @@ bool CollisionDetect::init(const Callback_t & cb, ProcessorIF * proc) {
 	return true;
 }
 
-void CollisionDetect::setObj(const Widget * widged) {
-	m_Obj = widged;
+void CollisionDetect::setObj(const Widget * widget) {
+	m_Obj = widget;
 }
 
-void CollisionDetect::add(const Widget * widged) {
-	m_Continer.push_back(widged);
+void CollisionDetect::add(const Widget * widget) {
+	m_Container.push_back(widget);
 }
 
-bool CollisionDetect::remove(const Widget * widged) {
-	auto it = std::find(m_Continer.begin(), m_Continer.end(), widged);
-	if(m_Continer.end() == it) {
+bool CollisionDetect::remove(const Widget * widget) {
+	auto it = std::find(m_Container.begin(), m_Container.end(), widget);
+	if(m_Container.end() == it) {
 		std::cerr << "Can't find widget" << std::endl;
 		return false;
 	}
-	m_Continer.erase(it);
+	m_Container.erase(it);
 	return true;
 }
 
 void CollisionDetect::processing() {
 	assert(m_Processor && "CollisionDetect not initialized");
 	if(m_Obj) {
-		std::vector<const Widget *> data = (*m_Processor)(m_Obj, m_Continer);
+		std::vector<const Widget *> data = (*m_Processor)(m_Obj, m_Container);
 		if(data.empty()) {
 			return;
 		}

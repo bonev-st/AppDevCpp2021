@@ -7,10 +7,8 @@
 
 #include "game/widgets/FPS.hpp"
 
-const double FPS::SmoothingFactor = 0.9;
-
 void FPS::init() {
-	m_Filter.setSmootingFactor(SmoothingFactor);
+	m_Filter.setSmootingFactor(SMOOTHING_FACTOR);
 }
 
 void FPS::newFrame() {

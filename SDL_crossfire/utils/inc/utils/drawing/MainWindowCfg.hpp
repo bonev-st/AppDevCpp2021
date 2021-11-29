@@ -24,7 +24,7 @@ enum WindowFlags_t : uint32_t {
 
 struct Config_t {
 	std::string m_Name = "";
-	Rectangle m_Rect = Rectangle::UNDEFINED;
+	Rectangle m_Rect = Rectangles::UNDEFINED;
 	uint32_t m_Flags = WINDOW_NONE;
 };
 }

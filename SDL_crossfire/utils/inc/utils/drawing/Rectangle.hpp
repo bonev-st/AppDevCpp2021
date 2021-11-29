@@ -9,6 +9,12 @@
 #define UTILS_DRAWING_RECTANGLE_HPP_
 
 #include "utils/drawing/Point.hpp"
+struct Rectangle;
+
+struct Rectangles {
+	static const Rectangle ZERO;
+	static const Rectangle UNDEFINED;
+};
 
 struct Rectangle {
 	Rectangle()  = default;
@@ -16,7 +22,7 @@ struct Rectangle {
 	Rectangle(std::int32_t x, std::int32_t y, std::int32_t w, std::int32_t h);
 	Rectangle(Point pos, std::int32_t w, std::int32_t h);
 
-	Point m_Pos = Point::UNDEFINED;
+	Point m_Pos = Points::UNDEFINED;
 	std::int32_t m_W = 0;
 	std::int32_t m_H = 0;
 
@@ -32,10 +38,6 @@ struct Rectangle {
 	Point getBottom() const;
 	Point getBottomRigth() const;
 	void setToCenter(const Point & point);
-
-
-	static const Rectangle ZERO;
-	static const Rectangle UNDEFINED;
 };
 
 #endif /* UTILS_DRAWING_RECTANGLE_HPP_ */

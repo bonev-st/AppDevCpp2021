@@ -23,14 +23,14 @@ struct DrawParams_t {
 	std::size_t m_ResrId = INVALID_RESR_ID;
 	int32_t m_Opacity = FULL_OPACITY;
 	BlendMode_t m_BlendMode = BlendMode_t::NONE;
-	Rectangle m_SrcRect = Rectangle::UNDEFINED;
-	Rectangle m_DstRect = Rectangle::UNDEFINED;
+	Rectangle m_SrcRect = Rectangles::UNDEFINED;
+	Rectangle m_DstRect = Rectangles::UNDEFINED;
 	WidgetType_t m_WidgetType = WidgetType_t::UNKNOWN;
-	Dimention m_Dimention = Dimention::ZERO;
+	Dimention m_Dimention = Dimentions::ZERO;
 	const std::vector<Rectangle> *m_Frames = nullptr;
 	FlipMode_t m_FlipMode = FlipMode_t::NONE;
 	double m_Angle = 0;
-	Point m_RotationCenter = Point::UNDEFINED;
+	Point m_RotationCenter = Points::UNDEFINED;
 	bool m_Invalidate = true;
 };
 

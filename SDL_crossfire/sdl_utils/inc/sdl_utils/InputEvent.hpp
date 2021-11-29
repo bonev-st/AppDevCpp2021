@@ -28,7 +28,7 @@ public:
 	}
 
 	/* Holds event position on the screen */
-	Point m_Pos = Point::UNDEFINED;
+	Point m_Pos = Points::UNDEFINED;
 	/* See EventDefines.h for more information */
 	Keyboard::Key m_Key = Keyboard::KEY_UNKNOWN;
 	Mouse::MouseKey m_MouseButton = Mouse::UNKNOWN;

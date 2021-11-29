@@ -16,7 +16,7 @@
 
 bool MainWindow::init(const MainWindowCfg::Config_t &cfg) {
 	Rectangle rect = cfg.m_Rect;
-	if (Point::UNDEFINED == rect.m_Pos) {
+	if (Points::UNDEFINED == rect.m_Pos) {
 		rect.m_Pos = Point(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 	}
 	m_Window.reset();
@@ -48,16 +48,20 @@ bool MainWindow::init(const MainWindowCfg::Config_t &cfg) {
 		SDLHelper::print_SDL_Error("MainWindow::createMainWindow::SDL_CreateWindow() fault.");
 		return false;
 	}
-	SDL_DisplayMode tmp;
-	if(SDL_GetWindowDisplayMode(m_Window, &tmp)) {
+	SDL_DisplayMode mode;
+	if(SDL_GetWindowDisplayMode(m_Window, &mode)) {
 		SDLHelper::print_SDL_Error("MainWindow::createMainWindow::SDL_GetWindowDisplayMode() fault.");
 		return false;
 	}
-	m_DispyMode.Mode.format = tmp.format;
-	m_DispyMode.Mode.refresh_rate = tmp.refresh_rate;
-	m_DispyMode.Mode.w = tmp.w;
-	m_DispyMode.Mode.h = tmp.h;
-	m_DispyMode.driverdata = tmp.driverdata;
+	m_DispyMode.format = mode.format;
+	m_DispyMode.refresh_rate = mode.refresh_rate;
+	m_DispyMode.w = mode.w;
+	m_DispyMode.h = mode.h;
+	m_DispyMode.driverdata = mode.driverdata;
+	m_WindowDim.m_DefW = cfg.m_Rect.m_W;
+	m_WindowDim.m_DefH = cfg.m_Rect.m_H;
+	SDL_GetWindowSize(m_Window, &m_WindowDim.m_W, &m_WindowDim.m_H);
+
 	return true;
 }
 
@@ -69,6 +73,6 @@ const Rectangle & MainWindow::getRect() const {
 	return m_Rect;
 }
 
-const DiplayMode::Mode_t & MainWindow::getDisplayMode() const {
-	return m_DispyMode.Mode;
+const DisplayMode::Mode_t & MainWindow::getDisplayMode() const {
+	return m_WindowDim;
 }

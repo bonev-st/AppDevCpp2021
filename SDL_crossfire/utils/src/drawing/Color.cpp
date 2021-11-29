@@ -7,38 +7,22 @@
 
 #include "utils/drawing/Color.hpp"
 
-namespace Colors {
-const Color RED(255, 0, 0, 255);
-const Color GREEN(0, 255, 0, 255);
-const Color BLUE(0, 0, 255, 255);
-const Color BLACK(0, 0, 0, 255);
-const Color WHITE(255, 255, 255, 255);
-const Color GRAY(192, 192, 192, 255);
-const Color CYAN(0, 255, 255, 255);
-const Color MAGENTA(255, 0, 255, 255);
-const Color YELLOW(255, 255, 0, 255);
-const Color ORANGE(255, 128, 0, 255);
-const Color PURPLE(128, 0, 128, 255);
-const Color FULL_TRANSPARENT(0, 0, 0, 0);
-const Color DEBUG_BACKGROUND(255, 0, 0, 150);
-} //namespace Colors
-
-const Color Color::RED(255, 0, 0, 255);
-const Color Color::GREEN(0, 255, 0, 255);
-const Color Color::BLUE(0, 0, 255, 255);
-const Color Color::BLACK(0, 0, 0, 255);
-const Color Color::WHITE(255, 255, 255, 255);
-const Color Color::GRAY(192, 192, 192, 255);
-const Color Color::CYAN(0, 255, 255, 255);
-const Color Color::MAGENTA(255, 0, 255, 255);
-const Color Color::YELLOW(255, 255, 0, 255);
-const Color Color::ORANGE(255, 128, 0, 255);
-const Color Color::PURPLE(128, 0, 128, 255);
-const Color Color::FULL_TRANSPARENT(0, 0, 0, 0);
-const Color Color::DEBUG_BACKGROUND(255, 0, 0, 150);
+const Color Colors::RED(255, 0, 0, 255);
+const Color Colors::GREEN(0, 255, 0, 255);
+const Color Colors::BLUE(0, 0, 255, 255);
+const Color Colors::BLACK(0, 0, 0, 255);
+const Color Colors::WHITE(255, 255, 255, 255);
+const Color Colors::GRAY(192, 192, 192, 255);
+const Color Colors::CYAN(0, 255, 255, 255);
+const Color Colors::MAGENTA(255, 0, 255, 255);
+const Color Colors::YELLOW(255, 255, 0, 255);
+const Color Colors::ORANGE(255, 128, 0, 255);
+const Color Colors::PURPLE(128, 0, 128, 255);
+const Color Colors::FULL_TRANSPARENT(0, 0, 0, 0);
+const Color Colors::DEBUG_BACKGROUND(255, 0, 0, 150);
 
 Color::Color() {
-	*this = FULL_TRANSPARENT;
+	*this = Colors::FULL_TRANSPARENT;
 }
 
 Color::Color(const uint8_t red,  const uint8_t green,

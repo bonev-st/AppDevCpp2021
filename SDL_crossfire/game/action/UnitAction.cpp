@@ -48,7 +48,7 @@ uint8_t UnitAction::getLineOfFire() const {
 		// XXX: Action_t::NONE -> all direction line of fire
 		return Action::toLineOfFireMask(Action_t::NONE);
 	}
-	if(Point::UNDEFINED != m_CrossPoint) {
+	if(Points::UNDEFINED != m_CrossPoint) {
 		uint8_t rc = 0;
 		if(!(m_CrossPoint.m_X & 1)) {
 			rc = rc | Action::toLineOfFireMask(Action_t::MOVE_UP);
@@ -74,8 +74,8 @@ bool UnitAction::tick(Action_t pending_action) {
 		// stop state
 		return false;
 	}
-	m_CrossPoint = Point::UNDEFINED;
-	Point move_delta = Point::ZERO;
+	m_CrossPoint = Points::UNDEFINED;
+	Point move_delta = Points::ZERO;
 	if(Action_t::NONE == m_CurrentDirection) {
 		// change from stop to motion
 		assert(0 == m_PathToNext);
@@ -190,7 +190,7 @@ bool UnitAction::isMoveAllowed(Action_t dir) const {
 }
 
 Point UnitAction::prepareMoveAction(Action_t dir) {
-	Point rel_pos = Point::ZERO;
+	Point rel_pos = Points::ZERO;
 	switch (dir) {
 	case Action_t::MOVE_UP:
 		rel_pos.m_Y = -1;

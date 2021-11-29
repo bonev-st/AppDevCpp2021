@@ -17,7 +17,7 @@ struct SDL_Texture;
 
 class RGB_Texture : public Widget {
 public:
-	bool create(const Dimention &dim, const Color &color, const Point &pos = Point::ZERO);
+	bool create(const Dimention &dim, const Color &color, const Point &pos = Points::UNDEFINED);
 	bool setColor(const Color &color);
 	std::shared_ptr<SDL_Texture> getLock();
 };

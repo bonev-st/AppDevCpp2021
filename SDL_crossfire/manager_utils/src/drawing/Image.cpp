@@ -22,7 +22,7 @@ bool Image::create(std::size_t image_id, const Point &pos, bool center) {
 		std::cerr << "Image::create.G_pResMgr->populateImg() fault" << std::endl;
 		return false;
 	}
-	if(Point::UNDEFINED != pos) {
+	if(Points::UNDEFINED != pos) {
 		center?setPositionCenter(pos):setPosition(pos);
 	}
 	m_MaxFrames = 0;

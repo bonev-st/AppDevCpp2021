@@ -12,11 +12,12 @@
 
 #include "utils/inputs/EventDefines.h"
 
+#include "utils/drawing/Dimention.hpp"
 #include "manager_utils/managers/ResMgr.hpp"
 #include "manager_utils/managers/DrawMgr.hpp"
 #include "manager_utils/managers/Timer2Mgr.hpp"
 
-bool Mgrs::init(const ResourcesConfig::Config_t &cfg) {
+bool Mgrs::init(const ResourcesConfig::Config_t &cfg, DisplayMode::Mode_t & out_display_mode) {
 	auto * drawing_manager = DrawMgrInst::getInstance();
 	auto * resources_manager = ResMgrInst::getInstance();
 	auto * timer_manager = Timer2MgrInst::getInstance();
@@ -30,11 +31,11 @@ bool Mgrs::init(const ResourcesConfig::Config_t &cfg) {
         return false;
     }
     if(!ResMgrInst::getInstance()->init(cfg.m_ResMgrCfg, drawing_manager->getRendered(),
-    		&m_ImageContainer, &m_TextContainer, &m_TextureContainer, drawing_manager->getDisplayMode())) {
+    		&m_ImageContainer, &m_TextContainer, &m_TextureContainer)) {
 		std::cerr << "ResMgr->init() failed." << std::endl;
         return false;
     }
-
+    out_display_mode = drawing_manager->getDisplayMode();
 	return true;
 }
 

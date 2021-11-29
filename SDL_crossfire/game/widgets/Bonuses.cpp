@@ -33,7 +33,7 @@ bool Bonuses::init(std::size_t img_id, double scale, const Point * ena_pos, cons
 		e.m_Widget.m_Scaled.setPositionCenter(e.m_Position.m_DisablePos);
 	}
 
-	if(!m_PointsText.create(" ", text_color, font_id, Point::ZERO)) {
+	if(!m_PointsText.create(" ", text_color, font_id, Points::ZERO)) {
 		std::cerr << "Text create() failed" << std::endl;
 		return false;
 	}
@@ -109,7 +109,7 @@ void Bonuses::setHide(uint32_t number) {
 	auto & widget = m_BonusContaner[m_Current].m_Widget.m_Scaled;
 	if(widget.getVisible()) {
 		const auto text = std::to_string(number);
-		if(!m_PointsText.setText(text, Point::ZERO)) {
+		if(!m_PointsText.setText(text, Points::ZERO)) {
 			std::cerr << "Text setText() failed" << std::endl;
 		} else {
 			m_ScalePointsText.setPositionCenter(widget.getPositionCenter());

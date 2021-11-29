@@ -19,7 +19,7 @@
 template<class T>
 class RotateAnimation : public T {
 public:
-	void initAnimation(double deg_per_frame, int32_t period, double angle = 0, const Point &rot_center = Point::UNDEFINED);
+	void initAnimation(double deg_per_frame, int32_t period, double angle = 0, const Point &rot_center = Points::UNDEFINED);
 	void setPeriod(int32_t period);
 	void setRotCenter(const Point &pos);
 	bool setAngle(double angle, bool infinite = false);
@@ -30,7 +30,7 @@ public:
 private:
 	bool m_Infinite = false;
 	double m_Angle;
-	Point m_RotCenter =  Point::UNDEFINED;
+	Point m_RotCenter = Points::UNDEFINED;
 	Timer2Client m_Timer;
 	double m_DegFrame = 0;
 	int32_t m_Period = 0;

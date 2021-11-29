@@ -22,14 +22,14 @@ constexpr auto WINDOW_WIDTH					= 770;
 constexpr auto WINDOW_HEIGHT				= 526;
 
 constexpr std::uint32_t MAX_REFRESH_RATE	= 100;
-
 }
 
 static void populateAppWindowCfg(MainWindowCfg::Config_t &cfg) {
 	constexpr auto app_name = APP_NAME;
 	cfg.m_Name = app_name;
-	cfg.m_Rect = Rectangle(Point::UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT);
-	cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN;
+	cfg.m_Rect = Rectangle(Points::UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT);
+	cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN | MainWindowCfg::WINDOW_FULLSCREEN | MainWindowCfg::WINDOW_DESKTOP;
+	//cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN | MainWindowCfg::WINDOW_BORDERLESS;
 }
 
 static void populateDrawingCfg(DrawMgrConfig::Config_t &cfg) {
@@ -50,7 +50,7 @@ void populateImgCfg(ImgConfig::ImgRes_t &cfg) {
 	cfg[ResurcesId::BONUS_IMG].m_Path = "resources/images/bonus.png";
 	cfg[ResurcesId::AMMUN_IMG].m_Path = "resources/images/ammu.png";
 	cfg[ResurcesId::OWN_BULLET_IMG].m_Path = "resources/images/own_bullet.png";
-	cfg[ResurcesId::ENEMY_BULLET_IMG].m_Path = "resources/images/enemy_bullet.png";
+	cfg[ResurcesId::ENEMY_BULLET_IMG].m_Path = "resources/images/alien_bullet.png";
 #if 0
 	cfg[ResurcesId::RUNNING_GIRL_BIG_IMG].m_Path = "resources/images/running_girl_big.png";
 	Rectangle rec(0, 0, RUNNING_GIRL_BIG_IMG_W, RUNNING_GIRL_BIG_IMG_H);

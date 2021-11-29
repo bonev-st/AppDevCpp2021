@@ -15,12 +15,12 @@
 
 class Text : public Widget {
 public:
-	bool create(const std::string &text, const Color &color, std::size_t font_id, const Point &pos = Point::UNDEFINED);
-	bool setText(const std::string &text, const Point &pos = Point::UNDEFINED);
+	bool create(const std::string &text, const Color &color, std::size_t font_id, const Point &pos = Points::UNDEFINED);
+	bool setText(const std::string &text, const Point &pos = Points::UNDEFINED);
 	bool setColor(const Color &color);
 
 private:
-	Color m_Color = Color::BLACK;
+	Color m_Color = Colors::BLACK;
 	std::string m_Text;
 	std::size_t m_FontId = -1;
 

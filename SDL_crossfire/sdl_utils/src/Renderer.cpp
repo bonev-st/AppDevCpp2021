@@ -67,15 +67,15 @@ bool Renderer::copy(SDL_Texture * p_texture, const DrawParams_t & params) const 
 	auto dst_rect = SDL_Rect {};
 	auto center = SDL_Point {};
 
-	if (Rectangle::UNDEFINED != params.m_SrcRect) {
+	if (Rectangles::UNDEFINED != params.m_SrcRect) {
 		src_rect = SDLHelper::toRect(params.m_SrcRect);
 		p_srcrect = &src_rect;
 	}
-	if (Rectangle::UNDEFINED != params.m_DstRect) {
+	if (Rectangles::UNDEFINED != params.m_DstRect) {
 		dst_rect = SDLHelper::toRect(params.m_DstRect);
 		p_dstrect = &dst_rect;
 	}
-	if (Point::UNDEFINED != params.m_RotationCenter) {
+	if (Points::UNDEFINED != params.m_RotationCenter) {
 		center = SDLHelper::toPoint(params.m_RotationCenter);
 		p_center = &center;
 	}
@@ -92,6 +92,6 @@ Renderer::operator SDL_Renderer *() const {
 	return m_Renderer;
 }
 
-const DiplayMode::Mode_t & Renderer::getDisplayMode() const {
+const DisplayMode::Mode_t & Renderer::getDisplayMode() const {
 	return m_AppWindow.getDisplayMode();
 }

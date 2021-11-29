@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <iomanip>
 
+#include "../utils/inc/utils/drawing/DisplayMode.hpp"
 #include "sdl_utils/InputEvent.hpp"
 #include "manager_utils/managers/Timer2Mgr.hpp"
 #include "utils/drawing/Color.hpp"
@@ -23,9 +24,9 @@
 const uint32_t Game::REFRESH_RATE = 333;	// ms
 const uint32_t Game::MOTION_PERIOD = 15;	// ms
 
-bool Game::init(const GameConfig::Config_t & cfg) {
+bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & display_mode) {
 	Widget::setDebug(true);
-	m_Scale = 2.0;
+	Layout::init(display_mode);
 	if(!loadKeys(cfg.m_Keys)) {
 		std::cerr << "loadKeys() failed." << std::endl;
 		return false;
@@ -50,9 +51,143 @@ bool Game::init(const GameConfig::Config_t & cfg) {
 		std::cerr << "initTimers() failed." << std::endl;
 		return false;
 	}
+	Dimention disp_dim;
+	disp_dim.m_W = display_mode.m_W;
+	disp_dim.m_H = display_mode.m_H;
+	{
+		const auto & config = Layout::getImgData(0);
+		if(!m_Background.init(0, config.m_Alpha, 0.25, disp_dim, Layout::getMotionArea(), m_Ship)) {
+			std::cerr << "m_Background.init() failed." << std::endl;
+			return false;
+		}
+	}
+
+	if(!m_BackgroundFieldImageL1.create(2)) {
+		std::cerr << "m_BackgroundFieldImageL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledBackgroundFieldImageL1.init(Layout::getScaleFactor(),&m_BackgroundFieldImageL1)) {
+		std::cerr << "m_BackgroundFieldImageL1.create() failed." << std::endl;
+	}
+	{
+		const auto & config = Layout::getImgData(2);
+		m_ScaledBackgroundFieldImageL1.setOpacity(config.m_Alpha);
+		m_ScaledBackgroundFieldImageL1.setPosition(config.m_Pos);
+	}
+
+	if(!m_CrossfireImageL1.create(1)) {
+		std::cerr << "m_BackgroundFieldImageL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledCrossfireImageL1.init(Layout::getScaleFactor(),&m_CrossfireImageL1)) {
+		std::cerr << "m_BackgroundFieldImageL1.create() failed." << std::endl;
+	}
+	{
+		const auto & config = Layout::getImgData(1);
+		m_ScaledCrossfireImageL1.setOpacity(config.m_Alpha);
+		m_ScaledCrossfireImageL1.setPosition(config.m_Pos);
+	}
+
+	if(!m_GridImageL1.create(3)) {
+		std::cerr << "m_BackgroundFieldImageL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledGridImageL1.init(Layout::getScaleFactor(),&m_GridImageL1)) {
+		std::cerr << "m_BackgroundFieldImageL1.create() failed." << std::endl;
+	}
+	{
+		const auto & config = Layout::getImgData(3);
+		m_ScaledGridImageL1.setOpacity(config.m_Alpha);
+		m_ScaledGridImageL1.setPosition(config.m_Pos);
+	}
+
+	if(!m_ScaledTextScoreLableL1.init(Layout::getScaleFactor(),&m_TextScoreLableL1)) {
+		std::cerr << "m_ScaledTextScoreLableL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledTextHiScoreLableL1.init(Layout::getScaleFactor(),&m_TextHiScoreLableL1)) {
+		std::cerr << "m_ScaledTextScoreLableL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledTextShipsLableL1.init(Layout::getScaleFactor(),&m_TextShipsLableL1)) {
+		std::cerr << "m_ScaledTextScoreLableL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledTextScoreL2.init(Layout::getScaleFactor(),&m_TextScoreL2)) {
+		std::cerr << "m_ScaledTextScoreLableL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledTextHiScoreL2.init(Layout::getScaleFactor(),&m_TextHiScoreL2)) {
+		std::cerr << "m_ScaledTextScoreLableL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledTextShipsL2.init(Layout::getScaleFactor(),&m_TextShipsL2)) {
+		std::cerr << "m_ScaledTextScoreLableL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledTextFPSL2.init(Layout::getScaleFactor(),&m_TextFPSL2)) {
+		std::cerr << "m_ScaledTextScoreLableL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledTextActiveTimL2.init(Layout::getScaleFactor(),&m_TextActiveTimL2)) {
+		std::cerr << "m_ScaledTextScoreLableL1.create() failed." << std::endl;
+	}
+	if(!m_ScaledTextMaxTimL2.init(Layout::getScaleFactor(),&m_TextMaxTimL2)) {
+		std::cerr << "m_ScaledTextScoreLableL1.create() failed." << std::endl;
+	}
+	{
+		const auto & config = Layout::getTextData(GameConfig::TEXT_SCORE_LABLE_INDX);
+		m_ScaledTextScoreLableL1.setPosition(config.m_Pos);
+	}
+	{
+		const auto & config = Layout::getTextData(GameConfig::TEXT_SCORE_INDX);
+		m_ScaledTextScoreL2.setPosition(config.m_Pos);
+	}
+	{
+		const auto & config = Layout::getTextData(GameConfig::TEXT_HI_SCORE_LABLE_INDX);
+		m_ScaledTextHiScoreLableL1.setPosition(config.m_Pos);
+	}
+	{
+		const auto & config = Layout::getTextData(GameConfig::TEXT_HI_SCORE_INDX);
+		m_ScaledTextHiScoreL2.setPosition(config.m_Pos);
+	}
+	{
+		const auto & config = Layout::getTextData(GameConfig::TEXT_SHIPS_LABLE_INDX);
+		m_ScaledTextShipsLableL1.setPosition(config.m_Pos);
+	}
+	{
+		const auto & config = Layout::getTextData(GameConfig::TEXT_SHIPS_INDX);
+		m_ScaledTextShipsL2.setPosition(config.m_Pos);
+	}
+	{
+		const auto & config = Layout::getTextData(GameConfig::TEXT_FPS_INDX);
+		m_ScaledTextFPSL2.setPosition(config.m_Pos);
+	}
+	{
+		const auto & config = Layout::getTextData(GameConfig::TEXT_ACTIVE_TIMER_INDX);
+		m_ScaledTextActiveTimL2.setPosition(config.m_Pos);
+	}
+	{
+		const auto & config = Layout::getTextData(GameConfig::TEXT_MAX_ACTIVE_TIMER_INDX);
+		m_ScaledTextMaxTimL2.setPosition(config.m_Pos);
+	}
+
+	if(!m_L1.init(disp_dim, Points::ZERO)) {
+		std::cerr << "m_CollitionMgr.init() failed." << std::endl;
+	}
+	m_L1.add(&m_ScaledBackgroundFieldImageL1);
+	m_L1.add(&m_ScaledCrossfireImageL1);
+	//m_L1.add(&m_ScaledGridImageL1);
+	m_L1.add(&m_ScaledTextScoreLableL1);
+	m_L1.add(&m_ScaledTextHiScoreLableL1);
+	m_L1.add(&m_ScaledTextShipsLableL1);
+
+	if(!m_L2.init(disp_dim, Points::ZERO)) {
+		std::cerr << "m_CollitionMgr.init() failed." << std::endl;
+	}
+	m_L2.add(&m_ScaledTextScoreL2);
+	m_L2.add(&m_ScaledTextHiScoreL2);
+	m_L2.add(&m_ScaledTextShipsL2);
+	m_L2.add(&m_ScaledTextFPSL2);
+	m_L2.add(&m_ScaledTextActiveTimL2);
+	m_L2.add(&m_ScaledTextMaxTimL2);
+
+	//m_L2.add(&m_Ship);
+
 	m_Ship.reload(5);
 	m_Ship.setCallback(std::bind(&Game::onShipFire, this, std::placeholders::_1, std::placeholders::_2));
 	m_FPS.init();
+	m_GridPoint.init(12);
 
 	if(!m_CollitionMgr.init(std::bind(&Game::onCB_Ammun, this, std::placeholders::_1),
 							std::bind(&Game::onCB_Bonus, this, std::placeholders::_1),
@@ -77,16 +212,26 @@ bool Game::events(const InputEvent & event, bool & exit) {
 }
 
 bool Game::draw() {
-	//m_Img[GameConfig::IMG_BACKGROUND_INDX].draw();
-	m_Img[GameConfig::IMG_GRID_BKGRND_INDX].draw();
-	m_Img[GameConfig::IMG_CROSSFIRE_INDX].draw();
-	m_Img[GameConfig::IMG_GRID_INDX].draw();
+	m_Background.draw();
+	//m_ScaledBackgroundFieldImageL1.draw();
+	//m_ScaledCrossfireImageL1.draw();
+
+	//m_ScaledTextScoreLableL1.draw();
+	//m_ScaledTextHiScoreLableL1.draw();
+	//m_ScaledTextShipsLableL1.draw();
+	m_L1.draw();
+	m_L2.draw();
+	//m_ScaledTextScoreL2.draw();
+	//m_ScaledTextHiScoreL2.draw();
+	//m_ScaledTextShipsL2.draw();
+	//m_ScaledTextFPSL2.draw();
+	//m_ScaledTextActiveTimL2.draw();
+	//m_ScaledTextMaxTimL2.draw();
+	m_ScaledGridImageL1.draw();
 	m_Bonuses.draw();
 	m_Ammunition.draw();
 	m_Ship.draw();
-	for(auto & t : m_Text) {
-		t.draw();
-	}
+	m_GridPoint.draw();
 	return true;
 }
 
@@ -108,40 +253,30 @@ bool Game::loadKeys(const GameConfig::KeyRes_t & cfg) {
 bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 	size_t bulled_id = INVALID_RESR_ID;
 	for(const auto & [key, data]: cfg) {
-		const auto & config = Layout::getImgData(key);
 		if(GameConfig::IMG_SHIP_INDX == key) {
-			if(!m_Ship.init(data, m_Scale, Layout::getShipRelPos(), Layout::getGridSize(), Layout::getShipSpeed())) {
+			if(!m_Ship.init(data, Layout::getScaleFactor(), Layout::getShipRelPos(), Layout::getGridSize(), Layout::getShipSpeed())) {
 				std::cerr << "Game::createImages.m_Ship.init() failed"<< std::endl;
 				return false;
 			}
 		} else if(GameConfig::IMG_BONUS_INDX == key) {
-			if(!m_Bonuses.init(data, m_Scale, Layout::getBonusRelPosEna(), Layout::getBonusRelPosDis(),
-					0, Color::GREEN)) {
+			if(!m_Bonuses.init(data, Layout::getScaleFactor(), Layout::getBonusRelPosEna(), Layout::getBonusRelPosDis(),
+					0, Colors::GREEN)) {
 				std::cerr << "Game::createImages() m_Bonuses.init() failed"<< std::endl;
 				return false;
 			}
 		} else if(GameConfig::IMG_OWN_BULLED_INDX == key) {
 			bulled_id = data;
 		} else if(GameConfig::IMG_AMMU_INDX == key) {
-			if(!m_Ammunition.init(data, m_Scale)) {
+			if(!m_Ammunition.init(data, Layout::getScaleFactor())) {
 				std::cerr << "Game::createImages() m_Ammunition.init() failed"<< std::endl;
 				return false;
-			}
-		} else {
-			if(!m_Img[key].create(data, config.m_Pos)) {
-				std::cerr << "Game::createImages() m_Img[" << key << "].create() failed"<< std::endl;
-				return false;
-			}
-			if(FULL_OPACITY != config.m_Alpha) {
-				m_Img[GameConfig::IMG_GRID_BKGRND_INDX].activateAlphaModulation();
-				m_Img[GameConfig::IMG_GRID_BKGRND_INDX].setOpacity(config.m_Alpha);
 			}
 		}
 	}
 	if(INVALID_RESR_ID == bulled_id) {
 		return false;
 	}
-	if(!m_Ship.init_bullet(bulled_id, m_Scale, Layout::getShipBulletSpeed(), Layout::getOwnMaxBulled(), Layout::getOwnReloadTime(), Layout::getArenaRectangle())) {
+	if(!m_Ship.init_bullet(bulled_id, Layout::getScaleFactor(), Layout::getShipBulletSpeed(), Layout::getOwnMaxBulled(), Layout::getOwnReloadTime(), Layout::getArenaRectangle())) {
 		std::cerr << "Game::createImages() m_Ship.init_bullet() failed"<< std::endl;
 		return false;
 	}
@@ -151,9 +286,63 @@ bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 bool Game::createTexts(const GameConfig::TextRes_t & cfg) {
 	for(const auto & [key, data]: cfg) {
 		const auto & config = Layout::getTextData(key);
-		if(!m_Text[key].create(config.m_Text, config.m_Color, data, config.m_Pos)) {
-			std::cerr << "Game::createImages.m_Img[" << key << "].create() failed"<< std::endl;
-			return false;
+		switch(key) {
+		case GameConfig::TEXT_SCORE_LABLE_INDX:
+			if(!m_TextScoreLableL1.create(config.m_Text, config.m_Color, data, config.m_Pos)) {
+				std::cerr << "Game::createImages.m_Img[" << key << "].create() failed"<< std::endl;
+				return false;
+			}
+			break;
+		case GameConfig::TEXT_SCORE_INDX:
+			if(!m_TextScoreL2.create(config.m_Text, config.m_Color, data, config.m_Pos)) {
+				std::cerr << "Game::createImages.m_Img[" << key << "].create() failed"<< std::endl;
+				return false;
+			}
+			break;
+		case GameConfig::TEXT_HI_SCORE_LABLE_INDX:
+			if(!m_TextHiScoreLableL1.create(config.m_Text, config.m_Color, data, config.m_Pos)) {
+				std::cerr << "Game::createImages.m_Img[" << key << "].create() failed"<< std::endl;
+				return false;
+			}
+			break;
+		case GameConfig::TEXT_HI_SCORE_INDX:
+			if(!m_TextHiScoreL2.create(config.m_Text, config.m_Color, data, config.m_Pos)) {
+				std::cerr << "Game::createImages.m_Img[" << key << "].create() failed"<< std::endl;
+				return false;
+			}
+			break;
+		case GameConfig::TEXT_SHIPS_LABLE_INDX:
+			if(!m_TextShipsLableL1.create(config.m_Text, config.m_Color, data, config.m_Pos)) {
+				std::cerr << "Game::createImages.m_Img[" << key << "].create() failed"<< std::endl;
+				return false;
+			}
+			break;
+		case GameConfig::TEXT_SHIPS_INDX:
+			if(!m_TextShipsL2.create(config.m_Text, config.m_Color, data, config.m_Pos)) {
+				std::cerr << "Game::createImages.m_Img[" << key << "].create() failed"<< std::endl;
+				return false;
+			}
+			break;
+		case GameConfig::TEXT_FPS_INDX:
+			if(!m_TextFPSL2.create(config.m_Text, config.m_Color, data, config.m_Pos)) {
+				std::cerr << "Game::createImages.m_Img[" << key << "].create() failed"<< std::endl;
+				return false;
+			}
+			break;
+		case GameConfig::TEXT_ACTIVE_TIMER_INDX:
+			if(!m_TextActiveTimL2.create(config.m_Text, config.m_Color, data, config.m_Pos)) {
+				std::cerr << "Game::createImages.m_Img[" << key << "].create() failed"<< std::endl;
+				return false;
+			}
+			break;
+		case GameConfig::TEXT_MAX_ACTIVE_TIMER_INDX:
+			if(!m_TextMaxTimL2.create(config.m_Text, config.m_Color, data, config.m_Pos)) {
+				std::cerr << "Game::createImages.m_Img[" << key << "].create() failed"<< std::endl;
+				return false;
+			}
+			break;
+		default:
+			break;
 		}
 	}
 	return true;
@@ -236,21 +425,21 @@ void Game::setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask) {
 void Game::onFPS_Timeout([[maybe_unused]]Timer2::TimerHandler_t id) {
 	assert((m_RefreshTimer == id) && m_RefreshTimer.isRunning());
 
-	auto text = Layout::getTextData(GameConfig::TEXT_FPS_INDX).m_Text;
+	std::string text = Layout::getTextData(GameConfig::TEXT_FPS_INDX).m_Text;
 	std::ostringstream oss;
 	oss.setf(std::ios::fixed);
 	oss << std::setprecision(1) << m_FPS;
 
 	text += oss.str();
-	m_Text[GameConfig::TEXT_FPS_INDX].setText(text);
+	m_TextFPSL2.setText(text);
 
 	text = Layout::getTextData(GameConfig::TEXT_ACTIVE_TIMER_INDX).m_Text;
 	text += std::to_string(Timer2MgrInst::getInstance()->getActive());
-	m_Text[GameConfig::TEXT_ACTIVE_TIMER_INDX].setText(text);
+	m_TextActiveTimL2.setText(text);
 
 	text = Layout::getTextData(GameConfig::TEXT_MAX_ACTIVE_TIMER_INDX).m_Text;
 	text += std::to_string(Timer2MgrInst::getInstance()->getMaxActive());
-	m_Text[GameConfig::TEXT_MAX_ACTIVE_TIMER_INDX].setText(text);
+	m_TextMaxTimL2.setText(text);
 }
 
 void Game::onMotion_Timeout([[maybe_unused]]Timer2::TimerHandler_t id) {

@@ -23,17 +23,16 @@ bool App::init(const AppConfig& cfg) {
 	        std::cerr << "m_Loader.init() failed." << std::endl;
 	        return false;
 	    }
-	    if(!m_Managers.init(cfg.m_ResourcesCfg)) {
+	    DisplayMode::Mode_t display_mode;
+	    if(!m_Managers.init(cfg.m_ResourcesCfg, display_mode)) {
 	        std::cerr << "m_Managers.init() failed." << std::endl;
 	        return false;
 	    }
-	    if(!m_Game.init(cfg.m_GameCfg)) {
+	    if(!m_Game.init(cfg.m_GameCfg, display_mode)) {
 	        std::cerr << "m_Game.init() failed." << std::endl;
 	        return false;
 	    }
-
 	    m_FrameDuration = (int64_t)1E6/cfg.m_ResourcesCfg.m_DrawMgrCfg.m_MaxFrameRate;
-
 		rc = true;
 	} while(0);
 	return rc;

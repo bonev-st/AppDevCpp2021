@@ -7,8 +7,8 @@
 
 #include "utils/drawing/Dimention.hpp"
 
-const Dimention Dimention::ZERO = Dimention(0,0);
-const Dimention Dimention::UNDEFINED = Dimention(1e6,1e6);
+const Dimention Dimentions::ZERO = Dimention(0,0);
+const Dimention Dimentions::UNDEFINED = Dimention(1e6,1e6);
 
 Dimention::Dimention(std::int32_t w, std::int32_t h) :
 	m_W(w)

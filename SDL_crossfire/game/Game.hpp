@@ -24,6 +24,9 @@
 #include "game/widgets/Ammunition.hpp"
 #include "game/widgets/ScaleTexture.hpp"
 #include "game/widgets/Bonuses.hpp"
+#include "game/widgets/WidgetContainer.hpp"
+#include "game/widgets/Background.hpp"
+#include "game/widgets/GridPoint.hpp"
 
 #include "game/gameplay/CollisionDetect.hpp"
 #include "game/gameplay/CD_Through.hpp"
@@ -32,10 +35,13 @@
 
 class InputEvent;
 class InputEventIF;
+namespace DisplayMode {
+struct Mode_t;
+}
 
 class Game {
 public:
-	bool init(const GameConfig::Config_t & cfg);
+	bool init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & display_mode);
 	bool events(const InputEvent & event, bool & exit);
 	bool draw();
 	bool new_frame();
@@ -45,13 +51,39 @@ private:
 	static const uint32_t REFRESH_RATE;
 	static const uint32_t MOTION_PERIOD;
 
-	double m_Scale = 1;
-
 	FPS m_FPS;
 
-	std::array<Image, GameConfig::IMG_ARRAY_SIZE> m_Img;
-	std::array<Text, GameConfig::TEXT_ARRAY_SIZE> m_Text;
-	std::vector<InputEventIF*> m_InputEvetntContainer;
+	Background m_Background;
+
+	WidgetContainer m_L1;
+	Image m_BackgroundFieldImageL1;
+	ScaleTexture m_ScaledBackgroundFieldImageL1;
+	Image m_CrossfireImageL1;
+	ScaleTexture m_ScaledCrossfireImageL1;
+	Image m_GridImageL1;
+	ScaleTexture m_ScaledGridImageL1;
+
+	Text m_TextScoreLableL1;
+	ScaleTexture m_ScaledTextScoreLableL1;
+	Text m_TextHiScoreLableL1;
+	ScaleTexture m_ScaledTextHiScoreLableL1;
+	Text m_TextShipsLableL1;
+	ScaleTexture m_ScaledTextShipsLableL1;
+
+	WidgetContainer m_L2;
+	Text m_TextScoreL2;
+	ScaleTexture m_ScaledTextScoreL2;
+	Text m_TextHiScoreL2;
+	ScaleTexture m_ScaledTextHiScoreL2;
+	Text m_TextShipsL2;
+	ScaleTexture m_ScaledTextShipsL2;
+
+	Text m_TextFPSL2;
+	ScaleTexture m_ScaledTextFPSL2;
+	Text m_TextActiveTimL2;
+	ScaleTexture m_ScaledTextActiveTimL2;
+	Text m_TextMaxTimL2;
+	ScaleTexture m_ScaledTextMaxTimL2;
 
 	Ship m_Ship;
 	Ammunition m_Ammunition;
@@ -66,6 +98,8 @@ private:
 	Timer2Client m_MotionTimer;
 
 	CollitionMgr m_CollitionMgr;
+
+	GridPoint m_GridPoint;
 
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
 	bool createImages(const GameConfig::ImgRes_t & cfg);

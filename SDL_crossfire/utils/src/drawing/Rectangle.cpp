@@ -8,8 +8,8 @@
 #include <cmath>
 #include "utils/drawing/Rectangle.hpp"
 
-const Rectangle Rectangle::ZERO(0, 0, 0, 0);
-const Rectangle Rectangle::UNDEFINED(Point::UNDEF_VAL, Point::UNDEF_VAL, Point::UNDEF_VAL, Point::UNDEF_VAL);
+const Rectangle Rectangles::ZERO(0, 0, 0, 0);
+const Rectangle Rectangles::UNDEFINED(Point::UNDEF_VAL, Point::UNDEF_VAL, Point::UNDEF_VAL, Point::UNDEF_VAL);
 
 Rectangle::Rectangle(std::int32_t x, std::int32_t y, std::int32_t w, std::int32_t h) :
 	m_Pos(x,y)

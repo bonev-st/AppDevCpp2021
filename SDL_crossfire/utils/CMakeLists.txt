@@ -23,6 +23,7 @@ add_library(
 		${_INC_DIR}/drawing/BlendMode.hpp		
 		${_INC_DIR}/drawing/FlipMode.hpp
 		${_INC_DIR}/drawing/WidgetType.hpp
+		${_INC_DIR}/drawing/DisplayMode.hpp
 		${_INC_DIR}/inputs/EventDefines.h
 		${_INC_DIR}/inputs/InputEventIF.hpp
 		${_INC_DIR}/time/Time.hpp

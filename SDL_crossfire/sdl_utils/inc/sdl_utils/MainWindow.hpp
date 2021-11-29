@@ -17,7 +17,7 @@
 
 #include "utils/NoCopy.hpp"
 
-#include "sdl_utils/DiplayMode.hpp"
+#include "utils/drawing/DisplayMode.hpp"
 
 struct SDL_Window;
 
@@ -26,16 +26,20 @@ public:
 	bool init(const MainWindowCfg::Config_t &cfg);
 	operator SDL_Window *() const;
 	const Rectangle & getRect() const;
-	const DiplayMode::Mode_t & getDisplayMode() const;
+	const DisplayMode::Mode_t & getDisplayMode() const;
 
 private:
 	struct SDL_DisplayMode_t {
-		DiplayMode::Mode_t Mode;
-	    void *driverdata = nullptr;		/**< driver-specific data, initialize to 0 */
+	    uint32_t format;
+	    int32_t w;
+	    int32_t h;
+	    int refresh_rate;
+	    void *driverdata = nullptr;
 	};
 
 	RAII_Handler<SDL_Window*, nullptr, std::function<void(SDL_Window*)>> m_Window;
-	Rectangle m_Rect = Rectangle::UNDEFINED;
+	Rectangle m_Rect = Rectangles::UNDEFINED;
 	SDL_DisplayMode_t m_DispyMode;
+	DisplayMode::Mode_t m_WindowDim;
 };
 #endif /* SDL_UTILS_MAINWINDOW_HPP_ */

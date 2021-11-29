@@ -10,8 +10,11 @@
 #include <cassert>
 #include <iostream>
 
+#include "game/config/Layout.hpp"
+
 bool CollitionMgr::init(Callback_t cb_ammu, Callback_t cb_bonus, Callback_t cb_ship, Callback_t cb_enemy) {
-	const auto rec = Rectangle(Point::ZERO, 3, 3);
+	const auto rec = Rectangle(Points::ZERO, static_cast<int32_t>(5 * Layout::getScaleFactor())
+			, static_cast<int32_t>(5 * Layout::getScaleFactor()));
 	if(!m_ProcThrough.init(rec)) {
 		std::cerr << "m_ProcThrough.init() failed" << std::endl;
 		return false;

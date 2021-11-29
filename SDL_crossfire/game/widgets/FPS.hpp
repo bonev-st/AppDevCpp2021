@@ -20,7 +20,7 @@ public:
 	operator double() const;
 
 private:
-	static const double SmoothingFactor;
+	static constexpr double SMOOTHING_FACTOR = 0.9;
 	ExpFilter m_Filter;
 	Time m_Period;
 

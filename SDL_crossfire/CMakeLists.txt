@@ -21,6 +21,12 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bonuses.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bonuses.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/WidgetTO.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/WidgetContainer.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/WidgetContainer.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Background.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Background.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/GridPoint.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/GridPoint.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.hpp
@@ -46,6 +52,12 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfig.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/Layout.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/Layout.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/AbsCoordinates.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/AbsCoordinatesIntr.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/AbsCoordinatesIntr.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/RelCoordinates.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/RelCoordinatesIntr.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/RelCoordinatesIntr.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/App.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/App.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfig.hpp

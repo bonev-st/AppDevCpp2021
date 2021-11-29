@@ -130,7 +130,7 @@ bool DrawMgr::setAlpha(const DrawParams_t & draw) {
 	return Texture::setAlphaTexture(p_texture, draw.m_Opacity);
 }
 
-const DiplayMode::Mode_t & DrawMgr::getDisplayMode() const {
+const DisplayMode::Mode_t & DrawMgr::getDisplayMode() const {
 	assert(m_Renderer);
 	return m_Renderer->getDisplayMode();
 }

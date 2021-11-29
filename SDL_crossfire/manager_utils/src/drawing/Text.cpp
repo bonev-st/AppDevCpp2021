@@ -24,14 +24,14 @@ bool Text::create(const std::string &text, const Color &color, std::size_t font_
 
 bool Text::setText(const std::string &text, const Point &pos) {
 	if(text == m_Text) {
-		if(Point::UNDEFINED != pos) {
+		if(Points::UNDEFINED != pos) {
 			setPosition(pos);
 		}
 		return true;
 	}
 	m_Text = text;
 	auto position = getPosition();
-	if(Point::UNDEFINED != pos) {
+	if(Points::UNDEFINED != pos) {
 		position = pos;
 	}
 	return create(position);
@@ -51,7 +51,7 @@ bool Text::create(const Point &pos) {
 		std::cerr << "Text::create.createText() failed"<< std::endl;
 		return false;
 	}
-	if(Point::UNDEFINED != pos) {
+	if(Points::UNDEFINED != pos) {
 		setPosition(pos);
 	}
 	invalidate();

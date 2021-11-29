@@ -80,5 +80,14 @@ Point getRotation180(const Point &pos, const Point &center) {
 	return rc + center;
 }
 
+int32_t scaleVal(int32_t val, double scale) {
+	return static_cast<int32_t>(std::round(val * scale));
+}
+
+Point scalePoint(const Point & point, double scale) {
+	return Point(scaleVal(point.m_X, scale),
+				 scaleVal(point.m_Y, scale));
+}
+
 }
 

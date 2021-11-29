@@ -20,7 +20,7 @@ public:
 	static bool getDebug();
 
 	void invalidate();
-	bool isInvalidate() const;
+	virtual bool isInvalidate() const;
 
 	virtual void draw();
 

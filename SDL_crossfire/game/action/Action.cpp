@@ -98,31 +98,31 @@ bool Action::isFireAction(const Action_t a) {
 }
 
 uint8_t Action::toNeighborhoodMask(Action_t action) {
-	uint8_t rc = Layout::NONE;
+	uint8_t rc = GridNeighborhoodType_t::NONE;
 	switch(action) {
 	case Action_t::MOVE_UP:
-		rc = Layout::UP;
+		rc = GridNeighborhoodType_t::UP;
 		break;
 	case Action_t::MOVE_DOWN:
-		rc = Layout::DOWN;
+		rc = GridNeighborhoodType_t::DOWN;
 		break;
 	case Action_t::MOVE_LEFT:
-		rc = Layout::LEFT;
+		rc = GridNeighborhoodType_t::LEFT;
 		break;
 	case Action_t::MOVE_RIGHT:
-		rc = Layout::RIGHT;
+		rc = GridNeighborhoodType_t::RIGHT;
 		break;
 	case Action_t::FIRE_UP:
-		rc = Layout::UP;
+		rc = GridNeighborhoodType_t::UP;
 		break;
 	case Action_t::FIRE_DOWN:
-		rc = Layout::DOWN;
+		rc = GridNeighborhoodType_t::DOWN;
 		break;
 	case Action_t::FIRE_LEFT:
-		rc = Layout::LEFT;
+		rc = GridNeighborhoodType_t::LEFT;
 		break;
 	case Action_t::FIRE_RIGHT:
-		rc = Layout::RIGHT;
+		rc = GridNeighborhoodType_t::RIGHT;
 		break;
 	case Action_t::NONE:
 		break;
@@ -133,18 +133,18 @@ uint8_t Action::toNeighborhoodMask(Action_t action) {
 }
 
 uint8_t Action::toLineOfFireMask(Action_t action) {
-	uint8_t rc = Layout::NONE;
+	uint8_t rc = GridNeighborhoodType_t::NONE;
 	switch(action) {
 	case Action_t::MOVE_UP:
 	case Action_t::MOVE_DOWN:
-		rc = Layout::UP | Layout::DOWN;
+		rc = GridNeighborhoodType_t::UP | GridNeighborhoodType_t::DOWN;
 		break;
 	case Action_t::MOVE_LEFT:
 	case Action_t::MOVE_RIGHT:
-		rc = Layout::RIGHT | Layout::LEFT;
+		rc = GridNeighborhoodType_t::RIGHT | GridNeighborhoodType_t::LEFT;
 		break;
 	case Action_t::NONE:
-		rc = Layout::UP | Layout::DOWN | Layout::RIGHT | Layout::LEFT;
+		rc = GridNeighborhoodType_t::UP | GridNeighborhoodType_t::DOWN | GridNeighborhoodType_t::RIGHT | GridNeighborhoodType_t::LEFT;
 		break;
 	default:
 		assert(0);

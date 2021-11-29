@@ -9,6 +9,12 @@
 #define UTILS_INC_UTILS_DRAWING_DIMENTION_HPP_
 
 #include <cstdint>
+struct Dimention;
+
+struct Dimentions {
+	static const Dimention ZERO;
+	static const Dimention UNDEFINED;
+};
 
 struct Dimention {
 	Dimention()  = default;
@@ -17,9 +23,6 @@ struct Dimention {
 
 	std::int32_t m_W = 0;
 	std::int32_t m_H = 0;
-
-	static const Dimention ZERO;
-	static const Dimention UNDEFINED;
 };
 
 

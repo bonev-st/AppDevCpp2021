@@ -20,7 +20,7 @@
 
 class Mgrs : public BaseMgr, public InputEventIF {
 public:
-	bool init(const ResourcesConfig::Config_t &cfg);
+	bool init(const ResourcesConfig::Config_t &cfg, DisplayMode::Mode_t & out_display_mode);
 	std::size_t getActive() const final;
 	std::size_t getMaxActive() const final;
 	bool handleEvent(const InputEvent &e) final;
