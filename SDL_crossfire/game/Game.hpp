@@ -27,11 +27,11 @@
 #include "game/widgets/WidgetContainer.hpp"
 #include "game/widgets/Background.hpp"
 #include "game/widgets/GridPoint.hpp"
+#include "game/widgets/ExplosionContainer.hpp"
 
 #include "game/gameplay/CollisionDetect.hpp"
 #include "game/gameplay/CD_Through.hpp"
 #include "game/gameplay/CollitionMgr.hpp"
-
 
 class InputEvent;
 class InputEventIF;
@@ -86,8 +86,10 @@ private:
 	ScaleTexture m_ScaledTextMaxTimL2;
 
 	Ship m_Ship;
+	Ship m_Enemy;
 	Ammunition m_Ammunition;
 	Bonuses m_Bonuses;
+	ExplosionContainer m_ExplosionContainer;
 
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;
@@ -120,6 +122,8 @@ private:
 	void onCB_Bonus(const std::vector<const Widget *> data);
 	void onCB_Ship(const std::vector<const Widget *> data);
 	void onCB_Enemy(const std::vector<const Widget *> data);
+
+	void onAnimation0(Widget * data);
 };
 
 #endif /* GAME_GAME_HPP_ */

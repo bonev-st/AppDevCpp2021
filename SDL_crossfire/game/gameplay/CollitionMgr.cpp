@@ -48,6 +48,9 @@ void CollitionMgr::addUnits(const Widget* ship, const std::vector<const Widget*>
 	m_Enemy = enemy;
 	m_BonusColl.setObj(ship);
 	m_AmmunitionColl.setObj(ship);
+	if(!enemy.empty()) {
+		m_EnemyColl.setObj(enemy.front());
+	}
 }
 
 void CollitionMgr::addBonus(const Widget* bonus) {
@@ -66,6 +69,7 @@ void CollitionMgr::removeAmmun(const Widget* ammun) {
 }
 
 void CollitionMgr::addBulletShipColl([[maybe_unused]]Widget* bullet) {
+	m_EnemyColl.add(bullet);
 }
 
 void CollitionMgr::addBulletEnemyColl([[maybe_unused]]Widget* bullet) {

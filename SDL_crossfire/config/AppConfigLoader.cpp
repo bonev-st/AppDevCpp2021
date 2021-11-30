@@ -23,8 +23,8 @@ constexpr auto WINDOW_HEIGHT				= 526;
 
 constexpr std::uint32_t MAX_REFRESH_RATE	= 100;
 
-constexpr std::uint32_t EXPLOSION_IMG_W		= 256;
-constexpr std::uint32_t EXPLOSION_IMG_H		= 256;
+constexpr std::uint32_t EXPLOSION_IMG_W		= 48;
+constexpr std::uint32_t EXPLOSION_IMG_H		= 48;
 constexpr std::uint32_t EXPLOSION_IMG_ROL	= 6;
 constexpr std::uint32_t EXPLOSION_IMG_COL	= 8;
 
@@ -51,6 +51,7 @@ void polulateSprite(std::vector<Rectangle> & frames_b, const int32_t rols, const
 			rec.m_Pos.m_X += h;
 		}
 		rec.m_Pos.m_Y += h;
+		rec.m_Pos.m_X  = 0;
 	}
 }
 
@@ -119,6 +120,7 @@ void populateGameImg(GameConfig::ImgRes_t &cfg) {
 	cfg[GameConfig::IMG_AMMU_INDX] = ResurcesId::AMMUN_IMG;
 	cfg[GameConfig::IMG_OWN_BULLED_INDX] = ResurcesId::OWN_BULLET_IMG;
 	cfg[GameConfig::IMG_ENEMY_BULLED_INDX] = ResurcesId::ENEMY_BULLET_IMG;
+	cfg[GameConfig::IMG_EXPLOSION_INDX] = ResurcesId::EXPLOSION_IMG;
 }
 
 void populateGameText(GameConfig::TextRes_t &cfg) {
