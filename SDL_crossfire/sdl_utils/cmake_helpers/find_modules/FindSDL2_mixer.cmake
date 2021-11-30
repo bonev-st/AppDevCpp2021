@@ -2,7 +2,7 @@
 # This module defines
 # SDL2_MIXER_LIBRARY, the name of the library to link against
 # SDL2_MIXER_FOUND, if false, do not try to link to SDL2_mixer
-# SDL2_MIXER_INCLUDE_DIR, where to find SDL_image.h
+# SDL2_MIXER_INCLUDE_DIR, where to find SDL_mixer.h
 #
 # Additional Note: If you see an empty SDL2_MIXER_LIBRARY_TEMP in your configuration
 # and no SDL2_MIXER_LIBRARY, it means CMake did not find your SDL2_mixer library
@@ -88,7 +88,7 @@
 # (To distribute this file outside of CMake, substitute the full
 # License text for the above reference.)
 
-FIND_PATH(SDL2_MIXER_INCLUDE_DIR SDL_image.h
+FIND_PATH(SDL2_MIXER_INCLUDE_DIR SDL_mixer.h
 	HINTS
 	${SDL2}
 	$ENV{SDL2}
