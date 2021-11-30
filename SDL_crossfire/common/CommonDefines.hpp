@@ -26,6 +26,7 @@ enum ImgId_t : std::size_t {
 	AMMUN_IMG,
 	OWN_BULLET_IMG,
 	ENEMY_BULLET_IMG,
+	EXPLOSION_IMG,
 	NUMB_IMG
 };
 

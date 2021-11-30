@@ -22,6 +22,12 @@ constexpr auto WINDOW_WIDTH					= 770;
 constexpr auto WINDOW_HEIGHT				= 526;
 
 constexpr std::uint32_t MAX_REFRESH_RATE	= 100;
+
+constexpr std::uint32_t EXPLOSION_IMG_W		= 256;
+constexpr std::uint32_t EXPLOSION_IMG_H		= 256;
+constexpr std::uint32_t EXPLOSION_IMG_ROL	= 6;
+constexpr std::uint32_t EXPLOSION_IMG_COL	= 8;
+
 }
 
 static void populateAppWindowCfg(MainWindowCfg::Config_t &cfg) {
@@ -35,6 +41,17 @@ static void populateAppWindowCfg(MainWindowCfg::Config_t &cfg) {
 static void populateDrawingCfg(DrawMgrConfig::Config_t &cfg) {
 	populateAppWindowCfg(cfg.m_WindowCfg);
 	cfg.m_MaxFrameRate = MAX_REFRESH_RATE;
+}
+
+void polulateSprite(std::vector<Rectangle> & frames_b, const int32_t rols, const int32_t cols, const int32_t w, const int32_t h) {
+	Rectangle rec(0, 0, w, h);
+	for(int32_t rol = 0; rols > rol; ++rol ) {
+		for(int32_t col = 0; cols > col; ++col ) {
+			frames_b.emplace_back(rec);
+			rec.m_Pos.m_X += h;
+		}
+		rec.m_Pos.m_Y += h;
+	}
 }
 
 void populateImgCfg(ImgConfig::ImgRes_t &cfg) {
@@ -51,15 +68,9 @@ void populateImgCfg(ImgConfig::ImgRes_t &cfg) {
 	cfg[ResurcesId::AMMUN_IMG].m_Path = "resources/images/ammu.png";
 	cfg[ResurcesId::OWN_BULLET_IMG].m_Path = "resources/images/own_bullet.png";
 	cfg[ResurcesId::ENEMY_BULLET_IMG].m_Path = "resources/images/alien_bullet.png";
-#if 0
-	cfg[ResurcesId::RUNNING_GIRL_BIG_IMG].m_Path = "resources/images/running_girl_big.png";
-	Rectangle rec(0, 0, RUNNING_GIRL_BIG_IMG_W, RUNNING_GIRL_BIG_IMG_H);
-	auto & frames_b = cfg[ResurcesId::RUNNING_GIRL_BIG_IMG].m_Frames;
-	for(int32_t i = 0; RUNNING_GIRL_FRAMES > i; ++i ) {
-		frames_b.emplace_back(rec);
-		rec.m_Pos.m_X += RUNNING_GIRL_BIG_IMG_W;
-	}
-#endif
+	cfg[ResurcesId::EXPLOSION_IMG].m_Path = "resources/images/explosion.png";
+	polulateSprite(cfg[ResurcesId::EXPLOSION_IMG].m_Frames, EXPLOSION_IMG_ROL,
+			EXPLOSION_IMG_COL, EXPLOSION_IMG_W, EXPLOSION_IMG_H);
 }
 
 void populateFontCfg(FontConfig::FontRes_t &cfg) {
