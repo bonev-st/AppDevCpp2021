@@ -45,18 +45,18 @@ void ExplosionContainer::draw() {
 
 void ExplosionContainer::onAnimationTick(std::size_t frame, void * param) {
 	std::shared_ptr<Data_t> * p_data = m_Container.get(reinterpret_cast<size_t>(param));
-	if(p_data) {
+	if(p_data && *p_data) {
 		std::cerr << "ExplosionContainer::onAnimationTick() invalid handler" << std::endl;
 		return;
 	}
-	auto data = &p_data;
+	auto &data = *(*p_data).get();
 	if(!frame) {
-		if((*data)->m_CB) {
-			(*data)->m_CB((*data)->m_Widget);
+		if(data.m_CB) {
+			data.m_CB(data.m_Widget);
 		}
 
 	}
-	int32_t alpha = ZERO_OPACITY;
+	auto alpha = ZERO_OPACITY;
 	if(HIDE_FAME > frame) {
 		double k = static_cast<double>(frame);
 		k /= HIDE_FAME;
@@ -64,5 +64,5 @@ void ExplosionContainer::onAnimationTick(std::size_t frame, void * param) {
 		k *= FULL_OPACITY;
 		alpha = static_cast<int32_t>(k);
 	}
-	(*data)->m_Img.setOpacity(alpha);
+	data.m_Img.setOpacity(alpha);
 }
