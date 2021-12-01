@@ -163,7 +163,7 @@ bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & di
 	}
 
 	if(!m_L1.init(disp_dim, Points::ZERO)) {
-		std::cerr << "m_CollitionMgr.init() failed." << std::endl;
+		std::cerr << "m_L1.init() failed." << std::endl;
 	}
 	m_L1.add(&m_ScaledBackgroundFieldImageL1);
 	m_L1.add(&m_ScaledCrossfireImageL1);
@@ -173,7 +173,7 @@ bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & di
 	m_L1.add(&m_ScaledTextShipsLableL1);
 
 	if(!m_L2.init(disp_dim, Points::ZERO)) {
-		std::cerr << "m_CollitionMgr.init() failed." << std::endl;
+		std::cerr << "m_L2.init() failed." << std::endl;
 	}
 	m_L2.add(&m_ScaledTextScoreL2);
 	m_L2.add(&m_ScaledTextHiScoreL2);
@@ -200,12 +200,13 @@ bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & di
 	if(!m_CollitionMgr.init(std::bind(&Game::onCB_Ammun, this, std::placeholders::_1),
 							std::bind(&Game::onCB_Bonus, this, std::placeholders::_1),
 							std::bind(&Game::onCB_Ship, this, std::placeholders::_1),
-							std::bind(&Game::onCB_Enemy, this, std::placeholders::_1))) {
+							std::bind(&Game::onCB_Enemy, this, std::placeholders::_1),
+							std::bind(&Game::onCB_Ship2Ship, this, std::placeholders::_1))) {
 		std::cerr << "m_CollitionMgr.init() failed." << std::endl;
 		return false;
 	}
 
-	std::vector<const Widget*> tmp;
+	std::vector<Widget*> tmp;
 	tmp.push_back(&m_Enemy);
 	m_CollitionMgr.addUnits(&m_Ship, tmp);
 
@@ -253,7 +254,14 @@ bool Game::new_frame() {
 }
 
 bool Game::processing() {
-	m_CollitionMgr.processing();
+	std::vector<Widget*> ammun;
+	ammun.push_back(&m_Ammunition);
+	std::vector<Widget *> enemy;
+	if(!m_Enemy.isDestroy()) {
+		enemy.push_back(&m_Enemy);
+	}
+	m_CollitionMgr.processing(m_Ship.getBullets(), m_Enemy.getBullets()
+			,enemy , m_Bonuses.getWidgets(), ammun);
 	return true;
 }
 
@@ -288,7 +296,7 @@ bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 				return false;
 			}
 		} else if(GameConfig::IMG_ENEMY1_INDX == key) {
-			if(!m_Enemy.init(data, Layout::getScaleFactor(), Point(2,2), Layout::getGridSize())) {
+			if(!m_Enemy.init(data, Layout::getScaleFactor(), Point(12,10), Layout::getGridSize())) {
 				std::cerr << "Game::createImages.m_Enemy.init() failed"<< std::endl;
 				return false;
 			}
@@ -485,14 +493,12 @@ void Game::onShipFire(const Point &pos, int8_t rem) {
 		return;
 	}
 	++count;
-	if(m_Bonuses.getEnabledWidget() && (4 < count)) {
-		m_CollitionMgr.removeBonus(m_Bonuses.getEnabledWidget());
+	if(!m_Bonuses.getWidgets().empty() && (4 < count)) {
 		m_Bonuses.disable();
 		count = 0;
 	}
 	if((6 < count) && (static_cast<uint8_t>(BonusId_t::BONUS_NUMB) > id)) {
 		m_Bonuses.enable(static_cast<BonusId_t>(id));
-		m_CollitionMgr.addBonus(m_Bonuses.getEnabledWidget());
 		count = 0;
 		++id;
 	}
@@ -500,13 +506,6 @@ void Game::onShipFire(const Point &pos, int8_t rem) {
 		if(!m_Ammunition.show(Geometry::getRotation180(pos, Layout::getArenaRectangle().getCenter()))) {
 			std::cerr << "Game::createImages() m_Ammunition.show() failed"<< std::endl;
 		}
-		m_CollitionMgr.addAmmun(&m_Ammunition);
-	}
-	ExplosionContainer::Callback_t cb;
-	m_Enemy.setOpacity(FULL_OPACITY);
-	m_Enemy.setVisible(true);
-	if(!m_ExplosionContainer.show(&m_Enemy, std::bind(&Game::onAnimation0, this, std::placeholders::_1))) {
-		std::cerr << "ExplosionContainer show() failed"<< std::endl;
 	}
 }
 
@@ -514,13 +513,12 @@ void Game::onAnimation0(Widget * data) {
 	data->setVisible(false);
 }
 
-void Game::onCB_Ammun([[maybe_unused]]const std::vector<const Widget *> data) {
-	m_CollitionMgr.removeAmmun(&m_Ammunition);
+void Game::onCB_Ammun([[maybe_unused]]const std::vector<Widget *> &data) {
 	m_Ammunition.collision();
 	m_Ship.reload(5);
 }
 
-void Game::onCB_Bonus([[maybe_unused]]const std::vector<const Widget *> data) {
+void Game::onCB_Bonus([[maybe_unused]]const std::vector<Widget *> &data) {
 	uint32_t points = 0;
 	switch(m_Bonuses.getId()) {
 	case BonusId_t::BONUS1:
@@ -538,17 +536,44 @@ void Game::onCB_Bonus([[maybe_unused]]const std::vector<const Widget *> data) {
 	default:
 		assert(0);
 	}
-	m_CollitionMgr.removeBonus(m_Bonuses.getEnabledWidget());
 	m_Bonuses.hide(points);
 }
 
-void Game::onCB_Ship([[maybe_unused]]const std::vector<const Widget *> data) {
-
+void Game::onCB_Ship(const std::vector<Widget *> &data) {
+	ExplosionContainer::Callback_t cb;
+	assert(2 <= data.size());
+	auto it = data.begin();
+	if(!m_ExplosionContainer.show(*it, std::bind(&Game::onAnimation0, this, std::placeholders::_1))) {
+		std::cerr << "ExplosionContainer show() failed"<< std::endl;
+	}
+	m_Ship.destroy();
+	for(++it; data.end() != it; ++it) {
+		assert(*it);
+		(*it)->setVisible(false);
+	}
 }
 
-void Game::onCB_Enemy([[maybe_unused]]const std::vector<const Widget *> data) {
+void Game::onCB_Enemy(const std::vector<Widget *> &data) {
+	ExplosionContainer::Callback_t cb;
+	assert(2 <= data.size());
+	auto it = data.begin();
+	if(!m_ExplosionContainer.show(*it, std::bind(&Game::onAnimation0, this, std::placeholders::_1))) {
+		std::cerr << "ExplosionContainer show() failed"<< std::endl;
+	}
+	m_Enemy.destroy();
+	for(++it; data.end() != it; ++it) {
+		assert(*it);
+		(*it)->setVisible(false);
+	}
+}
+
+void Game::onCB_Ship2Ship(const std::vector<Widget *> &data) {
+	ExplosionContainer::Callback_t cb;
+	assert(2 <= data.size());
 	for(auto e : data) {
-		auto w = const_cast<Widget* >(e);
-		w->setVisible(false);
+		if(!m_ExplosionContainer.show(e, std::bind(&Game::onAnimation0, this, std::placeholders::_1))) {
+			std::cerr << "ExplosionContainer show() failed"<< std::endl;
+		}
+		reinterpret_cast<Ship*>(e)->destroy();
 	}
 }

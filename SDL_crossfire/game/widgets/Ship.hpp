@@ -26,9 +26,11 @@ public:
 	void setCallback(const BulletsCtrl::Callback_t & callback);
 	void reload(int8_t bullets);
 	void destroy();
+	bool isDestroy() const;
 	void reset();
 	void setShipSpeed(double speed);
 	void setBolletsSpeed(double speed);
+	std::vector<Widget *> getBullets();
 
 private:
 	ActionBuffer m_ActionBuffer;

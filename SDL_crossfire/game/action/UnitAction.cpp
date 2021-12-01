@@ -29,44 +29,6 @@ void UnitAction::setSpeed(double speed) {
 	m_Speed = speed;
 }
 
-void UnitAction::reset() {
-	m_RelPos = m_StartRelPos;
-	m_PathToNext = 0;
-	m_CurrentDirection = Action_t::NONE;
-	m_CrossPoint = m_RelPos;
-	m_Destroy = false;
-}
-
-void UnitAction::destroy() {
-	m_Destroy = true;
-}
-
-Action_t UnitAction::getDirection() const {
-	return m_CurrentDirection;
-}
-
-Point UnitAction::getCrossPoint() const {
-	return m_RelPos;
-}
-
-uint8_t UnitAction::getLineOfFire() const {
-	if(Action_t::NONE == m_CurrentDirection) {
-		// XXX: Action_t::NONE -> all direction line of fire
-		return Action::toLineOfFireMask(Action_t::NONE);
-	}
-	if(Points::UNDEFINED != m_CrossPoint) {
-		uint8_t rc = 0;
-		if(!(m_CrossPoint.m_X & 1)) {
-			rc = rc | Action::toLineOfFireMask(Action_t::MOVE_UP);
-		}
-		if(!(m_CrossPoint.m_Y & 1)) {
-			rc = rc | Action::toLineOfFireMask(Action_t::MOVE_RIGHT);
-		}
-		return rc;
-	}
-	return Action::toLineOfFireMask(m_CurrentDirection);
-}
-
 bool UnitAction::event(const Action_t action) {
 	if(m_Destroy) {
 		return true;
@@ -116,6 +78,54 @@ bool UnitAction::tick(Action_t pending_action) {
 	return Action_t::NONE != pending_action;
 }
 
+void UnitAction::reset() {
+	m_RelPos = m_StartRelPos;
+	m_PathToNext = 0;
+	m_CurrentDirection = Action_t::NONE;
+	m_CrossPoint = m_RelPos;
+	m_Destroy = false;
+}
+
+void UnitAction::destroy() {
+	m_Destroy = true;
+}
+
+bool UnitAction::isDestroy() const {
+	return m_Destroy;
+}
+
+Action_t UnitAction::getDirection() const {
+	return m_CurrentDirection;
+}
+
+Point UnitAction::getCrossPoint() const {
+	return m_RelPos;
+}
+
+uint8_t UnitAction::getLineOfFire() const {
+	if(Action_t::NONE == m_CurrentDirection) {
+		// XXX: Action_t::NONE -> all direction line of fire
+		return Action::toLineOfFireMask(Action_t::NONE);
+	}
+	if(Points::UNDEFINED != m_CrossPoint) {
+		uint8_t rc = 0;
+		if(!(m_CrossPoint.m_X & 1)) {
+			rc = rc | Action::toLineOfFireMask(Action_t::MOVE_UP);
+		}
+		if(!(m_CrossPoint.m_Y & 1)) {
+			rc = rc | Action::toLineOfFireMask(Action_t::MOVE_RIGHT);
+		}
+		return rc;
+	}
+	return Action::toLineOfFireMask(m_CurrentDirection);
+}
+
+void UnitAction::stop() {
+	m_PathToNext = 0;
+	m_CurrentDirection = Action_t::NONE;
+	m_CrossPoint = m_RelPos;
+}
+
 void UnitAction::stop_to_start(const Action_t &action, Point& rel_pos) {
 	m_CurrentDirection = action;
 	rel_pos = prepareMoveAction(m_CurrentDirection);
@@ -131,7 +141,7 @@ void UnitAction::forward(Point& rel_pos) {
 			m_RelPos += rel_pos;
 			m_PathToNext += m_GridSize;
 		} else {
-			reset();
+			stop();
 		}
 	}
 }
@@ -148,7 +158,7 @@ void UnitAction::reverse(const Action_t &action, Point& rel_pos) {
 				m_RelPos += rel_pos;
 				m_PathToNext += m_GridSize;
 			} else {
-				reset();
+				stop();
 			}
 		}
 	} else {
@@ -174,7 +184,7 @@ void UnitAction::turn(Action_t &action, Point& rel_pos) {
 				// XXX: skip command buffer clear
 				action = Action_t::NONE;
 			} else {
-				reset();
+				stop();
 			}
 		}
 	} else {

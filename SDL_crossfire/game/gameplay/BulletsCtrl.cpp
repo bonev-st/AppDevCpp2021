@@ -76,3 +76,8 @@ bool BulletsCtrl::tick(const Action_t pending_action, uint8_t line_of_fire, cons
 void BulletsCtrl::draw() {
 	m_Bullets.draw();
 }
+
+std::vector<Widget *> BulletsCtrl::getWidgets() {
+	return m_Bullets.get();
+}
+

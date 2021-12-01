@@ -21,6 +21,7 @@ public:
 	bool tick(Action_t pending_action);
 	void reset();
 	void destroy();
+	bool isDestroy() const;
 	Action_t getDirection() const;
 	Point getCrossPoint() const;
 	uint8_t getLineOfFire() const;
@@ -36,6 +37,7 @@ private:
 	Action_t m_CurrentDirection = Action_t::NONE;
 	Point m_CrossPoint;
 
+	void stop();
 	void stop_to_start(const Action_t &action, Point& rel_pos);
 	void forward(Point& rel_pos);
 	void reverse(const Action_t &action, Point& rel_pos);

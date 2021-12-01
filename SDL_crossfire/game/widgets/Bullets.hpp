@@ -9,6 +9,7 @@
 #define GAME_WIDGETS_BULLETS_HPP_
 
 #include <memory>
+#include <vector>
 
 #include "manager_utils/drawing/Image.hpp"
 #include "utils/containers/FirstFreeContainer.hpp"
@@ -22,6 +23,7 @@ public:
 	bool shoot(const Action_t action, const Rectangle & shooter_rect);
 	bool event(const Action_t action, uint8_t line_of_fire, const Rectangle & shooter_rect);
 	bool tick();
+	std::vector<Widget *> get();
 
 	void draw();
 

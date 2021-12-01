@@ -27,7 +27,7 @@ public:
 	void hide(uint32_t points);
 	void draw();
 	BonusId_t getId() const;
-	const Widget*  getEnabledWidget() const;
+	std::vector<Widget *> getWidgets();
 
 private:
 	static constexpr std::size_t BONUS_NUMB = 4;

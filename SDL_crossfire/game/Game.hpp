@@ -118,10 +118,11 @@ private:
 
 	void onShipFire(const Point &pos, int8_t rem);
 
-	void onCB_Ammun(const std::vector<const Widget *> data);
-	void onCB_Bonus(const std::vector<const Widget *> data);
-	void onCB_Ship(const std::vector<const Widget *> data);
-	void onCB_Enemy(const std::vector<const Widget *> data);
+	void onCB_Ammun(const std::vector<Widget *> &data);
+	void onCB_Bonus(const std::vector<Widget *> &data);
+	void onCB_Ship(const std::vector<Widget *> &data);
+	void onCB_Enemy(const std::vector<Widget *> &data);
+	void onCB_Ship2Ship(const std::vector<Widget *> &data);
 
 	void onAnimation0(Widget * data);
 };

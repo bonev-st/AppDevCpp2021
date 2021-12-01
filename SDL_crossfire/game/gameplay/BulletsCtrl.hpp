@@ -31,6 +31,7 @@ public:
 	bool event(const Action_t action, uint8_t line_of_fire, const Rectangle & shooter_rect);
 	bool tick(const Action_t pending_action, uint8_t line_of_fire, const Rectangle & shooter_rect);
 	void draw();
+	std::vector<Widget *> getWidgets();
 
 private:
 	uint32_t m_ReloadTime = 0;

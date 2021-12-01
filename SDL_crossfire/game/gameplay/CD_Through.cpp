@@ -15,8 +15,8 @@ bool CD_Through::init(const Rectangle & tolerance) {
 	return true;
 }
 
-std::vector<const Widget*> CD_Through::operator ()(const Widget* obj, const std::deque<const Widget *> & others) const {
-	std::vector<const Widget*> rc;
+std::vector<Widget*> CD_Through::operator ()(Widget* obj, const std::vector<Widget *> & others) const {
+	std::vector<Widget*> rc;
 	rc.reserve(2);
 	if(obj) {
 		Rectangle rect_obj = m_Tolerance;

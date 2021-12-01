@@ -86,11 +86,12 @@ BonusId_t Bonuses::getId() const {
 	return static_cast<BonusId_t>(m_Current);
 }
 
-const Widget* Bonuses::getEnabledWidget() const {
+std::vector<Widget *> Bonuses::getWidgets() {
+	std::vector<Widget *> rc;
 	if(BONUS_NUMB > m_Current) {
-		return &m_BonusContaner[m_Current].m_Widget.m_Scaled;
+		rc.push_back(&m_BonusContaner[m_Current].m_Widget.m_Scaled);
 	}
-	return nullptr;
+	return rc;
 }
 
 void Bonuses::setEnable() {

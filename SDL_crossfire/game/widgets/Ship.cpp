@@ -76,11 +76,15 @@ void Ship::reload(int8_t bullets) {
 }
 
 void Ship::destroy() {
+	m_UnitAction.destroy();
+}
 
+bool Ship::isDestroy() const {
+	return m_UnitAction.isDestroy();
 }
 
 void Ship::reset() {
-
+	m_UnitAction.reset();
 }
 
 void Ship::setShipSpeed(double speed) {
@@ -89,4 +93,8 @@ void Ship::setShipSpeed(double speed) {
 
 void Ship::setBolletsSpeed(double speed) {
 	m_BulletsCtrl.setSpeed(speed);
+}
+
+std::vector<Widget *> Ship::getBullets() {
+	return m_BulletsCtrl.getWidgets();
 }

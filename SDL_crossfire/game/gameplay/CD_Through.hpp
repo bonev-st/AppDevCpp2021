@@ -18,7 +18,7 @@ public:
 private:
 	Rectangle m_Tolerance;
 
-	std::vector<const Widget*> operator ()(const Widget* obj, const std::deque<const Widget *> & others) const final;
+	std::vector<Widget*> operator ()(Widget* obj, const std::vector<Widget *> & others) const final;
 };
 
 #endif /* GAME_GAMEPLAY_CD_THROUGH_HPP_ */

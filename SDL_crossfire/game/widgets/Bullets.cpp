@@ -53,6 +53,19 @@ bool Bullets::tick() {
 	return true;
 }
 
+std::vector<Widget *> Bullets::get() {
+	std::vector<Widget *> rc;
+	rc.reserve(m_BulletsContainer.getValid());
+	for(auto & e : m_BulletsContainer) {
+		if(nullptr == e) {
+			std::cerr << "Bullets::tick() invalid pointer" << std::endl;
+			continue;
+		}
+		rc.push_back(&e->m_Scaled);
+	}
+	return rc;
+}
+
 void Bullets::draw() {
 	for(auto & e : m_BulletsContainer) {
 		if(nullptr == e) {

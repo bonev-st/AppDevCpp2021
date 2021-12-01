@@ -11,7 +11,7 @@
 #include "game/gameplay/ProcessorIF.hpp"
 
 class CD_Touch : public ProcessorIF {
-	std::vector<const Widget*> operator ()(const Widget* obj, const std::deque<const Widget *> & others) const final;
+	std::vector<Widget*> operator ()(Widget* obj, const std::vector<Widget *> & others) const final;
 };
 
 #endif /* GAME_GAMEPLAY_CD_TOUCH_HPP_ */
