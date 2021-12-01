@@ -12,12 +12,16 @@
 
 #include "utils/drawing/DrawParams.hpp"
 
-bool Bullets::init(std::size_t bullet_img_id, double scale, double speed, const Rectangle & field) {
+bool Bullets::init(std::size_t bullet_img_id, double scale, const Rectangle & field) {
 	m_ImgId = bullet_img_id;
 	m_Scale = scale;
-	m_Speed = speed;
 	m_Field = field;
+	setSpeed(0);
 	return true;
+}
+
+void Bullets::setSpeed(double speed) {
+	m_Speed = speed;
 }
 
 bool Bullets::shoot(const Action_t action, const Rectangle & shooter_rect) {

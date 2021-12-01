@@ -23,7 +23,8 @@ public:
 	using Callback_t = std::function<void(const Point&, int8_t)>;
 
 	bool init(int8_t max_bullets, uint32_t reload);
-	bool initDraw(std::size_t bullet_img_id, double scale, double speed, const Rectangle & field);
+	bool initDraw(std::size_t bullet_img_id, double scale, const Rectangle & field);
+	void setSpeed(double speed);
 	int8_t getRemainingBullets() const;
 	void reload(int8_t numb);
 	void setCallback(const Callback_t & callback);

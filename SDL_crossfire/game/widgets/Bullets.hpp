@@ -17,7 +17,8 @@
 
 class Bullets {
 public:
-	bool init(std::size_t bullet_img_id, double scale, double speed, const Rectangle & field);
+	bool init(std::size_t bullet_img_id, double scale, const Rectangle & field);
+	void setSpeed(double speed);
 	bool shoot(const Action_t action, const Rectangle & shooter_rect);
 	bool event(const Action_t action, uint8_t line_of_fire, const Rectangle & shooter_rect);
 	bool tick();

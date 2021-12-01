@@ -15,20 +15,23 @@ class Widget;
 
 class UnitAction {
 public:
-	bool init(Widget* unit, const Point& pos, uint32_t grid_size, double speed);
+	bool init(Widget* unit, const Point& pos, uint32_t grid_size);
 	void setSpeed(double speed);
 	bool event(const Action_t type);
 	bool tick(Action_t pending_action);
 	void reset();
+	void destroy();
 	Action_t getDirection() const;
 	Point getCrossPoint() const;
 	uint8_t getLineOfFire() const;
 
 private:
+	bool m_Destroy = false;
 	Widget* m_Unit = nullptr;
 	double m_Speed = 0;
 	double m_PathToNext = 0;
 	uint32_t m_GridSize = 0;
+	Point m_StartRelPos;
 	Point m_RelPos;
 	Action_t m_CurrentDirection = Action_t::NONE;
 	Point m_CrossPoint;

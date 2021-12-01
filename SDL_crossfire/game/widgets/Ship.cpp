@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-bool Ship::init(std::size_t ship_img_id, double scale_factor, const Point& pos, uint32_t grid_size, double speed) {
+bool Ship::init(std::size_t ship_img_id, double scale_factor, const Point& pos, uint32_t grid_size) {
 	if(!m_Image.create(ship_img_id, Point(), true)) {
 		std::cerr << "Ship::init().create() failed"<< std::endl;
 		return false;
@@ -18,7 +18,7 @@ bool Ship::init(std::size_t ship_img_id, double scale_factor, const Point& pos, 
 		std::cerr << "ScaleTexture::init() failed"<< std::endl;
 		return false;
 	}
-	if(!m_UnitAction.init(this, pos, grid_size, speed)) {
+	if(!m_UnitAction.init(this, pos, grid_size)) {
 		std::cerr << "Ship::init().m_UnitAction.init() failed"<< std::endl;
 		return false;
 	}
@@ -26,8 +26,8 @@ bool Ship::init(std::size_t ship_img_id, double scale_factor, const Point& pos, 
 	return true;
 }
 
-bool Ship::init_bullet(std::size_t bullet_img_id, double scale_factor, double speed, int8_t max_bullets, uint32_t reload_time, const Rectangle & field) {
-	if(!m_BulletsCtrl.initDraw(bullet_img_id, scale_factor, speed,field)) {
+bool Ship::init_bullet(std::size_t bullet_img_id, double scale_factor, int8_t max_bullets, uint32_t reload_time, const Rectangle & field) {
+	if(!m_BulletsCtrl.initDraw(bullet_img_id, scale_factor, field)) {
 		std::cerr << "m_Bullets.initDraw() failed"<< std::endl;
 		return false;
 	}
@@ -73,4 +73,20 @@ void Ship::setCallback(const BulletsCtrl::Callback_t & callback) {
 
 void Ship::reload(int8_t bullets) {
 	m_BulletsCtrl.reload(bullets);
+}
+
+void Ship::destroy() {
+
+}
+
+void Ship::reset() {
+
+}
+
+void Ship::setShipSpeed(double speed) {
+	m_UnitAction.setSpeed(speed);
+}
+
+void Ship::setBolletsSpeed(double speed) {
+	m_BulletsCtrl.setSpeed(speed);
 }

@@ -267,10 +267,11 @@ bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 	size_t enemy_bulled_id = INVALID_RESR_ID;
 	for(const auto & [key, data]: cfg) {
 		if(GameConfig::IMG_SHIP_INDX == key) {
-			if(!m_Ship.init(data, Layout::getScaleFactor(), Layout::getShipRelPos(), Layout::getGridSize(), Layout::getShipSpeed())) {
+			if(!m_Ship.init(data, Layout::getScaleFactor(), Layout::getShipRelPos(), Layout::getGridSize())) {
 				std::cerr << "Game::createImages.m_Ship.init() failed"<< std::endl;
 				return false;
 			}
+			m_Ship.setShipSpeed(Layout::getShipSpeed());
 		} else if(GameConfig::IMG_BONUS_INDX == key) {
 			if(!m_Bonuses.init(data, Layout::getScaleFactor(), Layout::getBonusRelPosEna(), Layout::getBonusRelPosDis(),
 					0, Colors::GREEN)) {
@@ -287,23 +288,26 @@ bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 				return false;
 			}
 		} else if(GameConfig::IMG_ENEMY1_INDX == key) {
-			if(!m_Enemy.init(data, Layout::getScaleFactor(), Point(2,2), Layout::getGridSize(), Layout::getShipSpeed())) {
+			if(!m_Enemy.init(data, Layout::getScaleFactor(), Point(2,2), Layout::getGridSize())) {
 				std::cerr << "Game::createImages.m_Enemy.init() failed"<< std::endl;
 				return false;
 			}
+			m_Enemy.setShipSpeed(Layout::getShipSpeed());
 		}
 	}
 	if((INVALID_RESR_ID == bulled_id) || (INVALID_RESR_ID == enemy_bulled_id)) {
 		return false;
 	}
-	if(!m_Ship.init_bullet(bulled_id, Layout::getScaleFactor(), Layout::getShipBulletSpeed(), Layout::getOwnMaxBulled(), Layout::getOwnReloadTime(), Layout::getArenaRectangle())) {
+	if(!m_Ship.init_bullet(bulled_id, Layout::getScaleFactor(), Layout::getOwnMaxBulled(), Layout::getOwnReloadTime(), Layout::getArenaRectangle())) {
 		std::cerr << "Game::createImages() m_Ship.init_bullet() failed"<< std::endl;
 		return false;
 	}
-	if(!m_Enemy.init_bullet(bulled_id, Layout::getScaleFactor(), Layout::getEnemyBulletSpeed(), Layout::getEnemyMaxBulled(), Layout::getEnemyReloadTime(), Layout::getArenaRectangle())) {
+	m_Ship.setBolletsSpeed(Layout::getShipBulletSpeed());
+	if(!m_Enemy.init_bullet(bulled_id, Layout::getScaleFactor(), Layout::getEnemyMaxBulled(), Layout::getEnemyReloadTime(), Layout::getArenaRectangle())) {
 		std::cerr << "Game::createImages() m_Enemy.init_bullet() failed"<< std::endl;
 		return false;
 	}
+	m_Ship.setBolletsSpeed(Layout::getEnemyBulletSpeed());
 	return true;
 }
 

@@ -34,8 +34,8 @@ private:
 		Widget * m_Widget = nullptr;
 	};
 
-	static constexpr uint32_t TIMER_PERIOD = 50;
-	static constexpr std::size_t HIDE_FAME = 32;
+	static constexpr uint32_t TIMER_PERIOD = 25;
+	static constexpr std::size_t HIDE_FAME = 24;
 
 	std::size_t m_ImgId = -1;
 	double m_Scale = 1;

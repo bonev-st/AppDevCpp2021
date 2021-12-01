@@ -15,11 +15,11 @@
 
 #include "manager_utils/drawing/Widget.hpp"
 
-bool UnitAction::init(Widget *unit, const Point& pos, uint32_t grid_size, double speed) {
+bool UnitAction::init(Widget *unit, const Point& pos, uint32_t grid_size) {
 	m_Unit = unit;
 	m_GridSize = grid_size;
-	m_RelPos = pos;
-	setSpeed(speed);
+	m_StartRelPos = pos;
+	setSpeed(0);
 	reset();
 	m_Unit->setPositionCenter(Layout::getRel2AbsPosition(m_RelPos));
 	return true;
@@ -30,9 +30,15 @@ void UnitAction::setSpeed(double speed) {
 }
 
 void UnitAction::reset() {
+	m_RelPos = m_StartRelPos;
 	m_PathToNext = 0;
 	m_CurrentDirection = Action_t::NONE;
 	m_CrossPoint = m_RelPos;
+	m_Destroy = false;
+}
+
+void UnitAction::destroy() {
+	m_Destroy = true;
 }
 
 Action_t UnitAction::getDirection() const {
@@ -62,10 +68,16 @@ uint8_t UnitAction::getLineOfFire() const {
 }
 
 bool UnitAction::event(const Action_t action) {
+	if(m_Destroy) {
+		return true;
+	}
 	return action == m_CurrentDirection;
 }
 
 bool UnitAction::tick(Action_t pending_action) {
+	if(m_Destroy) {
+		return true;
+	}
 	if(!Action::isMoveAction(pending_action)) {
 		pending_action = Action_t::NONE;
 	}

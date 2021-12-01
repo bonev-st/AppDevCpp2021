@@ -18,8 +18,12 @@ bool BulletsCtrl::init(int8_t max_bullets, uint32_t reload) {
 	return true;
 }
 
-bool BulletsCtrl::initDraw(std::size_t bullet_img_id, double scale, double speed, const Rectangle & field) {
-	return m_Bullets.init(bullet_img_id, scale, speed, field);
+bool BulletsCtrl::initDraw(std::size_t bullet_img_id, double scale, const Rectangle & field) {
+	return m_Bullets.init(bullet_img_id, scale, field);
+}
+
+void BulletsCtrl::setSpeed(double speed) {
+	return m_Bullets.setSpeed(speed);
 }
 
 int8_t BulletsCtrl::getRemainingBullets() const {
