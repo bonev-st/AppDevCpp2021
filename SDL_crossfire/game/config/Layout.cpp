@@ -171,7 +171,7 @@ const Point * Layout::getBonusRelPosEna() {
 }
 
 const Point & Layout::getEnemyRelPos(std::size_t id) {
-	if(static_cast<std::size_t>(EnemyId_t::ENEMY_NUMB) <= id) {
+	if(!(static_cast<std::size_t>(EnemyId_t::ENEMY_NUMB) > id)) {
 		return Points::UNDEFINED;
 	}
 	return RelCoordinates::EnemyPos[id];

@@ -29,7 +29,7 @@ public:
 	bool isDestroy() const;
 	void reset();
 	void setShipSpeed(double speed);
-	void setBolletsSpeed(double speed);
+	void setBulletsSpeed(double speed);
 	std::vector<Widget *> getBullets();
 
 private:

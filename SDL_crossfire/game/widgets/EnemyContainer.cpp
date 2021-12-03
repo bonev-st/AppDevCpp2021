@@ -7,17 +7,27 @@
 
 #include "game/widgets/EnemyContainer.hpp"
 
+#include <iostream>
 #include <algorithm>
 
 #include "game/config/Layout.hpp"
 #include "game/widgets/Ship.hpp"
 
 bool EnemyContainer::init(const std::vector<std::size_t> & ship_img_id, double scale_factor, const std::vector<Point> & pos, uint32_t grid_size) {
-	const auto img_id = ship_img_id.front();
+	if(ship_img_id.empty()) {
+		std::cerr << "Invalid image id container" << std::endl;
+		return false;
+	}
+	if(pos.empty()) {
+		std::cerr << "Invalid relative points container" << std::endl;
+		return false;
+	}
+	m_ImgId = ship_img_id;
+	const auto img_id = m_ImgId[0];
 	m_Pos = pos;
 	auto it_pos =  m_Pos.begin();
 
-	m_EnemyContainer.resize(m_Pos.size());
+	m_EnemyContainer.reserve(m_Pos.size());
 	for(auto & e: m_EnemyContainer) {
 		e = std::make_shared<Ship>();
 		if(!e->init(img_id, scale_factor, *it_pos, grid_size)) {

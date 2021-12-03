@@ -34,8 +34,8 @@ static void populateAppWindowCfg(MainWindowCfg::Config_t &cfg) {
 	constexpr auto app_name = APP_NAME;
 	cfg.m_Name = app_name;
 	cfg.m_Rect = Rectangle(Points::UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT);
-	cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN | MainWindowCfg::WINDOW_FULLSCREEN | MainWindowCfg::WINDOW_DESKTOP;
-	//cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN | MainWindowCfg::WINDOW_BORDERLESS;
+	//cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN | MainWindowCfg::WINDOW_FULLSCREEN | MainWindowCfg::WINDOW_DESKTOP;
+	cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN | MainWindowCfg::WINDOW_BORDERLESS;
 }
 
 static void populateDrawingCfg(DrawMgrConfig::Config_t &cfg) {

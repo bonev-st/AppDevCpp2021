@@ -91,7 +91,7 @@ void Ship::setShipSpeed(double speed) {
 	m_UnitAction.setSpeed(speed);
 }
 
-void Ship::setBolletsSpeed(double speed) {
+void Ship::setBulletsSpeed(double speed) {
 	m_BulletsCtrl.setSpeed(speed);
 }
 
