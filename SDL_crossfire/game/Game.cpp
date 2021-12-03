@@ -12,6 +12,7 @@
 #include <sstream>
 #include <algorithm>
 #include <iomanip>
+#include <map>
 
 #include "utils/inc/utils/drawing/DisplayMode.hpp"
 #include "sdl_utils/InputEvent.hpp"
@@ -187,8 +188,6 @@ bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & di
 	m_Ship.reload(5);
 	m_Ship.setCallback(std::bind(&Game::onShipFire, this, std::placeholders::_1, std::placeholders::_2));
 
-	m_Enemy.reload(100);
-
 	m_FPS.init();
 	m_GridPoint.init(12);
 
@@ -205,11 +204,9 @@ bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & di
 		std::cerr << "m_CollitionMgr.init() failed." << std::endl;
 		return false;
 	}
-
-	std::vector<Widget*> tmp;
-	tmp.push_back(&m_Enemy);
-	m_CollitionMgr.addUnits(&m_Ship, tmp);
-
+	m_CollitionMgr.addUnits(&m_Ship, m_Enemies.get());
+	m_Ship.setShipSpeed(Layout::getShipSpeed());
+	m_Enemies.setShipSpeed(Layout::getEnemySpeed());
 	return true;
 }
 
@@ -242,7 +239,7 @@ bool Game::draw() {
 	m_Bonuses.draw();
 	m_Ammunition.draw();
 	m_Ship.draw();
-	m_Enemy.draw();
+	m_Enemies.draw();
 	m_GridPoint.draw();
 	m_ExplosionContainer.draw();
 	return true;
@@ -256,12 +253,8 @@ bool Game::new_frame() {
 bool Game::processing() {
 	std::vector<Widget*> ammun;
 	ammun.push_back(&m_Ammunition);
-	std::vector<Widget *> enemy;
-	if(!m_Enemy.isDestroy()) {
-		enemy.push_back(&m_Enemy);
-	}
-	m_CollitionMgr.processing(m_Ship.getBullets(), m_Enemy.getBullets()
-			,enemy , m_Bonuses.getWidgets(), ammun);
+	m_CollitionMgr.processing(m_Ship.getBullets(), m_Enemies.getBullets(),
+			m_Enemies.get(), m_Bonuses.getWidgets(), ammun);
 	return true;
 }
 
@@ -273,13 +266,14 @@ bool Game::loadKeys(const GameConfig::KeyRes_t & cfg) {
 bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 	size_t bulled_id = INVALID_RESR_ID;
 	size_t enemy_bulled_id = INVALID_RESR_ID;
+	std::map<size_t, size_t> enemies_img_id_map;
+
 	for(const auto & [key, data]: cfg) {
 		if(GameConfig::IMG_SHIP_INDX == key) {
 			if(!m_Ship.init(data, Layout::getScaleFactor(), Layout::getShipRelPos(), Layout::getGridSize())) {
 				std::cerr << "Game::createImages.m_Ship.init() failed"<< std::endl;
 				return false;
 			}
-			m_Ship.setShipSpeed(Layout::getShipSpeed());
 		} else if(GameConfig::IMG_BONUS_INDX == key) {
 			if(!m_Bonuses.init(data, Layout::getScaleFactor(), Layout::getBonusRelPosEna(), Layout::getBonusRelPosDis(),
 					0, Colors::GREEN)) {
@@ -296,26 +290,46 @@ bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 				return false;
 			}
 		} else if(GameConfig::IMG_ENEMY1_INDX == key) {
-			if(!m_Enemy.init(data, Layout::getScaleFactor(), Point(12,10), Layout::getGridSize())) {
-				std::cerr << "Game::createImages.m_Enemy.init() failed"<< std::endl;
-				return false;
-			}
-			m_Enemy.setShipSpeed(Layout::getShipSpeed());
+			enemies_img_id_map[key] = data;
+		} else if(GameConfig::IMG_ENEMY2_INDX == key) {
+			enemies_img_id_map[key] = data;
+		} else if(GameConfig::IMG_ENEMY3_INDX == key) {
+			enemies_img_id_map[key] = data;
+		} else if(GameConfig::IMG_ENEMY4_INDX == key) {
+			enemies_img_id_map[key] = data;
 		}
 	}
 	if((INVALID_RESR_ID == bulled_id) || (INVALID_RESR_ID == enemy_bulled_id)) {
 		return false;
 	}
+
 	if(!m_Ship.init_bullet(bulled_id, Layout::getScaleFactor(), Layout::getOwnMaxBulled(), Layout::getOwnReloadTime(), Layout::getArenaRectangle())) {
 		std::cerr << "Game::createImages() m_Ship.init_bullet() failed"<< std::endl;
 		return false;
 	}
 	m_Ship.setBolletsSpeed(Layout::getShipBulletSpeed());
-	if(!m_Enemy.init_bullet(bulled_id, Layout::getScaleFactor(), Layout::getEnemyMaxBulled(), Layout::getEnemyReloadTime(), Layout::getArenaRectangle())) {
+
+	std::vector<size_t> enemies_img_id(enemies_img_id_map.size());
+	for(const auto & [key, data]: enemies_img_id_map) {
+		enemies_img_id.push_back(data);
+	}
+	std::vector<Point> enemies_pos;
+	for(uint8_t i = static_cast<uint8_t>(EnemyId_t::ENEMY1); true; ++i) {
+		const auto pos = Layout::getEnemyRelPos(i);
+		if(Points::UNDEFINED == pos) {
+			break;
+		}
+		enemies_pos.push_back(pos);
+	}
+	if(!m_Enemies.init(enemies_img_id, Layout::getScaleFactor(), enemies_pos, Layout::getGridSize())) {
+		std::cerr << "Game::createImages.m_Ship.init() failed"<< std::endl;
+		return false;
+	}
+	if(!m_Enemies.init_bullet(enemy_bulled_id, Layout::getScaleFactor(), Layout::getEnemyMaxBulled(), Layout::getEnemyReloadTime(), Layout::getArenaRectangle())) {
 		std::cerr << "Game::createImages() m_Enemy.init_bullet() failed"<< std::endl;
 		return false;
 	}
-	m_Ship.setBolletsSpeed(Layout::getEnemyBulletSpeed());
+	m_Enemies.setBulledSpeed(Layout::getEnemyBulletSpeed());
 	return true;
 }
 
@@ -481,7 +495,7 @@ void Game::onFPS_Timeout([[maybe_unused]]Timer2::TimerHandler_t id) {
 void Game::onMotion_Timeout([[maybe_unused]]Timer2::TimerHandler_t id) {
 	assert((m_MotionTimer == id) && m_MotionTimer.isRunning());
 	m_Ship.tick();
-	m_Enemy.tick();
+	m_Enemies.tick();
 }
 
 void Game::onShipFire(const Point &pos, int8_t rem) {
@@ -560,7 +574,7 @@ void Game::onCB_Enemy(const std::vector<Widget *> &data) {
 	if(!m_ExplosionContainer.show(*it, std::bind(&Game::onAnimation0, this, std::placeholders::_1))) {
 		std::cerr << "ExplosionContainer show() failed"<< std::endl;
 	}
-	m_Enemy.destroy();
+	m_Enemies.destroy(*it);
 	for(++it; data.end() != it; ++it) {
 		assert(*it);
 		(*it)->setVisible(false);

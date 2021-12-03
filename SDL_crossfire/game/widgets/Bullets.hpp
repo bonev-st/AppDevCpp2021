@@ -22,7 +22,7 @@ public:
 	void setSpeed(double speed);
 	bool shoot(const Action_t action, const Rectangle & shooter_rect);
 	bool event(const Action_t action, uint8_t line_of_fire, const Rectangle & shooter_rect);
-	bool tick();
+	void tick();
 	std::vector<Widget *> get();
 
 	void draw();

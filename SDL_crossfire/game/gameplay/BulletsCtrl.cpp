@@ -67,9 +67,7 @@ bool BulletsCtrl::event(const Action_t action, uint8_t line_of_fire, const Recta
 
 bool BulletsCtrl::tick(const Action_t pending_action, uint8_t line_of_fire, const Rectangle & shooter_rect) {
 	bool rc = event(pending_action, line_of_fire, shooter_rect);
-	if(!m_Bullets.tick()) {
-		std::cerr << "m_Bullets->tick() failed" << std::endl;
-	}
+	m_Bullets.tick();
 	return rc;
 }
 

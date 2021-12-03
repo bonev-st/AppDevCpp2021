@@ -42,7 +42,7 @@ bool Bullets::shoot(const Action_t action, const Rectangle & shooter_rect) {
 	return true;
 }
 
-bool Bullets::tick() {
+void Bullets::tick() {
 	for(auto & e : m_BulletsContainer) {
 		if(nullptr != e) {
 			if(!e->m_Scaled.tick()) {
@@ -50,7 +50,6 @@ bool Bullets::tick() {
 			}
 		}
 	}
-	return true;
 }
 
 std::vector<Widget *> Bullets::get() {

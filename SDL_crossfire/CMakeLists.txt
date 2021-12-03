@@ -29,6 +29,8 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/GridPoint.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/ExplosionContainer.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/ExplosionContainer.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/EnemyContainer.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/EnemyContainer.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.hpp

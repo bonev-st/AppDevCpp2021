@@ -20,7 +20,7 @@ enum class BonusId_t : uint8_t {
 	BONUS_NUMB
 };
 
-enum class EnemyId_t {
+enum class EnemyId_t : uint8_t {
 	ENEMY1 = 0,
 	ENEMY2,
 	ENEMY3,

@@ -28,6 +28,7 @@
 #include "game/widgets/Background.hpp"
 #include "game/widgets/GridPoint.hpp"
 #include "game/widgets/ExplosionContainer.hpp"
+#include "game/widgets/EnemyContainer.hpp"
 
 #include "game/gameplay/CollisionDetect.hpp"
 #include "game/gameplay/CD_Through.hpp"
@@ -86,7 +87,7 @@ private:
 	ScaleTexture m_ScaledTextMaxTimL2;
 
 	Ship m_Ship;
-	Ship m_Enemy;
+	EnemyContainer m_Enemies;
 	Ammunition m_Ammunition;
 	Bonuses m_Bonuses;
 	ExplosionContainer m_ExplosionContainer;
