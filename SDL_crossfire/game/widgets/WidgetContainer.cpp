@@ -54,5 +54,6 @@ void WidgetContainer::draw() {
 			e->draw();
 		}
 	}
+	m_Redraw = false;
 	m_Texture.draw();
 }

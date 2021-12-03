@@ -169,9 +169,9 @@ bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & di
 	m_L1.add(&m_ScaledBackgroundFieldImageL1);
 	m_L1.add(&m_ScaledCrossfireImageL1);
 	m_L1.add(&m_ScaledGridImageL1);
-	m_L1.add(&m_ScaledTextScoreLableL1);
-	m_L1.add(&m_ScaledTextHiScoreLableL1);
-	m_L1.add(&m_ScaledTextShipsLableL1);
+	//m_L1.add(&m_ScaledTextScoreLableL1);
+	//m_L1.add(&m_ScaledTextHiScoreLableL1);
+	//m_L1.add(&m_ScaledTextShipsLableL1);
 
 	if(!m_L2.init(disp_dim, Points::ZERO)) {
 		std::cerr << "m_L2.init() failed." << std::endl;
@@ -217,13 +217,13 @@ bool Game::events(const InputEvent & event, bool & exit) {
 
 bool Game::draw() {
 	m_Background.draw();
+	m_L1.draw();
 	//m_ScaledBackgroundFieldImageL1.draw();
 	//m_ScaledCrossfireImageL1.draw();
-	//m_ScaledTextScoreLableL1.draw();
-	//m_ScaledTextHiScoreLableL1.draw();
-	//m_ScaledTextShipsLableL1.draw();
 	//m_ScaledGridImageL1.draw();
-	m_L1.draw();
+	m_ScaledTextScoreLableL1.draw();
+	m_ScaledTextHiScoreLableL1.draw();
+	m_ScaledTextShipsLableL1.draw();
 	//m_ScaledTextScoreL2.draw();
 	//m_ScaledTextHiScoreL2.draw();
 	//m_ScaledTextShipsL2.draw();
@@ -317,6 +317,12 @@ bool Game::createImages(const GameConfig::ImgRes_t & cfg) {
 		}
 		enemies_pos.push_back(pos);
 	}
+	for(const auto e : enemies_img_id) {
+		std::cout << "Enemy Img ID " << e << std::endl;
+	}
+	for(const auto e : enemies_pos) {
+		std::cout << "Enemy pos X " << e.m_X << ", Y " << e.m_Y << std::endl;
+	}
 	if(!m_Enemies.init(enemies_img_id, Layout::getScaleFactor(), enemies_pos, Layout::getGridSize())) {
 		std::cerr << "m_Enemies.init() failed"<< std::endl;
 		return false;
@@ -404,7 +410,7 @@ bool Game::initInput() {
 }
 
 bool Game::initTimers() {
-#if 1
+#if 0
 	if(!m_RefreshTimer.start(REFRESH_RATE, Timer2::TimerMode_t::RELOAD, std::bind(&Game::onFPS_Timeout, this, std::placeholders::_1))) {
 		std::cerr << "startTimer() failed." << std::endl;
 		return false;

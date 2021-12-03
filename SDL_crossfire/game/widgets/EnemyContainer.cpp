@@ -27,7 +27,7 @@ bool EnemyContainer::init(const std::vector<std::size_t> & ship_img_id, double s
 	m_Pos = pos;
 	auto it_pos =  m_Pos.begin();
 
-	m_EnemyContainer.reserve(m_Pos.size());
+	m_EnemyContainer.resize(m_Pos.size());
 	for(auto & e: m_EnemyContainer) {
 		e = std::make_shared<Ship>();
 		if(!e->init(img_id, scale_factor, *it_pos, grid_size)) {
