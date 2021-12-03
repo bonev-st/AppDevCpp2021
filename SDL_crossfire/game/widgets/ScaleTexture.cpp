@@ -59,7 +59,7 @@ void ScaleTexture::draw() {
 }
 
 bool ScaleTexture::isInvalidate() const {
-	return m_Scaled->isInvalidate() || isInvalidate();
+	return m_Scaled->isInvalidate() || RGB_Texture::isInvalidate();
 }
 
 void ScaleTexture::dim_update() {
