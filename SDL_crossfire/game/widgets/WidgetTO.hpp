@@ -57,8 +57,10 @@ void WidgetTO<T>::stop() {
 }
 
 template <class T>
-void WidgetTO<T>::onTimeout([[maybe_unused]]Timer2::TimerHandler_t handler) {
-	assert(m_TO_Timer == handler);
+void WidgetTO<T>::onTimeout(Timer2::TimerHandler_t handler) {
+	if(m_TO_Timer != handler) {
+		return;
+	}
 	T::setVisible(false);
 	if(m_CB) {
 		m_CB(this);

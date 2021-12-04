@@ -68,7 +68,7 @@ bool RotateAnimation<T>::setAngle(double angle, bool infinite) {
 
 template<class T>
 void RotateAnimation<T>::attachDone(const std::function<void()> & fn) {
-	assert(fn)
+	assert(fn);
 	m_CB = fn;
 }
 
@@ -86,9 +86,13 @@ void RotateAnimation<T>::cancel() {
 }
 
 template<class T>
-void RotateAnimation<T>::onTimeout([[maybe_unused]]Timer2::TimerHandler_t id) {
-	assert(m_Timer.isRunning());
-	assert(m_Timer == id);
+void RotateAnimation<T>::onTimeout(Timer2::TimerHandler_t id) {
+	if(!m_Timer.isRunning()) {
+		return;
+	}
+	if(m_Timer != id) {
+		return;
+	}
 	auto angle = m_DegFrame;
 	if(!m_Infinite) {
 		if(0 > m_Angle) {

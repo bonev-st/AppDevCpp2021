@@ -64,8 +64,10 @@ void BlinkingAnimation<T>::stop() {
 }
 
 template <class T>
-void BlinkingAnimation<T>::onTimeout([[maybe_unused]]Timer2::TimerHandler_t handler) {
-	assert(m_RefreshTimer == handler);
+void BlinkingAnimation<T>::onTimeout(Timer2::TimerHandler_t handler) {
+	if(m_RefreshTimer != handler) {
+		return;
+	}
 	updateAlpha();
 }
 

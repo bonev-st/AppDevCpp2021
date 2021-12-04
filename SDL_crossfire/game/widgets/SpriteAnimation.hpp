@@ -8,8 +8,6 @@
 #ifndef GAME_WIDGETS_SPRITEANIMATION_HPP_
 #define GAME_WIDGETS_SPRITEANIMATION_HPP_
 
-#include <cassert>
-
 #include "manager_utils/timer/Timer2Client.hpp"
 
 enum class SpriteMode_t {
@@ -32,7 +30,7 @@ private:
 	void * m_Param = nullptr;
 	Callback_t m_CB;
 
-	void onTimeout(const Timer2::TimerHandler_t & handler);
+	void onTimeout(Timer2::TimerHandler_t handler);
 };
 
 template<class T>
@@ -67,8 +65,10 @@ void SpriteAnimation<T>::stop() {
 }
 
 template<class T>
-void SpriteAnimation<T>::onTimeout(const Timer2::TimerHandler_t & handler) {
-	assert(m_Timer == handler);
+void SpriteAnimation<T>::onTimeout(Timer2::TimerHandler_t handler) {
+	if(m_Timer != handler) {
+		return;
+	}
 	SpriteMode_t::FORWARD == m_Mode ? T::setNextFrame() : T::setPrevFrame();
 	if(m_CB) {
 		m_CB(T::getFrame(), m_Param);
