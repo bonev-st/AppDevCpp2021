@@ -9,9 +9,9 @@
 #define GAME_WIDGETS_SHIP_HPP_
 
 #include "gr_engine/drawing/Image.hpp"
+#include "gr_engine/widgets/SpriteAnimation.hpp"
+#include "gr_engine/widgets/ScaleTexture.hpp"
 #include "game/config/Layout.hpp"
-#include "game/widgets/SpriteAnimation.hpp"
-#include "game/widgets/ScaleTexture.hpp"
 #include "game/action/ActionBuffer.hpp"
 #include "game/action/UnitAction.hpp"
 #include "game/gameplay/BulletsCtrl.hpp"

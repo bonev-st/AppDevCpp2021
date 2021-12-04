@@ -5,7 +5,7 @@
  *      Author: stanimir
  */
 
-#include "game/widgets/InitHelper.hpp"
+#include "gr_engine/widgets/InitHelper.hpp"
 
 #include <iostream>
 

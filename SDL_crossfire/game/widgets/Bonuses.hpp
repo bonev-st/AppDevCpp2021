@@ -12,9 +12,9 @@
 
 #include "gr_engine/drawing/Image.hpp"
 #include "gr_engine/drawing/Text.hpp"
-#include "game/widgets/ScaleTexture.hpp"
-#include "game/widgets/BlinkingAnimation.hpp"
-#include "game/widgets/WidgetTO.hpp"
+#include "gr_engine/widgets/ScaleTexture.hpp"
+#include "gr_engine/widgets/BlinkingAnimation.hpp"
+#include "gr_engine/widgets/WidgetTO.hpp"
 
 enum class BonusId_t : uint8_t;
 

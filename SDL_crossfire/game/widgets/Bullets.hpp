@@ -11,10 +11,10 @@
 #include <memory>
 #include <vector>
 
-#include "gr_engine/drawing/Image.hpp"
 #include "utils/containers/FirstFreeContainer.hpp"
+#include "gr_engine/drawing/Image.hpp"
+#include "gr_engine/widgets/ScaleTexture.hpp"
 #include "game/action/BulletAction.hpp"
-#include "game/widgets/ScaleTexture.hpp"
 
 class Bullets {
 public:

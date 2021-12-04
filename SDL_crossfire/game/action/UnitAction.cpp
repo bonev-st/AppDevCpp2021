@@ -11,7 +11,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "../../gr_engine/inc/gr_engine/drawing/Widget.hpp"
+#include "gr_engine/drawing/Widget.hpp"
 #include "utils/geometry/Geometry.hpp"
 
 

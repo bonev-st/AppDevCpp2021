@@ -5,8 +5,8 @@
  *      Author: stanimir
  */
 
-#ifndef GAME_WIDGETS_INITHELPER_HPP_
-#define GAME_WIDGETS_INITHELPER_HPP_
+#ifndef GR_ENGINE_WIDGETS_INITHELPER_HPP_
+#define GR_ENGINE_WIDGETS_INITHELPER_HPP_
 
 #include <cstdint>
 #include <string>
@@ -17,7 +17,7 @@ class Color;
 #include "gr_engine/drawing/Image.hpp"
 #include "gr_engine/drawing/Text.hpp"
 #include "gr_engine/drawing/Text.hpp"
-#include "game/widgets/ScaleTexture.hpp"
+#include "gr_engine/widgets/ScaleTexture.hpp"
 
 namespace InitHelper {
 

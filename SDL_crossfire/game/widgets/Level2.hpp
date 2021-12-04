@@ -8,10 +8,9 @@
 #ifndef GAME_WIDGETS_LEVEL2_HPP_
 #define GAME_WIDGETS_LEVEL2_HPP_
 
+#include "gr_engine/widgets/WidgetContainer.hpp"
+#include "gr_engine/widgets/InitHelper.hpp"
 #include "game/config/GameConfig.hpp"
-
-#include "game/widgets/WidgetContainer.hpp"
-#include "game/widgets/InitHelper.hpp"
 
 namespace DisplayMode {
 struct Mode_t;

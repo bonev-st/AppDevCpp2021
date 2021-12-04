@@ -9,8 +9,8 @@
 #define GAME_WIDGETS_BACKGROUND_HPP_
 
 #include "gr_engine/drawing/Image.hpp"
+#include "gr_engine/widgets/ScaleTexture.hpp"
 #include "utils/drawing/Point.hpp"
-#include "game/widgets/ScaleTexture.hpp"
 
 class Background {
 public:

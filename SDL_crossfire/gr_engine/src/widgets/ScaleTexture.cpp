@@ -5,7 +5,7 @@
  *      Author: stanimir
  */
 
-#include "game/widgets/ScaleTexture.hpp"
+#include "gr_engine/widgets/ScaleTexture.hpp"
 
 #include <iostream>
 #include <cmath>

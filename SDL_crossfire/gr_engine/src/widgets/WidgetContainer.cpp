@@ -5,7 +5,7 @@
  *      Author: stanimir
  */
 
-#include "game/widgets/WidgetContainer.hpp"
+#include "gr_engine/widgets/WidgetContainer.hpp"
 
 #include <algorithm>
 #include <iostream>

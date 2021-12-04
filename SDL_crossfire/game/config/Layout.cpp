@@ -20,7 +20,7 @@
 #include "game/config/AbsCoordinatesIntr.hpp"
 #include "game/config/RelCoordinatesIntr.hpp"
 
-static constexpr double ENEMY_SPEED = 0.5;
+static constexpr double ENEMY_SPEED = 0.3;
 static constexpr double ENEMY_BULLET_SPEED = ENEMY_SPEED * 4.0;
 static constexpr double SHIP_SPEED = ENEMY_SPEED*2.0;
 static constexpr double SHIP_BULLET_SPEED = SHIP_SPEED * 4.0;
@@ -28,7 +28,7 @@ static constexpr double SHIP_BULLET_SPEED = SHIP_SPEED * 4.0;
 static constexpr int32_t FIELD_W = 480;
 static constexpr int32_t FIELD_H = 416;
 
-static constexpr int8_t OWN_MAX_BULLED = 35;
+static constexpr int8_t OWN_MAX_BULLED 	 = 35;
 static constexpr int8_t ENEMY_MAX_BULLED = -1;
 
 static constexpr uint32_t OWN_RELOAD_TIME = 800;
@@ -200,7 +200,11 @@ int8_t Layout::getOwnMaxBulled() {
 }
 
 uint32_t Layout::getOwnReloadTime() {
-	return OWN_RELOAD_TIME;
+	uint32_t scale = static_cast<uint32_t>(Scale);
+	if(!scale) {
+		scale = 1;
+	}
+	return OWN_RELOAD_TIME/scale;
 }
 
 int8_t Layout::getEnemyMaxBulled() {
@@ -208,5 +212,9 @@ int8_t Layout::getEnemyMaxBulled() {
 }
 
 uint32_t Layout::getEnemyReloadTime() {
-	return ENEMY_RELOAD_TIME;
+	uint32_t scale = static_cast<uint32_t>(Scale);
+	if(!scale) {
+		scale = 1;
+	}
+	return ENEMY_RELOAD_TIME/scale;
 }

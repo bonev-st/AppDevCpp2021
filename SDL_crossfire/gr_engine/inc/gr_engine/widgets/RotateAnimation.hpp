@@ -5,13 +5,13 @@
  *      Author: stanimir
  */
 
-#ifndef GAME_WIDGETS_ROTATEANIMATION_HPP_
-#define GAME_WIDGETS_ROTATEANIMATION_HPP_
+#ifndef GR_ENGINE_WIDGETS_ROTATEANIMATION_HPP_
+#define GR_ENGINE_WIDGETS_ROTATEANIMATION_HPP_
 
 #include <cassert>
 #include <functional>
 
-#include "../../gr_engine/inc/gr_engine/timer/Timer2Client.hpp"
+#include "gr_engine/timer/Timer2Client.hpp"
 #include "utils/drawing/Point.hpp"
 #include "utils/geometry/Geometry.hpp"
 

@@ -5,8 +5,8 @@
  *      Author: stanimir
  */
 
-#ifndef GAME_WIDGETS_SPRITEANIMATION_HPP_
-#define GAME_WIDGETS_SPRITEANIMATION_HPP_
+#ifndef GR_ENGINE_WIDGETS_SPRITEANIMATION_HPP_
+#define GR_ENGINE_WIDGETS_SPRITEANIMATION_HPP_
 
 #include "gr_engine/timer/Timer2Client.hpp"
 

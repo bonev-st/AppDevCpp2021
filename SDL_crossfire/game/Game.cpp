@@ -16,14 +16,15 @@
 #include <map>
 
 #include "utils/inc/utils/drawing/DisplayMode.hpp"
-#include "sdl_utils/InputEvent.hpp"
-#include "../gr_engine/inc/gr_engine/managers/Timer2Mgr.hpp"
-
 #include "utils/drawing/Color.hpp"
+
+#include "sdl_utils/InputEvent.hpp"
+
+#include "gr_engine/managers/Timer2Mgr.hpp"
+
 #include "common/CommonDefines.hpp"
 
 #include "game/config/Layout.hpp"
-
 #include "game/config/GameConfigDef.hpp"
 
 const uint32_t Game::REFRESH_RATE = 333;	// ms

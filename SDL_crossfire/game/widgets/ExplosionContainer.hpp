@@ -11,11 +11,10 @@
 #include <functional>
 #include <memory>
 
-#include "gr_engine/drawing/Image.hpp"
 #include "utils/containers/FirstFreeContainer.hpp"
-
-#include "game/widgets/ScaleTexture.hpp"
-#include "game/widgets/SpriteAnimation.hpp"
+#include "gr_engine/drawing/Image.hpp"
+#include "gr_engine/widgets/ScaleTexture.hpp"
+#include "gr_engine/widgets/SpriteAnimation.hpp"
 
 class ExplosionContainer {
 public:

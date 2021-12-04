@@ -12,7 +12,7 @@
 #include <algorithm>
 #include <cassert>
 
-#include "../../gr_engine/inc/gr_engine/drawing/Widget.hpp"
+#include "gr_engine/drawing/Widget.hpp"
 #include "game/gameplay/ProcessorIF.hpp"
 
 bool CollisionDetect::init(const Callback_t & cb, ProcessorIF * proc) {

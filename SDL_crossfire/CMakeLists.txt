@@ -5,9 +5,6 @@ project(crossfire LANGUAGES CXX)
 #generate project binary
 add_executable(
 	${PROJECT_NAME}
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/SpriteAnimation.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/RotateAnimation.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/BlinkingAnimation.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/FPS.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/FPS.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ship.hpp
@@ -16,13 +13,8 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bullets.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ammunition.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ammunition.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/ScaleTexture.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/ScaleTexture.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bonuses.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bonuses.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/WidgetTO.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/WidgetContainer.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/WidgetContainer.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Background.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Background.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/GridPoint.hpp
@@ -35,8 +27,6 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level1.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level2.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level2.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/InitHelper.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/InitHelper.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.hpp

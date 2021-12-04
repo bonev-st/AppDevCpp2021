@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "gr_engine/drawing/Image.hpp"
-#include "game/widgets/ScaleTexture.hpp"
+#include "gr_engine/widgets/ScaleTexture.hpp"
 #include "game/action/Action.hpp"
 
 class Ship;

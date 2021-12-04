@@ -12,7 +12,7 @@
 #include <vector>
 #include <functional>
 
-#include "../gr_engine/inc/gr_engine/timer/Timer2Client.hpp"
+#include "gr_engine/timer/Timer2Client.hpp"
 #include "game/config/GameConfig.hpp"
 #include "game/widgets/Level1.hpp"
 #include "game/widgets/Level2.hpp"
@@ -20,7 +20,6 @@
 #include "game/widgets/Ship.hpp"
 #include "game/widgets/Ammunition.hpp"
 #include "game/widgets/Bonuses.hpp"
-#include "game/widgets/WidgetContainer.hpp"
 #include "game/widgets/Background.hpp"
 #ifdef DEBUG
 #include "game/widgets/GridPoint.hpp"

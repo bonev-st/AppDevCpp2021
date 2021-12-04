@@ -5,8 +5,8 @@
  *      Author: stanimir
  */
 
-#ifndef GAME_WIDGETS_SCALETEXTURE_HPP_
-#define GAME_WIDGETS_SCALETEXTURE_HPP_
+#ifndef GR_ENGINE_WIDGETS_SCALETEXTURE_HPP_
+#define GR_ENGINE_WIDGETS_SCALETEXTURE_HPP_
 
 #include "gr_engine/drawing/RGB_Texture.hpp"
 #include "gr_engine/timer/Timer2Client.hpp"

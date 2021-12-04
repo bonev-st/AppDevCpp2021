@@ -5,8 +5,8 @@
  *      Author: stanimir
  */
 
-#ifndef GAME_WIDGETS_BLINKINGANIMATION_HPP_
-#define GAME_WIDGETS_BLINKINGANIMATION_HPP_
+#ifndef GR_ENGINE_WIDGETS_BLINKINGANIMATION_HPP_
+#define GR_ENGINE_WIDGETS_BLINKINGANIMATION_HPP_
 
 #include <cassert>
 #include <cmath>

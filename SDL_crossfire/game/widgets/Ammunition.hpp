@@ -11,8 +11,8 @@
 #include <functional>
 
 #include "gr_engine/drawing/Image.hpp"
-#include "game/widgets/BlinkingAnimation.hpp"
-#include "game/widgets/ScaleTexture.hpp"
+#include "gr_engine/widgets/BlinkingAnimation.hpp"
+#include "gr_engine/widgets/ScaleTexture.hpp"
 #include "game/gameplay/CD_ClientIF.hpp"
 
 class Ammunition : public CD_ClientIF, public BlinkingAnimation<ScaleTexture> {
