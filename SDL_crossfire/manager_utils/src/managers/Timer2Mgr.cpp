@@ -18,7 +18,7 @@
 
 using namespace Timer2;
 
-const std::shared_ptr<std::size_t> Timer2Mgr::start(uint32_t period, TimerMode_t mode, const TimerCB_t& cb) {
+const std::shared_ptr<TimerCfg_t> Timer2Mgr::start(uint32_t period, TimerMode_t mode, const TimerCB_t& cb) {
 	if(!period) {
 		std::cerr << "Invalid timer period " << period << std::endl;
 		return nullptr;
@@ -53,39 +53,29 @@ const std::shared_ptr<std::size_t> Timer2Mgr::start(uint32_t period, TimerMode_t
 		m_MaxSize = size;
 	}
 	cfg->m_Handler = m_Container.begin();
-	return *reinterpret_cast<std::shared_ptr<std::size_t>*>(&cfg);
+	return cfg;
 }
 
-void Timer2Mgr::stop(TimerHandler_t handler) {
-	if(INVALID_TIMER_HANDLER == handler) {
-		std::cerr << "Stop timer with invalid handler" << std::endl;
-		return;
-	}
-	auto &it = getIterator(handler);
-	release_timer_data(it);
+void Timer2Mgr::stop(Iterator_t &handler) {
+	release_timer_data(handler);
 }
 
-bool Timer2Mgr::isRunning(TimerHandler_t handler) const {
-	if(INVALID_TIMER_HANDLER == handler) {
-		return false;
-	}
-	Timer2::Iterator_t &it = getIterator(handler);
-	assert(*it);
-	return Timer2::INVALID_TIMER_HANDLER != (*it)->m_TimerSDL_Handler;
+bool Timer2Mgr::isRunning(const Iterator_t &handler) const {
+	assert(*handler);
+	return INVALID_SLD_TIMER_HANDLER != (*handler)->m_TimerSDL_Handler;
 }
 
-bool Timer2Mgr::changePeriod(Timer2::TimerHandler_t handler, uint32_t period) {
+bool Timer2Mgr::changePeriod(Timer2::Iterator_t &handler, uint32_t period) {
+	assert(*handler);
 	if(!period) {
 		std::cerr << "Timer2Mgr::changePeriod failed. Invalid timer period " << period << std::endl;
 		return false;
 	}
-	if((INVALID_TIMER_HANDLER == handler) || !isRunning(handler)) {
+	if(!isRunning(handler)) {
 		std::cerr << "Timer2Mgr::changePeriod failed. Timer is inactive" << std::endl;
 		return false;
 	}
-	Timer2::Iterator_t &it = getIterator(handler);
-	assert(*it);
-	(*it)->m_Period = period;
+	(*handler)->m_Period = period;
 	return true;
 }
 
@@ -103,10 +93,10 @@ bool Timer2Mgr::handleEvent(const InputEvent & event) {
 		release_timer_data(it);
 		return true;
 	}
-	auto handler = *reinterpret_cast<Timer2::TimerHandler_t *>(&data.m_Handler);
+	auto & handler = data.m_Handler;
 	auto & cb = data.m_CB;
 	if(cb) {
-		cb(handler);
+		cb(reinterpret_cast<Timer2::TimerHandler_t>(&handler));
 	} else {
 		std::cout << "Warning: Timer2Mgr::events() callback is nullptr" << std::endl;
 	}

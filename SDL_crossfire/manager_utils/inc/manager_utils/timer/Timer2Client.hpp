@@ -11,7 +11,9 @@
 #include <memory>
 #include "utils/timer/Timer2Def.hpp"
 
-class Timer2Mgr;
+namespace Timer2 {
+struct TimerCfg_t;
+}
 
 class Timer2Client {
 public:
@@ -24,7 +26,7 @@ public:
 	bool operator != (Timer2::TimerHandler_t handler) const;
 
 private:
-	std::weak_ptr<Timer2::TimerHandler_t> m_Handler;
+	std::weak_ptr<Timer2::TimerCfg_t> m_Handler;
 };
 
 #endif /* MANAGER_UTILS_INC_MANAGER_UTILS_TIMER_TIMER2CLIENT_HPP_ */

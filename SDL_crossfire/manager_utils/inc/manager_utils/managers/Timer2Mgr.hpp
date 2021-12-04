@@ -20,10 +20,10 @@ class InputEvent;
 
 class Timer2Mgr : public BaseMgr, public InputEventIF {
 public:
-	const std::shared_ptr<Timer2::TimerHandler_t> start(uint32_t period, Timer2::TimerMode_t mode, const Timer2::TimerCB_t& cb);
-	void stop(Timer2::TimerHandler_t handler);
-	bool isRunning(Timer2::TimerHandler_t handler) const;
-	bool changePeriod(Timer2::TimerHandler_t handler, uint32_t period);
+	const std::shared_ptr<Timer2::TimerCfg_t> start(uint32_t period, Timer2::TimerMode_t mode, const Timer2::TimerCB_t& cb);
+	void stop(Timer2::Iterator_t &handler);
+	bool isRunning(const Timer2::Iterator_t &handler) const;
+	bool changePeriod(Timer2::Iterator_t &handler, uint32_t period);
 
 	std::size_t getActive() const final;
 	std::size_t getMaxActive() const final;

@@ -30,23 +30,23 @@ bool Timer2Client::start(uint32_t period, TimerMode_t mode, const TimerCB_t& cb)
 void Timer2Client::stop() {
 	auto p_data = m_Handler.lock();
 	if(p_data) {
-		Timer2MgrInst::getInstance()->stop(*p_data);
+		Timer2MgrInst::getInstance()->stop(p_data->m_Handler);
 	}
 }
 
 bool Timer2Client::isRunning() const {
 	auto p_data = m_Handler.lock();
-	return p_data && Timer2MgrInst::getInstance()->isRunning(*p_data);
+	return p_data && Timer2MgrInst::getInstance()->isRunning(p_data->m_Handler);
 }
 
 bool Timer2Client::changePeriod(uint32_t period) {
 	auto p_data = m_Handler.lock();
-	return p_data && Timer2MgrInst::getInstance()->changePeriod(*p_data, period);
+	return p_data && Timer2MgrInst::getInstance()->changePeriod(p_data->m_Handler, period);
 }
 
 bool Timer2Client::operator == (Timer2::TimerHandler_t handler) const {
 	auto p_data = m_Handler.lock();
-	return p_data && (*p_data == handler);
+	return p_data && (reinterpret_cast<Timer2::TimerHandler_t>(&(p_data->m_Handler)) == handler);
 }
 
 bool Timer2Client::operator != (Timer2::TimerHandler_t handler) const {
