@@ -45,10 +45,14 @@ const Point & getEnemyRelPos(std::size_t id);
 Rectangle getArenaRectangle();
 Rectangle getMotionArea();
 
-int8_t getOwnMaxBulled();
-uint32_t getOwnReloadTime();
-int8_t getEnemyMaxBulled();
+int32_t getShipMaxBulled();
+int32_t getShipReloadBulled();
+uint32_t getShipReloadTime();
+int32_t getEnemyMaxBulled();
 uint32_t getEnemyReloadTime();
+
+void firstMission();
+void nextMission();
 
 }
 

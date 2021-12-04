@@ -49,6 +49,10 @@ private:
 	Timer2Client m_RefreshTimer;
 	Timer2Client m_MotionTimer;
 
+	void newGame();
+	void newMission();
+	void gameOver();
+
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
 	bool initTimers();
 	bool initWidgets(const DisplayMode::Mode_t & display_mode, const GameConfig::ImgRes_t & cfg);

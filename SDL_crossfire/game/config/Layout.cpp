@@ -28,8 +28,11 @@ static constexpr double SHIP_BULLET_SPEED = SHIP_SPEED * 4.0;
 static constexpr int32_t FIELD_W = 480;
 static constexpr int32_t FIELD_H = 416;
 
-static constexpr int8_t OWN_MAX_BULLED 	 = 35;
-static constexpr int8_t ENEMY_MAX_BULLED = -1;
+static constexpr int32_t  OWN_MAX_BULLED = 35;
+static constexpr int32_t  OWN_REALOD_BULLED = 10;
+static constexpr int32_t  OWN_DELTA_BULLED = 5;
+static constexpr int32_t  OWN_MIN_BULLED = 15;
+static constexpr int32_t  ENEMY_MAX_BULLED = -1;
 
 static constexpr uint32_t OWN_RELOAD_TIME = 800;
 static constexpr uint32_t ENEMY_RELOAD_TIME = OWN_RELOAD_TIME/3;
@@ -37,28 +40,33 @@ static constexpr uint32_t ENEMY_RELOAD_TIME = OWN_RELOAD_TIME/3;
 static const Rectangle GridRect(0, 0, RelCoordinates::GRID_RECT_H_NUMB, RelCoordinates::GRID_RECT_V_NUMB);
 static RelCoordinates::GridData_t GridData;
 static double Scale = 1.0;
+static uint32_t Mission = 0;
 
 AbsCoordinates::ImgCfg_t ImgCfg[GameConfig::IMG_ARRAY_SIZE]{};
 AbsCoordinates::TextCfg_t TextCfg[GameConfig::TEXT_ARRAY_SIZE]{};
 
-Point scale_point(const Point & point) {
+static Point scale_point(const Point & point) {
 	return Geometry::scalePoint(point, Scale);
 }
 
-int32_t scale(int32_t val) {
+static int32_t scale(int32_t val) {
 	return Geometry::scaleVal(val, Scale);
 }
 
-int32_t getFieldScaledW() {
+static int32_t getFieldScaledW() {
 	return scale(FIELD_W);
 }
 
-int32_t getFieldScaledH() {
+static int32_t getFieldScaledH() {
 	return scale(FIELD_H);
 }
 
 static const RelCoordinates::GridData_t & getGridData() {
 	return GridData;
+}
+
+static double getSpeedIncrease() {
+	return 1.0 + 0.05 * Mission;
 }
 
 bool Layout::init(const DisplayMode::Mode_t & display_mode) {
@@ -143,19 +151,19 @@ Point Layout::getRel2AbsPosition(const Point& rel) {
 }
 
 double Layout::getShipSpeed() {
-	return SHIP_SPEED * Scale;
+	return SHIP_SPEED * Scale * getSpeedIncrease();
 }
 
 double Layout::getShipBulletSpeed() {
-	return SHIP_BULLET_SPEED * Scale;
+	return SHIP_BULLET_SPEED * Scale * getSpeedIncrease();
 }
 
 double Layout::getEnemySpeed() {
-	return ENEMY_SPEED * Scale;
+	return ENEMY_SPEED * Scale * getSpeedIncrease();
 }
 
 double Layout::getEnemyBulletSpeed() {
-	return ENEMY_BULLET_SPEED * Scale;
+	return ENEMY_BULLET_SPEED * Scale * getSpeedIncrease();
 }
 
 uint32_t Layout::getGridSize() {
@@ -195,26 +203,37 @@ Rectangle Layout::getMotionArea() {
 	return motion_rect;
 }
 
-int8_t Layout::getOwnMaxBulled() {
-	return OWN_MAX_BULLED;
-}
-
-uint32_t Layout::getOwnReloadTime() {
-	uint32_t scale = static_cast<uint32_t>(Scale);
-	if(!scale) {
-		scale = 1;
+int32_t Layout::getShipMaxBulled() {
+	if(((OWN_MAX_BULLED - OWN_MIN_BULLED) / OWN_DELTA_BULLED) < Mission) {
+		return OWN_MIN_BULLED;
 	}
-	return OWN_RELOAD_TIME/scale;
+	return OWN_MAX_BULLED - OWN_DELTA_BULLED * Mission;
 }
 
-int8_t Layout::getEnemyMaxBulled() {
+int32_t Layout::getShipReloadBulled() {
+	return OWN_REALOD_BULLED;
+}
+
+uint32_t Layout::getShipReloadTime() {
+	double rc = OWN_RELOAD_TIME;
+	rc /= Scale*getSpeedIncrease();
+	return static_cast<uint32_t>(rc);
+}
+
+int32_t Layout::getEnemyMaxBulled() {
 	return ENEMY_MAX_BULLED;
 }
 
 uint32_t Layout::getEnemyReloadTime() {
-	uint32_t scale = static_cast<uint32_t>(Scale);
-	if(!scale) {
-		scale = 1;
-	}
-	return ENEMY_RELOAD_TIME/scale;
+	double rc = ENEMY_RELOAD_TIME;
+	rc /= Scale*getSpeedIncrease();
+	return static_cast<uint32_t>(rc);
+}
+
+void Layout::firstMission() {
+	Mission = 0;
+}
+
+void Layout::nextMission() {
+	++Mission;
 }

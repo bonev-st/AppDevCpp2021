@@ -5,7 +5,7 @@
  *      Author: stanimir
  */
 
-#define ENA_DEBUG_INFO	1
+#define ENA_DEBUG_INFO	0
 
 #include "Game.hpp"
 
@@ -57,6 +57,7 @@ bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & di
 		return false;
 	}
 	m_FPS.init();
+	newGame();
 	return true;
 }
 
@@ -92,6 +93,19 @@ bool Game::processing() {
 bool Game::loadKeys(const GameConfig::KeyRes_t & cfg) {
 	m_Keys = cfg;
 	return true;
+}
+
+void Game::newGame() {
+	Layout::firstMission();
+	m_L_Top.reload();
+}
+
+void Game::newMission() {
+	Layout::nextMission();
+	m_L_Top.reload();
+}
+
+void Game::gameOver() {
 }
 
 bool Game::initTimers() {

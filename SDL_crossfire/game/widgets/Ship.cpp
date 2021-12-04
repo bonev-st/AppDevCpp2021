@@ -26,13 +26,9 @@ bool Ship::init(std::size_t ship_img_id, double scale_factor, const Point& pos, 
 	return true;
 }
 
-bool Ship::init_bullet(std::size_t bullet_img_id, double scale_factor, int8_t max_bullets, uint32_t reload_time, const Rectangle & field) {
+bool Ship::init_bullet(std::size_t bullet_img_id, double scale_factor, const Rectangle & field) {
 	if(!m_BulletsCtrl.initDraw(bullet_img_id, scale_factor, field)) {
 		std::cerr << "m_Bullets.initDraw() failed"<< std::endl;
-		return false;
-	}
-	if(!m_BulletsCtrl.init(max_bullets, reload_time)) {
-		std::cerr << "m_BulletsCtrl.init() failed"<< std::endl;
 		return false;
 	}
 	return true;
@@ -71,8 +67,12 @@ void Ship::setCallback(const BulletsCtrl::Callback_t & callback) {
 	m_BulletsCtrl.setCallback(callback);
 }
 
-void Ship::reload(int8_t bullets) {
+void Ship::reload(int32_t bullets) {
 	m_BulletsCtrl.reload(bullets);
+}
+
+void Ship::reloadTime(uint32_t dly) {
+	m_BulletsCtrl.setReloadTime(dly);
 }
 
 void Ship::destroy() {

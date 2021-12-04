@@ -12,25 +12,23 @@
 #include "utils/drawing/Rectangle.hpp"
 #include "game/action/Action.hpp"
 
-bool BulletsCtrl::init(int8_t max_bullets, uint32_t reload) {
-	m_ReloadTime = reload;
-	m_BulletsRemaining = max_bullets;
-	return true;
-}
-
 bool BulletsCtrl::initDraw(std::size_t bullet_img_id, double scale, const Rectangle & field) {
 	return m_Bullets.init(bullet_img_id, scale, field);
+}
+
+void BulletsCtrl::setReloadTime(uint32_t dly) {
+	m_ReloadTime = dly;
 }
 
 void BulletsCtrl::setSpeed(double speed) {
 	return m_Bullets.setSpeed(speed);
 }
 
-int8_t BulletsCtrl::getRemainingBullets() const {
+int32_t BulletsCtrl::getRemainingBullets() const {
 	return m_BulletsRemaining;
 }
 
-void BulletsCtrl::reload(int8_t numb) {
+void BulletsCtrl::reload(int32_t numb) {
 	m_BulletsRemaining = numb;
 }
 

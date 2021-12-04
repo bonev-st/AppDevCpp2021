@@ -19,12 +19,14 @@
 class Ship : public ScaleTexture {
 public:
 	bool init(std::size_t ship_img_id, double scale_factor, const Point& pos, uint32_t grid_size);
-	bool init_bullet(std::size_t bullet_img_id, double scale_factor, int8_t max_bullets, uint32_t reload_time, const Rectangle & field);
+	bool init_bullet(std::size_t bullet_img_id, double scale_factor, const Rectangle & field);
 	bool event(const Action_t type);
 	void tick();
 	void draw() override;
 	void setCallback(const BulletsCtrl::Callback_t & callback);
-	void reload(int8_t bullets);
+	void reload(int32_t bullets);
+	void reloadTime(uint32_t dly);
+
 	void destroy();
 	bool isDestroy() const;
 	void reset();

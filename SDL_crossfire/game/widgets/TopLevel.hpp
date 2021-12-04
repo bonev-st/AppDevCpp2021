@@ -33,6 +33,7 @@ public:
 	void tick();
 	bool events(const InputEvent & event);
 	const Widget & getShip() const;
+	void reload();
 
 private:
 	GameConfig::KeyRes_t m_Keys;
@@ -50,7 +51,7 @@ private:
 	bool initWidgets(const DisplayMode::Mode_t & display_mode, const GameConfig::ImgRes_t & cfg);
 	bool setKeyRequest(GameConfig::KeyMask_t mask);
 
-	void onShipFire(const Point &pos, int8_t rem);
+	void onShipFire(const Point &pos, int32_t rem);
 	void onCB_Ammun(const std::vector<Widget *> &data);
 	void onCB_Bonus(const std::vector<Widget *> &data);
 	void onCB_Ship(const std::vector<Widget *> &data);

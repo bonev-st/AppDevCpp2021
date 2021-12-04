@@ -31,15 +31,17 @@ bool TopLevel::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t 
 		return false;
 	}
 	m_CollitionMgr.addUnits(&m_Ship, m_Enemies.get());
+	return true;
+}
 
+void TopLevel::reload() {
 	m_Ship.setBulletsSpeed(Layout::getShipBulletSpeed());
-	m_Ship.reload(5);
+	m_Ship.reloadTime(Layout::getShipReloadTime());
 	m_Ship.setShipSpeed(Layout::getShipSpeed());
-
+	m_Ship.reload(Layout::getShipMaxBulled());
 	m_Enemies.setShipSpeed(Layout::getEnemySpeed());
 	m_Enemies.setBulledSpeed(Layout::getEnemyBulletSpeed());
-
-	return true;
+	m_Enemies.setReloadTime(Layout::getEnemyReloadTime());
 }
 
 void TopLevel::draw() {
@@ -58,6 +60,7 @@ bool TopLevel::processing() {
 	ammun.push_back(&m_Ammunition);
 	m_CollitionMgr.processing(m_Ship.getBullets(), m_Enemies.getBullets(),
 			m_Enemies.get(), m_Bonuses.getWidgets(), ammun);
+	//m_EnemiesCtrl.processing();
 	return true;
 }
 
@@ -100,8 +103,7 @@ bool TopLevel::initWidgets(const DisplayMode::Mode_t & display_mode, const GameC
 			std::cerr << "Can't find ship bullets image resource id" << std::endl;
 			return false;
 		}
-		if(!m_Ship.init_bullet(it_bullets->second, Layout::getScaleFactor(), Layout::getOwnMaxBulled(),
-				Layout::getOwnReloadTime(), Layout::getArenaRectangle())) {
+		if(!m_Ship.init_bullet(it_bullets->second, Layout::getScaleFactor(), Layout::getArenaRectangle())) {
 			std::cerr << "m_Ship.init_bullet() failed"<< std::endl;
 			return false;
 		}
@@ -152,8 +154,7 @@ bool TopLevel::initWidgets(const DisplayMode::Mode_t & display_mode, const GameC
 			std::cerr << "Can't find enemy bullets image resource id" << std::endl;
 			return false;
 		}
-		if(!m_Enemies.init_bullet(it_bullets->second, Layout::getScaleFactor(), Layout::getEnemyMaxBulled(),
-				Layout::getEnemyReloadTime(), Layout::getArenaRectangle())) {
+		if(!m_Enemies.init_bullet(it_bullets->second, Layout::getScaleFactor(), Layout::getArenaRectangle())) {
 			std::cerr << "m_Enemies.init_bullet() failed"<< std::endl;
 			return false;
 		}
@@ -209,12 +210,12 @@ bool TopLevel::initWidgets(const DisplayMode::Mode_t & display_mode, const GameC
 	return true;
 }
 
-void TopLevel::onShipFire(const Point &pos, int8_t rem) {
+void TopLevel::onShipFire(const Point &pos, int32_t rem) {
 	static uint8_t id = 0;
 	static uint8_t count = 0;
 #ifdef DEBUG
 	std::cout << "Shoot start point X " << pos.m_X << " , Y " << pos.m_Y
-			  << ", remaining bullets " << static_cast<int32_t>(rem) << std::endl;
+			  << ", remaining bullets " << rem << std::endl;
 #endif
 	if(0 > rem) {
 		return;
@@ -229,7 +230,7 @@ void TopLevel::onShipFire(const Point &pos, int8_t rem) {
 		count = 0;
 		++id;
 	}
-	if(2 == rem) {
+	if(Layout::getShipReloadBulled() == rem) {
 		if(!m_Ammunition.show(Geometry::getRotation180(pos, Layout::getArenaRectangle().getCenter()))) {
 			std::cerr << "Game::createImages() m_Ammunition.show() failed"<< std::endl;
 		}
@@ -284,7 +285,7 @@ void TopLevel::onAnimation0(Widget * data) {
 
 void TopLevel::onCB_Ammun([[maybe_unused]]const std::vector<Widget *> &data) {
 	m_Ammunition.collision();
-	m_Ship.reload(5);
+	m_Ship.reload(Layout::getShipMaxBulled());
 }
 
 void TopLevel::onCB_Bonus([[maybe_unused]]const std::vector<Widget *> &data) {

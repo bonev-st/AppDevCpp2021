@@ -38,9 +38,9 @@ bool EnemyContainer::init(const std::vector<std::size_t> & ship_img_id, double s
 	return true;
 }
 
-bool EnemyContainer::init_bullet(std::size_t bullet_img_id, double scale_factor, int8_t max_bullets, uint32_t reload_time, const Rectangle & field) {
+bool EnemyContainer::init_bullet(std::size_t bullet_img_id, double scale_factor, const Rectangle & field) {
 	for(auto & e: m_EnemyContainer) {
-		if(!e->init_bullet(bullet_img_id, scale_factor, max_bullets, reload_time, field)) {
+		if(!e->init_bullet(bullet_img_id, scale_factor, field)) {
 			return false;
 		}
 		e->reload(-1);
@@ -50,13 +50,27 @@ bool EnemyContainer::init_bullet(std::size_t bullet_img_id, double scale_factor,
 
 void EnemyContainer::setShipSpeed(double speed) {
 	m_Speed = speed;
+	for(auto & e: m_EnemyContainer) {
+		e->setShipSpeed(m_Speed);
+	}
 }
 
 void EnemyContainer::setBulledSpeed(double speed) {
 	m_BulletsSpeed = speed;
+	for(auto & e: m_EnemyContainer) {
+		e->setBulletsSpeed(m_BulletsSpeed);
+	}
 }
 
-bool EnemyContainer::event([[maybe_unused]]const Action_t action, [[maybe_unused]]uint8_t line_of_fire, [[maybe_unused]]const Rectangle & shooter_rect) {
+void EnemyContainer::setReloadTime(uint32_t dly) {
+	m_ReladTime = dly;
+	for(auto & e: m_EnemyContainer) {
+		e->reloadTime(m_ReladTime);
+	}
+}
+
+bool EnemyContainer::event(const Action_t action, EnemyId_t id) {
+	m_EnemyContainer[static_cast<std::size_t>(id)]->event(action);
 	return true;
 }
 
