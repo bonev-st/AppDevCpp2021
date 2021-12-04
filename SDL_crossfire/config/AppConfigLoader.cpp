@@ -7,21 +7,24 @@
 
 #include "config/AppConfigLoader.hpp"
 
-#include "common/CommonDefines.hpp"
+#include "utils/drawing/Dimention.hpp"
+#include "utils/inputs/EventDefines.h"
 
 #include "sdl_utils/MainWindow.hpp"
-#include "utils/drawing/Dimention.hpp"
 
 #include "config/AppConfig.hpp"
 
 #include "game/config/GameConfig.hpp"
+#include "game/config/GameConfigDef.hpp"
+
+#include "common/CommonDefines.hpp"
 
 namespace {
 constexpr auto APP_NAME	 					= "Crossfire 81";
 constexpr auto WINDOW_WIDTH					= 770;
 constexpr auto WINDOW_HEIGHT				= 526;
 
-constexpr std::uint32_t MAX_REFRESH_RATE	= 100;
+constexpr std::uint32_t MAX_REFRESH_RATE	= 10000;
 
 constexpr std::uint32_t EXPLOSION_IMG_W		= 48;
 constexpr std::uint32_t EXPLOSION_IMG_H		= 48;
@@ -34,8 +37,8 @@ static void populateAppWindowCfg(MainWindowCfg::Config_t &cfg) {
 	constexpr auto app_name = APP_NAME;
 	cfg.m_Name = app_name;
 	cfg.m_Rect = Rectangle(Points::UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT);
-	//cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN | MainWindowCfg::WINDOW_FULLSCREEN | MainWindowCfg::WINDOW_DESKTOP;
-	cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN | MainWindowCfg::WINDOW_BORDERLESS;
+	cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN | MainWindowCfg::WINDOW_FULLSCREEN | MainWindowCfg::WINDOW_DESKTOP;
+	//cfg.m_Flags = MainWindowCfg::WINDOW_SHOWN | MainWindowCfg::WINDOW_BORDERLESS;
 }
 
 static void populateDrawingCfg(DrawMgrConfig::Config_t &cfg) {
@@ -58,7 +61,6 @@ void polulateSprite(std::vector<Rectangle> & frames_b, const int32_t rols, const
 void populateImgCfg(ImgConfig::ImgRes_t &cfg) {
 	cfg[ResurcesId::BACKGROUND_IMG].m_Path = "resources/images/background.jpg";
 	cfg[ResurcesId::CROSSFIRE_TEXT_IMG].m_Path = "resources/images/crossfire_text.png";
-	cfg[ResurcesId::GRID_BKGRND_IMG].m_Path = "resources/images/grid_background.png";
 	cfg[ResurcesId::GRID_IMG].m_Path = "resources/images/grid.png";
 	cfg[ResurcesId::SHIP_IMG].m_Path = "resources/images/ship.png";
 	cfg[ResurcesId::ENEMY1_IMG].m_Path = "resources/images/enemy1.png";
@@ -108,7 +110,6 @@ void populateGameKeys(GameConfig::KeyRes_t &cfg) {
 
 void populateGameImg(GameConfig::ImgRes_t &cfg) {
 	cfg[GameConfig::IMG_BACKGROUND_INDX] = ResurcesId::BACKGROUND_IMG;
-	cfg[GameConfig::IMG_GRID_BKGRND_INDX] = ResurcesId::GRID_BKGRND_IMG;
 	cfg[GameConfig::IMG_GRID_INDX] = ResurcesId::GRID_IMG;
 	cfg[GameConfig::IMG_CROSSFIRE_INDX] = ResurcesId::CROSSFIRE_TEXT_IMG;
 	cfg[GameConfig::IMG_SHIP_INDX] = ResurcesId::SHIP_IMG;

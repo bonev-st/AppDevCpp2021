@@ -15,7 +15,6 @@ namespace ResurcesId {
 enum ImgId_t : std::size_t {
 	BACKGROUND_IMG,
 	CROSSFIRE_TEXT_IMG,
-	GRID_BKGRND_IMG,
 	GRID_IMG,
 	SHIP_IMG,
 	ENEMY1_IMG,
