@@ -30,7 +30,6 @@ add_library(
 		${_INC_DIR}/timer/Timer2Def.hpp
 		${_INC_DIR}/thread/ThreadUtils.hpp
 		${_INC_DIR}/geometry/Geometry.hpp
-		${_INC_DIR}/geometry/PointR.hpp
 		${_INC_DIR}/Filter/ExpFilter.hpp
 	
 		${_SRC_DIR}/drawing/Point.cpp
@@ -40,7 +39,6 @@ add_library(
 		${_SRC_DIR}/thread/ThreadUtils.cpp		
 		${_SRC_DIR}/time/Time.cpp
 		${_SRC_DIR}/geometry/Geometry.cpp
-		${_SRC_DIR}/geometry/PointR.cpp
 		${_SRC_DIR}/Filter/ExpFilter.cpp
 )
 
