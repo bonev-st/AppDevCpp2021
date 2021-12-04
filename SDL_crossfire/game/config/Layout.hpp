@@ -27,8 +27,8 @@ double getScaleFactor();
 const RelCoordinates::GridDataEntity_t* getGridDataEntity(const Point& rel);
 Point getRel2AbsPosition(const Point& rel);
 
-const AbsCoordinates::ImgCfg_t & getImgData(std::size_t id);
-const AbsCoordinates::TextCfg_t & getTextData(std::size_t id);
+const AbsCoordinates::ImgCfg_t * getImgData(std::size_t id);
+const AbsCoordinates::TextCfg_t * getTextData(std::size_t id);
 
 double getShipSpeed();
 double getShipBulletSpeed();

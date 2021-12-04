@@ -11,7 +11,6 @@ namespace GameConfig {
 
 Config_t getConfig() {
 	Config_t rc;
-
 	return rc;
 }
 

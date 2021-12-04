@@ -12,26 +12,22 @@
 #include <vector>
 #include <functional>
 
-#include "game/config/GameConfig.hpp"
-#include "manager_utils/managers/BaseMgr.hpp"
-#include "manager_utils/drawing/Image.hpp"
-#include "manager_utils/drawing/Text.hpp"
-#include "manager_utils/input/RadioContainer.hpp"
 #include "manager_utils/timer/Timer2Client.hpp"
 
+#include "game/config/GameConfig.hpp"
+#include "game/widgets/Level1.hpp"
+#include "game/widgets/Level2.hpp"
 #include "game/widgets/FPS.hpp"
 #include "game/widgets/Ship.hpp"
 #include "game/widgets/Ammunition.hpp"
-#include "game/widgets/ScaleTexture.hpp"
 #include "game/widgets/Bonuses.hpp"
 #include "game/widgets/WidgetContainer.hpp"
 #include "game/widgets/Background.hpp"
+#ifdef DEBUG
 #include "game/widgets/GridPoint.hpp"
+#endif
 #include "game/widgets/ExplosionContainer.hpp"
 #include "game/widgets/EnemyContainer.hpp"
-
-#include "game/gameplay/CollisionDetect.hpp"
-#include "game/gameplay/CD_Through.hpp"
 #include "game/gameplay/CollitionMgr.hpp"
 
 class InputEvent;
@@ -55,36 +51,8 @@ private:
 	FPS m_FPS;
 
 	Background m_Background;
-
-	WidgetContainer m_L1;
-	Image m_BackgroundFieldImageL1;
-	ScaleTexture m_ScaledBackgroundFieldImageL1;
-	Image m_CrossfireImageL1;
-	ScaleTexture m_ScaledCrossfireImageL1;
-	Image m_GridImageL1;
-	ScaleTexture m_ScaledGridImageL1;
-
-	Text m_TextScoreLableL1;
-	ScaleTexture m_ScaledTextScoreLableL1;
-	Text m_TextHiScoreLableL1;
-	ScaleTexture m_ScaledTextHiScoreLableL1;
-	Text m_TextShipsLableL1;
-	ScaleTexture m_ScaledTextShipsLableL1;
-
-	WidgetContainer m_L2;
-	Text m_TextScoreL2;
-	ScaleTexture m_ScaledTextScoreL2;
-	Text m_TextHiScoreL2;
-	ScaleTexture m_ScaledTextHiScoreL2;
-	Text m_TextShipsL2;
-	ScaleTexture m_ScaledTextShipsL2;
-
-	Text m_TextFPSL2;
-	ScaleTexture m_ScaledTextFPSL2;
-	Text m_TextActiveTimL2;
-	ScaleTexture m_ScaledTextActiveTimL2;
-	Text m_TextMaxTimL2;
-	ScaleTexture m_ScaledTextMaxTimL2;
+	Level1	m_L1;
+	Level2	m_L2;
 
 	Ship m_Ship;
 	EnemyContainer m_Enemies;
@@ -102,19 +70,20 @@ private:
 
 	CollitionMgr m_CollitionMgr;
 
+#ifdef DEBUG
 	GridPoint m_GridPoint;
+#endif
 
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
-	bool createImages(const GameConfig::ImgRes_t & cfg);
-	bool createTexts(const GameConfig::TextRes_t & cfg);
 	bool initButtons();
 	bool initInput();
 	bool initTimers();
+	bool initWidgets(const DisplayMode::Mode_t & display_mode, const GameConfig::ImgRes_t & cfg);
 
 	void setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask);
 	bool exitRequest() const;
 
-	void onFPS_Timeout(Timer2::TimerHandler_t handler);
+	void onDebugRefresh(Timer2::TimerHandler_t handler);
 	void onMotion_Timeout(Timer2::TimerHandler_t handler);
 
 	void onShipFire(const Point &pos, int8_t rem);

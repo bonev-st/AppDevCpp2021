@@ -1,0 +1,65 @@
+/*
+ * GameConfigDef.hpp
+ *
+ *  Created on: Dec 4, 2021
+ *      Author: stanimir
+ */
+
+#ifndef GAME_CONFIG_GAMECONFIGDEF_HPP_
+#define GAME_CONFIG_GAMECONFIGDEF_HPP_
+
+#include <cstdint>
+
+namespace GameConfig {
+
+enum KeyMask_t : std::uint32_t {
+	KEY_EXIT_MASK 			= 1u << 0,
+	KEY_UP_MASK 			= 1u << 1,
+	KEY_DOWN_MASK 			= 1u << 2,
+	KEY_LEFT_MASK 			= 1u << 3,
+	KEY_RIGHT_MASK 			= 1u << 4,
+	KEY_FIRE_UP_MASK 		= 1u << 5,
+	KEY_FIRE_DOWN_MASK 		= 1u << 6,
+	KEY_FIRE_LEFT_MASK 		= 1u << 7,
+	KEY_FIRE_RIGHT_MASK 	= 1u << 8,
+	KEY_PAUSE_MASK 			= 1u << 9,
+	KEY_INFO_MASK 			= 1u << 10,
+	KEY_MENU_MASK 			= 1u << 11,
+};
+
+enum ImgIndx_t : uint32_t {
+	IMG_BACKGROUND_INDX = 0,
+	IMG_CROSSFIRE_INDX,
+	IMG_GRID_INDX,
+	IMG_SHIP_INDX,
+	IMG_ENEMY1_INDX,
+	IMG_ENEMY2_INDX,
+	IMG_ENEMY3_INDX,
+	IMG_ENEMY4_INDX,
+	IMG_OWN_BULLED_INDX,
+	IMG_ENEMY_BULLED_INDX,
+	IMG_BONUS_INDX,
+	IMG_AMMU_INDX,
+	IMG_EXPLOSION_INDX,
+
+	IMG_ARRAY_SIZE
+};
+
+enum TextIndx_t : uint32_t {
+	TEXT_SCORE_LABLE_INDX = 0,
+	TEXT_SCORE_INDX,
+	TEXT_HI_SCORE_LABLE_INDX,
+	TEXT_HI_SCORE_INDX,
+	TEXT_SHIPS_LABLE_INDX,
+	TEXT_SHIPS_INDX,
+
+	TEXT_FPS_INDX,
+	TEXT_ACTIVE_TIMER_INDX,
+	TEXT_MAX_ACTIVE_TIMER_INDX,
+
+	TEXT_ARRAY_SIZE
+};
+
+}
+
+#endif /* GAME_CONFIG_GAMECONFIGDEF_HPP_ */

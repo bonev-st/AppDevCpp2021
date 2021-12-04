@@ -15,12 +15,14 @@ namespace AbsCoordinates {
 struct TextCfg_t {
 	Point m_Pos;
 	Color m_Color;
+	Color m_BackgroundColor;
 	const char * m_Text;
 };
 
 struct ImgCfg_t {
 	Point m_Pos;
 	uint8_t m_Alpha;
+	Color m_BackgroundColor;
 };
 
 static constexpr int32_t GRID_SIZE = 32;

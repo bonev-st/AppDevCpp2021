@@ -31,6 +31,12 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/ExplosionContainer.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/EnemyContainer.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/EnemyContainer.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level1.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level1.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level2.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level2.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/InitHelper.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/InitHelper.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.hpp
@@ -50,10 +56,11 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/BulletsCtrl.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollitionMgr.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollitionMgr.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfigDef.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfig.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfig.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/ConfigData.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/ConfigData.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/Layout.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/Layout.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/AbsCoordinates.hpp
@@ -62,12 +69,14 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/RelCoordinates.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/RelCoordinatesIntr.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/RelCoordinatesIntr.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/App.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/App.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfig.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfigLoader.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfigLoader.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/common/CommonDefines.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/App.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/App.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 

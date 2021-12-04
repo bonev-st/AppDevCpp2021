@@ -34,7 +34,7 @@ private:
 	static constexpr uint8_t ENABLE_NUMB = 12;
 	static constexpr uint8_t DISABLE_NUMB = 6;
 	static constexpr double ANIMATION_PERIOD = 500;
-	static constexpr double TEXT_TO = 10000;
+	static constexpr double TEXT_TO = 2000;
 
 	struct Position_t {
 		Point m_EnablePos;

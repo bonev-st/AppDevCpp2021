@@ -12,7 +12,7 @@
 
 #include "utils/drawing/Color.hpp"
 
-bool ScaleTexture::init(double scale_factor, Widget * scaled) {
+bool ScaleTexture::init(double scale_factor, Widget * scaled, const Color & color) {
 	if(!scale_factor) {
 		std::cerr << "Invalid scale factor" << std::endl;
 		return false;
@@ -21,6 +21,7 @@ bool ScaleTexture::init(double scale_factor, Widget * scaled) {
 		std::cerr << "Invalid scaled Widget" << std::endl;
 		return false;
 	}
+	m_Color = color;
 	m_ScaleFactor = scale_factor;
 	m_Scaled = scaled;
 	if(!createTexture()) {
@@ -75,7 +76,7 @@ void ScaleTexture::dim_update() {
 bool ScaleTexture::createTexture() {
 	dim_update();
 	Dimention dim = getDimentions();
-	auto color = m_DebugTimer.isRunning()?Colors::DEBUG_BACKGROUND:Colors::FULL_TRANSPARENT;
+	auto color = m_DebugTimer.isRunning()?Colors::DEBUG_BACKGROUND:m_Color;
 	if(!create(dim, color, getPosition())){
 		std::cerr << "ScaleTexture::draw() RGB_Texture::create() failed" << std::endl;
 	}
@@ -90,7 +91,7 @@ bool ScaleTexture::resetTimer() {
 		if(this->m_DebugTimer != handler) {
 			std::cerr << "Handler and m_DebugTimer not match" << std::endl;
 		}
-		this->setColor(Colors::FULL_TRANSPARENT);
+		this->setColor(this->m_Color);
 	})) {
 		std::cerr << "Timer start() failed" << std::endl;
 		return false;

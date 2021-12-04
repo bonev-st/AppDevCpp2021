@@ -10,10 +10,11 @@
 
 #include "manager_utils/drawing/RGB_Texture.hpp"
 #include "manager_utils/timer/Timer2Client.hpp"
+#include "utils/drawing/Color.hpp"
 
 class ScaleTexture : public RGB_Texture {
 public:
-	bool init(double scale_factor, Widget * scaled);
+	bool init(double scale_factor, Widget * scaled, const Color & color = Colors::FULL_TRANSPARENT);
 	void setPositionCenter(const Point& pos) override;
 	void draw() override;
 	bool isInvalidate() const override;
@@ -21,6 +22,7 @@ public:
 private:
 	static constexpr uint32_t DEBUG_TIMER_PERIOD = 1000;
 	double m_ScaleFactor = 1.0;
+	Color m_Color;
 	Widget * m_Scaled = nullptr;
 	Timer2Client m_DebugTimer;
 

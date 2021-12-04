@@ -15,6 +15,7 @@
 #include "utils/drawing/Dimention.hpp"
 #include "utils/geometry/Geometry.hpp"
 #include "game/config/GameConfig.hpp"
+#include "game/config/GameConfigDef.hpp"
 
 #include "game/config/AbsCoordinatesIntr.hpp"
 #include "game/config/RelCoordinatesIntr.hpp"
@@ -78,14 +79,13 @@ bool Layout::init(const DisplayMode::Mode_t & display_mode) {
 
 	for(std::size_t i = 0; GameConfig::IMG_ARRAY_SIZE > i; ++i) {
 		const auto & src = AbsCoordinates::ImgCfg[i];
-		ImgCfg[i].m_Alpha = src.m_Alpha;
+		ImgCfg[i] = src;
 		ImgCfg[i].m_Pos = scale_point(src.m_Pos);
 		ImgCfg[i].m_Pos.move(x_offset, y_offset);
 	}
 	for(std::size_t i = 0; GameConfig::TEXT_ARRAY_SIZE > i; ++i) {
 		const auto & src = AbsCoordinates::TextCfg[i];
-		TextCfg[i].m_Color = src.m_Color;
-		TextCfg[i].m_Text = src.m_Text;
+		TextCfg[i] = src;
 		TextCfg[i].m_Pos = scale_point(src.m_Pos);
 		TextCfg[i].m_Pos.move(x_offset, y_offset);
 	}
@@ -111,14 +111,18 @@ double Layout::getScaleFactor() {
 	return Scale;
 }
 
-const AbsCoordinates::ImgCfg_t & Layout::getImgData(std::size_t id) {
-	assert(GameConfig::IMG_ARRAY_SIZE > id);
-	return ImgCfg[id];
+const AbsCoordinates::ImgCfg_t * Layout::getImgData(std::size_t id) {
+	if(GameConfig::IMG_ARRAY_SIZE > id) {
+		return ImgCfg + id;
+	}
+	return nullptr;
 }
 
-const AbsCoordinates::TextCfg_t & Layout::getTextData(std::size_t id) {
-	assert(GameConfig::TEXT_ARRAY_SIZE > id);
-	return TextCfg[id];
+const AbsCoordinates::TextCfg_t * Layout::getTextData(std::size_t id) {
+	if(GameConfig::IMG_ARRAY_SIZE > id) {
+		return TextCfg + id;
+	}
+	return nullptr;
 }
 
 const RelCoordinates::GridDataEntity_t* Layout::getGridDataEntity(const Point& rel) {
@@ -139,19 +143,19 @@ Point Layout::getRel2AbsPosition(const Point& rel) {
 }
 
 double Layout::getShipSpeed() {
-	return SHIP_SPEED;
+	return SHIP_SPEED * Scale;
 }
 
 double Layout::getShipBulletSpeed() {
-	return SHIP_BULLET_SPEED;
+	return SHIP_BULLET_SPEED * Scale;
 }
 
 double Layout::getEnemySpeed() {
-	return ENEMY_SPEED;
+	return ENEMY_SPEED * Scale;
 }
 
 double Layout::getEnemyBulletSpeed() {
-	return ENEMY_BULLET_SPEED;
+	return ENEMY_BULLET_SPEED * Scale;
 }
 
 uint32_t Layout::getGridSize() {
