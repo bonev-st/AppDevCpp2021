@@ -93,3 +93,20 @@ target_link_libraries(
 
 add_subdirectory(manager_utils)
 
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+message("Debug build")
+	target_compile_definitions(
+		${PROJECT_NAME}
+			PRIVATE
+				-DDEBUG=1
+	)
+endif()
+
+if(CMAKE_BUILD_TYPE MATCHES Release)
+message("Release build")
+	target_compile_definitions(
+		${PROJECT_NAME}
+			PRIVATE
+				-DNDEBUG=1
+	)
+endif()
