@@ -11,8 +11,8 @@
 #include <memory>
 #include <vector>
 
+#include "gr_engine/drawing/Image.hpp"
 #include "game/widgets/ScaleTexture.hpp"
-#include "manager_utils/drawing/Image.hpp"
 #include "game/action/Action.hpp"
 
 class Ship;

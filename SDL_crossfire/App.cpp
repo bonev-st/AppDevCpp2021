@@ -10,11 +10,10 @@
 #include <iostream>
 
 #include "config/AppConfig.hpp"
-
+#include "gr_engine/inc/gr_engine/managers/DrawMgr.hpp"
 #include "utils/thread/ThreadUtils.hpp"
 #include "utils/time/Time.hpp"
 
-#include "manager_utils/managers/DrawMgr.hpp"
 
 bool App::init(const AppConfig& cfg) {
 	bool rc = false;

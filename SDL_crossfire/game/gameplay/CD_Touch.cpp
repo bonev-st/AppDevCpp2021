@@ -7,7 +7,7 @@
 
 #include "game/gameplay/CD_Touch.hpp"
 
-#include "manager_utils/drawing/Widget.hpp"
+#include "../../gr_engine/inc/gr_engine/drawing/Widget.hpp"
 
 std::vector<Widget*> CD_Touch::operator ()(Widget* obj, const std::vector<Widget *> & others) const {
 	std::vector<Widget*> rc;

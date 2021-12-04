@@ -10,8 +10,7 @@
 
 #include <functional>
 
-#include "manager_utils/drawing/Image.hpp"
-
+#include "gr_engine/drawing/Image.hpp"
 #include "game/widgets/BlinkingAnimation.hpp"
 #include "game/widgets/ScaleTexture.hpp"
 #include "game/gameplay/CD_ClientIF.hpp"

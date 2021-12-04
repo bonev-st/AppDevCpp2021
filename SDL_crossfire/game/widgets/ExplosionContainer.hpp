@@ -11,9 +11,8 @@
 #include <functional>
 #include <memory>
 
+#include "gr_engine/drawing/Image.hpp"
 #include "utils/containers/FirstFreeContainer.hpp"
-
-#include "manager_utils/drawing/Image.hpp"
 
 #include "game/widgets/ScaleTexture.hpp"
 #include "game/widgets/SpriteAnimation.hpp"

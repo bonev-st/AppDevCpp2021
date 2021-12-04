@@ -11,9 +11,9 @@
 #include <cassert>
 #include <iostream>
 
+#include "../../gr_engine/inc/gr_engine/drawing/Widget.hpp"
 #include "utils/geometry/Geometry.hpp"
 
-#include "manager_utils/drawing/Widget.hpp"
 
 bool UnitAction::init(Widget *unit, const Point& pos, uint32_t grid_size) {
 	m_Unit = unit;

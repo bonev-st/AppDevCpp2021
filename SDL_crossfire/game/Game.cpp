@@ -17,7 +17,7 @@
 
 #include "utils/inc/utils/drawing/DisplayMode.hpp"
 #include "sdl_utils/InputEvent.hpp"
-#include "manager_utils/managers/Timer2Mgr.hpp"
+#include "../gr_engine/inc/gr_engine/managers/Timer2Mgr.hpp"
 
 #include "utils/drawing/Color.hpp"
 #include "common/CommonDefines.hpp"

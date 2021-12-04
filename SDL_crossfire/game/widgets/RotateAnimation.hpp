@@ -11,10 +11,10 @@
 #include <cassert>
 #include <functional>
 
+#include "../../gr_engine/inc/gr_engine/timer/Timer2Client.hpp"
 #include "utils/drawing/Point.hpp"
 #include "utils/geometry/Geometry.hpp"
 
-#include "manager_utils/timer/Timer2Client.hpp"
 
 template<class T>
 class RotateAnimation : public T {

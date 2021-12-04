@@ -8,8 +8,8 @@
 #ifndef GAME_WIDGETS_SCALETEXTURE_HPP_
 #define GAME_WIDGETS_SCALETEXTURE_HPP_
 
-#include "manager_utils/drawing/RGB_Texture.hpp"
-#include "manager_utils/timer/Timer2Client.hpp"
+#include "gr_engine/drawing/RGB_Texture.hpp"
+#include "gr_engine/timer/Timer2Client.hpp"
 #include "utils/drawing/Color.hpp"
 
 class ScaleTexture : public RGB_Texture {

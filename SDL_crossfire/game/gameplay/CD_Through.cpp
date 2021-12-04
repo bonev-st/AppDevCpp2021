@@ -8,7 +8,7 @@
 
 #include "game/gameplay/CD_Through.hpp"
 
-#include "manager_utils/drawing/Widget.hpp"
+#include "../../gr_engine/inc/gr_engine/drawing/Widget.hpp"
 
 bool CD_Through::init(const Rectangle & tolerance) {
 	m_Tolerance = tolerance;

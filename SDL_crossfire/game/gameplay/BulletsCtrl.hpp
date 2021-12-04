@@ -11,7 +11,7 @@
 #include <cstdint>
 #include <functional>
 
-#include "manager_utils/timer/Timer2Client.hpp"
+#include "gr_engine/timer/Timer2Client.hpp"
 #include "game/widgets/Bullets.hpp"
 
 class Point;

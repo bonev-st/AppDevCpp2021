@@ -11,7 +11,7 @@
 #include <memory>
 #include <vector>
 
-#include "manager_utils/drawing/Image.hpp"
+#include "gr_engine/drawing/Image.hpp"
 #include "utils/containers/FirstFreeContainer.hpp"
 #include "game/action/BulletAction.hpp"
 #include "game/widgets/ScaleTexture.hpp"

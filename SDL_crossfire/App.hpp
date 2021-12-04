@@ -14,8 +14,8 @@
 #include "utils/NoCopy.hpp"
 #include "sdl_utils/SDLLoader.hpp"
 #include "sdl_utils/InputEvent.hpp"
-#include "manager_utils/managers/Mgrs.hpp"
 #include "game/Game.hpp"
+#include "gr_engine/inc/gr_engine/managers/Mgrs.hpp"
 
 struct AppConfig;
 

@@ -9,8 +9,9 @@
 #define GAME_WIDGETS_BONUSES_HPP_
 
 #include <array>
-#include "manager_utils/drawing/Image.hpp"
-#include "manager_utils/drawing/Text.hpp"
+
+#include "gr_engine/drawing/Image.hpp"
+#include "gr_engine/drawing/Text.hpp"
 #include "game/widgets/ScaleTexture.hpp"
 #include "game/widgets/BlinkingAnimation.hpp"
 #include "game/widgets/WidgetTO.hpp"

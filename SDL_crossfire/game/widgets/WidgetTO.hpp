@@ -9,7 +9,8 @@
 #define GAME_WIDGETS_WIDGETTO_HPP_
 
 #include <cassert>
-#include "manager_utils/timer/Timer2Client.hpp"
+
+#include "gr_engine/timer/Timer2Client.hpp"
 
 template <class T>
 class WidgetTO : public T {

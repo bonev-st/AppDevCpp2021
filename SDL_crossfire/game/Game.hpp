@@ -12,8 +12,7 @@
 #include <vector>
 #include <functional>
 
-#include "manager_utils/timer/Timer2Client.hpp"
-
+#include "../gr_engine/inc/gr_engine/timer/Timer2Client.hpp"
 #include "game/config/GameConfig.hpp"
 #include "game/widgets/Level1.hpp"
 #include "game/widgets/Level2.hpp"

@@ -9,8 +9,9 @@
 #define GAME_WIDGETS_WIDGETCONTAINER_HPP_
 
 #include <deque>
-#include "manager_utils/drawing/RGB_Texture.hpp"
-#include "manager_utils/timer/Timer2Client.hpp"
+
+#include "gr_engine/drawing/RGB_Texture.hpp"
+#include "gr_engine/timer/Timer2Client.hpp"
 
 class Widget;
 

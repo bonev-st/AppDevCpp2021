@@ -97,10 +97,10 @@ target_include_directories(
 target_link_libraries(
     ${PROJECT_NAME}
         PRIVATE
-        	manager_utils
+        	gr_engine
 )
 
-add_subdirectory(manager_utils)
+add_subdirectory(gr_engine)
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
 message("Debug build")

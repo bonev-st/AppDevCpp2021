@@ -8,7 +8,7 @@
 #ifndef CONFIG_APPCONFIG_HPP_
 #define CONFIG_APPCONFIG_HPP_
 
-#include "manager_utils/config/ResourcesConfig.hpp"
+#include "../gr_engine/inc/gr_engine/config/ResourcesConfig.hpp"
 #include "game/config/GameConfig.hpp"
 
 struct AppConfig {

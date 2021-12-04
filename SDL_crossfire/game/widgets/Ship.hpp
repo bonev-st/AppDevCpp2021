@@ -8,7 +8,7 @@
 #ifndef GAME_WIDGETS_SHIP_HPP_
 #define GAME_WIDGETS_SHIP_HPP_
 
-#include "manager_utils/drawing/Image.hpp"
+#include "gr_engine/drawing/Image.hpp"
 #include "game/config/Layout.hpp"
 #include "game/widgets/SpriteAnimation.hpp"
 #include "game/widgets/ScaleTexture.hpp"

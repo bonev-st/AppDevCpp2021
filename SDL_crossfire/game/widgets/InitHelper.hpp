@@ -14,9 +14,9 @@
 class Point;
 class Color;
 
-#include "manager_utils/drawing/Image.hpp"
-#include "manager_utils/drawing/Text.hpp"
-#include "manager_utils/drawing/Text.hpp"
+#include "gr_engine/drawing/Image.hpp"
+#include "gr_engine/drawing/Text.hpp"
+#include "gr_engine/drawing/Text.hpp"
 #include "game/widgets/ScaleTexture.hpp"
 
 namespace InitHelper {

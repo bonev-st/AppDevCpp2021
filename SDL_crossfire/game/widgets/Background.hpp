@@ -8,7 +8,7 @@
 #ifndef GAME_WIDGETS_BACKGROUND_HPP_
 #define GAME_WIDGETS_BACKGROUND_HPP_
 
-#include "manager_utils/drawing/Image.hpp"
+#include "gr_engine/drawing/Image.hpp"
 #include "utils/drawing/Point.hpp"
 #include "game/widgets/ScaleTexture.hpp"
 

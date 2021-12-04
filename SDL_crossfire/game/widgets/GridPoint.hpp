@@ -9,7 +9,8 @@
 #define GAME_WIDGETS_GRIDPOINT_HPP_
 
 #include <array>
-#include "manager_utils/drawing/Image.hpp"
+
+#include "gr_engine/drawing/Image.hpp"
 #include "game/config/Layout.hpp"
 
 class GridPoint {
