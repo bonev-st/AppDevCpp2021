@@ -27,6 +27,8 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level1.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level2.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level2.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/TopLevel.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/TopLevel.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.hpp

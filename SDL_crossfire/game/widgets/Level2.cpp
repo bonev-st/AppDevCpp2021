@@ -34,7 +34,6 @@ bool Level2::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & 
 	m_Container.add(&m_TextFPS.m_ScaleContainer);
 	m_Container.add(&m_TextMaxTim.m_ScaleContainer);
 	m_Container.add(&m_TextActiveTim.m_ScaleContainer);
-
 	return true;
 }
 

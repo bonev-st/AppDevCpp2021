@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-#include "utils/inc/utils/drawing/DisplayMode.hpp"
+#include "utils/drawing/DisplayMode.hpp"
 
 #include "game/config/Layout.hpp"
 #include "game/config/GameConfigDef.hpp"
