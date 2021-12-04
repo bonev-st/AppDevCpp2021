@@ -21,7 +21,7 @@ bool WidgetContainer::init(const Dimention& dimension, const Point & pos) {
 
 void WidgetContainer::add(Widget * widget) {
 	m_Container.push_back(widget);
-	m_Redraw = true;
+	m_Texture.invalidate();
 }
 
 bool WidgetContainer::remove(const Widget * widget) {
@@ -31,20 +31,26 @@ bool WidgetContainer::remove(const Widget * widget) {
 		return false;
 	}
 	m_Container.erase(it);
-	m_Redraw = true;
+	m_Texture.invalidate();
 	return true;
 }
 
 void WidgetContainer::draw() {
-	if(!m_Redraw) {
+	if(!m_Texture.isInvalidate()) {
 		for(const auto e : m_Container) {
 			if(e->isInvalidate()) {
-				m_Redraw = true;
+				if(m_Texture.getDebug()) {
+					if(!resetTimer()) {
+						std::cerr << "WidgetContainer::draw() resetTimer() failed" << std::endl;
+						return;
+					}
+				}
+				m_Texture.invalidate();
 				break;
 			}
 		}
 	}
-	if(m_Redraw) {
+	if(m_Texture.isInvalidate()) {
 		auto lock = m_Texture.getLock();
 		if(nullptr == lock) {
 			std::cerr << "Can't get widget lock" << std::endl;
@@ -54,6 +60,22 @@ void WidgetContainer::draw() {
 			e->draw();
 		}
 	}
-	m_Redraw = false;
 	m_Texture.draw();
 }
+
+bool WidgetContainer::resetTimer() {
+	if(!m_DebugTimer.isRunning()) {
+		m_Texture.setColor(Colors::DEBUG_BACKGROUND);
+	}
+	if(!m_DebugTimer.start(DEBUG_TIMER_PERIOD, Timer2::TimerMode_t::ONESHOT, [this](Timer2::TimerHandler_t handler) {
+		if(this->m_DebugTimer != handler) {
+			std::cerr << "Handler and m_DebugTimer not match" << std::endl;
+		}
+		m_Texture.setColor(Colors::FULL_TRANSPARENT);
+	})) {
+		std::cerr << "Timer start() failed" << std::endl;
+		return false;
+	}
+	return true;
+}
+

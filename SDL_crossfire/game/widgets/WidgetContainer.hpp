@@ -10,6 +10,7 @@
 
 #include <deque>
 #include "manager_utils/drawing/RGB_Texture.hpp"
+#include "manager_utils/timer/Timer2Client.hpp"
 
 class Widget;
 
@@ -22,9 +23,13 @@ public:
 	void draw();
 
 private:
-	bool m_Redraw = false;
+	static constexpr uint32_t DEBUG_TIMER_PERIOD = 1000;
+
 	RGB_Texture m_Texture;
 	std::deque<Widget * > m_Container;
+	Timer2Client m_DebugTimer;
+
+	bool resetTimer();
 };
 
 #endif /* GAME_WIDGETS_WIDGETCONTAINER_HPP_ */
