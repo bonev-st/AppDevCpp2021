@@ -54,7 +54,7 @@ enum EventDataTypes {
 } /* namespace EventType */
 
 namespace Keyboard {
-enum Key {
+enum Key : uint32_t {
   KEY_UNKNOWN = 0,  //SDLK_UNKNOWN,
 
   KEY_BACKSPACE = 8,  //SDLK_BACKSPACE
