@@ -5,7 +5,7 @@
  *      Author: stanimir
  */
 
-#include "game/widgets/FPS.hpp"
+#include "game/debug/FPS.hpp"
 
 void FPS::init() {
 	m_Filter.setSmootingFactor(SMOOTHING_FACTOR);

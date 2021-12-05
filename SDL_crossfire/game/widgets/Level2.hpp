@@ -25,18 +25,12 @@ public:
 	bool setScore(uint32_t val);
 	bool setScoreMax(uint32_t val);
 	bool setShips(uint8_t val);
-	bool setFPS(double val);
-	bool setActiveTim(std::size_t val);
-	bool setMaxTim(std::size_t val);
 
 private:
 	WidgetContainer m_Container;
 	InitHelper::TextData_t m_TextScore;
 	InitHelper::TextData_t m_TextHiScore;
 	InitHelper::TextData_t m_TextShips;
-	InitHelper::TextData_t m_TextFPS;
-	InitHelper::TextData_t m_TextActiveTim;
-	InitHelper::TextData_t m_TextMaxTim;
 
 	bool initTexts(const GameConfig::TextRes_t & cfg);
 };

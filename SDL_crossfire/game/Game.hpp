@@ -17,6 +17,7 @@
 #include "game/widgets/Level1.hpp"
 #include "game/widgets/Level2.hpp"
 #include "game/widgets/TopLevel.hpp"
+#include "game/debug/LevelDebug.hpp"
 
 class InputEvent;
 class InputEventIF;
@@ -33,20 +34,18 @@ public:
 	bool processing();
 
 private:
-	static const uint32_t REFRESH_RATE;
 	static const uint32_t MOTION_PERIOD;
-
-	FPS m_FPS;
 
 	Background m_Background;
 	Level1	m_L1;
 	Level2	m_L2;
 	TopLevel m_L_Top;
+	LevelDebug m_Debug;
+
 
 	GameConfig::KeyRes_t m_Keys;
 	uint32_t m_KeysMask = 0;
 
-	Timer2Client m_RefreshTimer;
 	Timer2Client m_MotionTimer;
 
 	void newGame();
@@ -60,7 +59,6 @@ private:
 	void setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask);
 	bool exitRequest() const;
 
-	void onDebugRefresh(Timer2::TimerHandler_t handler);
 	void onMotion_Timeout(Timer2::TimerHandler_t handler);
 };
 

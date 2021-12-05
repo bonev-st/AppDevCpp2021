@@ -5,8 +5,6 @@ project(crossfire LANGUAGES CXX)
 #generate project binary
 add_executable(
 	${PROJECT_NAME}
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/FPS.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/FPS.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ship.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ship.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bullets.hpp
@@ -29,6 +27,10 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level2.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/TopLevel.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/TopLevel.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/debug/FPS.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/debug/FPS.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/debug/LevelDebug.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/debug/LevelDebug.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.hpp

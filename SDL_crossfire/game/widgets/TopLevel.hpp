@@ -8,7 +8,6 @@
 #ifndef GAME_WIDGETS_TOPLEVEL_HPP_
 #define GAME_WIDGETS_TOPLEVEL_HPP_
 
-#include "game/widgets/FPS.hpp"
 #include "game/widgets/Ship.hpp"
 #include "game/widgets/Ammunition.hpp"
 #include "game/widgets/Bonuses.hpp"

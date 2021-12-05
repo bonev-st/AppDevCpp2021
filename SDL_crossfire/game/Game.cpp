@@ -5,8 +5,6 @@
  *      Author: stanimir
  */
 
-#define ENA_DEBUG_INFO	0
-
 #include "Game.hpp"
 
 #include <cassert>
@@ -19,25 +17,28 @@
 
 #include "sdl_utils/InputEvent.hpp"
 
-#include "gr_engine/managers/Timer2Mgr.hpp"
+#include "gr_engine/config/DebugCfg.hpp"
 
 #include "common/CommonDefines.hpp"
 
 #include "game/config/Layout.hpp"
 #include "game/config/GameConfigDef.hpp"
 
-const uint32_t Game::REFRESH_RATE = 333;	// ms
 const uint32_t Game::MOTION_PERIOD = 15;	// ms
 
 bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & display_mode) {
 	Layout::init(display_mode);
-	//Widget::setDebug(true);
+	DebugCfg::m_Enable = true;
 	if(!m_L1.init(cfg, display_mode)) {
 		std::cerr << "Level1 init failed." << std::endl;
 		return false;
 	}
 	if(!m_L2.init(cfg, display_mode)) {
 		std::cerr << "Level2 init failed." << std::endl;
+		return false;
+	}
+	if(!m_Debug.init(cfg, display_mode)) {
+		std::cerr << "Debug failed." << std::endl;
 		return false;
 	}
 	if(!m_L_Top.init(cfg, display_mode)) {
@@ -56,8 +57,8 @@ bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & di
 		std::cerr << "initWidgets() failed." << std::endl;
 		return false;
 	}
-	m_FPS.init();
 	newGame();
+	m_Debug.enable();
 	return true;
 }
 
@@ -78,11 +79,12 @@ bool Game::draw() {
 	m_L1.draw();
 	m_L2.draw();
 	m_L_Top.draw();
+	m_Debug.draw();
 	return true;
 }
 
 bool Game::new_frame() {
-	m_FPS.newFrame();
+	m_Debug.newFrame();
 	return true;
 }
 
@@ -109,12 +111,6 @@ void Game::gameOver() {
 }
 
 bool Game::initTimers() {
-#if ENA_DEBUG_INFO
-	if(!m_RefreshTimer.start(REFRESH_RATE, Timer2::TimerMode_t::RELOAD, std::bind(&Game::onDebugRefresh, this, std::placeholders::_1))) {
-		std::cerr << "startTimer() failed." << std::endl;
-		return false;
-	}
-#endif
 	if(!m_MotionTimer.start(MOTION_PERIOD, Timer2::TimerMode_t::RELOAD, std::bind(&Game::onMotion_Timeout, this, std::placeholders::_1))) {
 		std::cerr << "startTimer() failed." << std::endl;
 		return false;
@@ -155,21 +151,6 @@ void Game::setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask) {
 		m_KeysMask |=  key_mask;
 	} else {
 		m_KeysMask &= ~key_mask;
-	}
-}
-
-void Game::onDebugRefresh(Timer2::TimerHandler_t id) {
-	if((m_RefreshTimer != id) || !m_RefreshTimer.isRunning()) {
-		return;
-	}
-	if(!m_L2.setFPS(m_FPS)) {
-		std::cerr << "Game::createImages() Level2.setFPS() failed"<< std::endl;
-	}
-	if(!m_L2.setActiveTim(Timer2MgrInst::getInstance()->getActive())) {
-		std::cerr << "Game::createImages() Level2.setActiveTim() failed"<< std::endl;
-	}
-	if(!m_L2.setMaxTim(Timer2MgrInst::getInstance()->getMaxActive())) {
-		std::cerr << "Game::createImages() Level2.setActiveTim() failed"<< std::endl;
 	}
 }
 
