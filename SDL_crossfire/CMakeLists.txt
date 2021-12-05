@@ -5,6 +5,15 @@ project(crossfire LANGUAGES CXX)
 #generate project binary
 add_executable(
 	${PROJECT_NAME}
+	
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gr_layers/Level1.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gr_layers/Level1.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gr_layers/Level2.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gr_layers/Level2.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gr_layers/TopLevel.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gr_layers/TopLevel.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gr_layers/LevelDebug.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gr_layers/LevelDebug.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ship.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Ship.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Bullets.hpp
@@ -21,16 +30,8 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/ExplosionContainer.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/EnemyContainer.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/EnemyContainer.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level1.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level1.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level2.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/Level2.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/TopLevel.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/widgets/TopLevel.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/debug/FPS.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/debug/FPS.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/debug/LevelDebug.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/debug/LevelDebug.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/Action.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/ActionBuffer.hpp

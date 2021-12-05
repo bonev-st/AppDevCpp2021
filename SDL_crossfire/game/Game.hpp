@@ -14,10 +14,10 @@
 
 #include "gr_engine/timer/Timer2Client.hpp"
 #include "game/config/GameConfig.hpp"
-#include "game/widgets/Level1.hpp"
-#include "game/widgets/Level2.hpp"
-#include "game/widgets/TopLevel.hpp"
-#include "game/debug/LevelDebug.hpp"
+#include "game/gr_layers/Level1.hpp"
+#include "game/gr_layers/Level2.hpp"
+#include "game/gr_layers/TopLevel.hpp"
+#include "game/gr_layers/LevelDebug.hpp"
 
 class InputEvent;
 class InputEventIF;

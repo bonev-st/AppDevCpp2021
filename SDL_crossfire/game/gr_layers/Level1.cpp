@@ -5,7 +5,7 @@
  *      Author: stanimir
  */
 
-#include "game/widgets/Level1.hpp"
+#include "game/gr_layers/Level1.hpp"
 
 #include <iostream>
 

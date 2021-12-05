@@ -5,7 +5,7 @@
  *      Author: stanimir
  */
 
-#include "game/debug/LevelDebug.hpp"
+#include "game/gr_layers/LevelDebug.hpp"
 
 #include <iostream>
 #include <iomanip>
