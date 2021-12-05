@@ -14,6 +14,7 @@ add_library(
 		${_INC_DIR}/Singleton.hpp
 		${_INC_DIR}/RAII_Handler.hpp
 		${_INC_DIR}/containers/FirstFreeContainer.hpp
+		${_INC_DIR}/containers/Variable.hpp
 		${_INC_DIR}/drawing/MainWindowCfg.hpp
 		${_INC_DIR}/drawing/DrawParams.hpp
 		${_INC_DIR}/drawing/Dimention.hpp
