@@ -9,6 +9,7 @@
 #define UTILS_INC_UTILS_RAII_HANDLER_HPP_
 
 #include <cassert>
+#include <algorithm>
 
 template<class T, T INVALID, class DELETER>
 class RAII_Handler {
