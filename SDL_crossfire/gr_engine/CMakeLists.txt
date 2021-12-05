@@ -12,6 +12,7 @@ add_library(
 		${_INC_DIR}/config/DrawMgrConfig.hpp
 		${_INC_DIR}/config/ResMgrConfig.hpp
 		${_INC_DIR}/config/ResourcesConfig.hpp
+		${_INC_DIR}/config/DebugCfg.hpp
 		${_INC_DIR}/managers/ResMgr.hpp
 		${_INC_DIR}/managers/BaseMgr.hpp
 		${_INC_DIR}/managers/DrawMgr.hpp
@@ -34,6 +35,7 @@ add_library(
 		${_INC_DIR}/widgets/WidgetTO.hpp
 		${_INC_DIR}/widgets/InitHelper.hpp
 
+		${_SRC_DIR}/config/DebugCfg.cpp
 		${_SRC_DIR}/managers/ResMgr.cpp
 		${_SRC_DIR}/managers/DrawMgr.cpp
 		${_SRC_DIR}/managers/Timer2Mgr.cpp

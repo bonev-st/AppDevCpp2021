@@ -20,7 +20,6 @@ public:
 	bool isInvalidate() const override;
 
 private:
-	static constexpr uint32_t DEBUG_TIMER_PERIOD = 1000;
 	double m_ScaleFactor = 1.0;
 	Color m_Color;
 	Widget * m_Scaled = nullptr;

@@ -16,9 +16,6 @@ class Widget {
 public:
 	virtual ~Widget() = default;
 
-	static void setDebug(bool ena);
-	static bool getDebug();
-
 	void invalidate();
 	virtual bool isInvalidate() const;
 
@@ -77,7 +74,6 @@ protected:
 
 private:
 	static DrawMgr *& m_DrawMgr;
-	static bool g_Debug;
 };
 
 #endif /* GR_ENGINE_INC_GR_ENGINE_DRAWING_WIDGET_HPP_ */

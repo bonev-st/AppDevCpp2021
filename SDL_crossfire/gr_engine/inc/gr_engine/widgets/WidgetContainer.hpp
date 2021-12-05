@@ -20,12 +20,12 @@ public:
 	bool init(const Dimention& dimension, const Point & pos);
 	void add(Widget * widget);
 	bool remove(const Widget * widget);
+	bool getVisible() const;
+	void setVisible(bool val);
 
 	void draw();
 
 private:
-	static constexpr uint32_t DEBUG_TIMER_PERIOD = 1000;
-
 	RGB_Texture m_Texture;
 	std::deque<Widget * > m_Container;
 	Timer2Client m_DebugTimer;

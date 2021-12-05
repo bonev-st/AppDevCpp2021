@@ -12,16 +12,6 @@
 #include "gr_engine/managers/DrawMgr.hpp"
 #include "utils/geometry/Geometry.hpp"
 
-bool Widget::g_Debug = false;
-
-void Widget::setDebug(bool ena) {
-	g_Debug = ena;
-}
-
-bool Widget::getDebug() {
-	return g_Debug;
-}
-
 void Widget::invalidate() {
 	m_DrawParams.m_Invalidate = true;
 }

@@ -11,6 +11,7 @@
 #include <cmath>
 
 #include "utils/drawing/Color.hpp"
+#include "gr_engine/config/DebugCfg.hpp"
 
 bool ScaleTexture::init(double scale_factor, Widget * scaled, const Color & color) {
 	if(!scale_factor) {
@@ -38,7 +39,7 @@ void ScaleTexture::setPositionCenter(const Point& pos) {
 
 void ScaleTexture::draw() {
 	bool invalidate = m_Scaled->isInvalidate();
-	if(invalidate && getDebug()) {
+	if(invalidate && DebugCfg::m_Enable) {
 		if(!resetTimer()) {
 			std::cerr << "ScaleTexture::draw() resetTimer() failed" << std::endl;
 			return;
@@ -87,7 +88,7 @@ bool ScaleTexture::resetTimer() {
 	if(!m_DebugTimer.isRunning()) {
 		setColor(Colors::DEBUG_BACKGROUND);
 	}
-	if(!m_DebugTimer.start(DEBUG_TIMER_PERIOD, Timer2::TimerMode_t::ONESHOT, [this](Timer2::TimerHandler_t handler) {
+	if(!m_DebugTimer.start(DebugCfg::m_TimerPeiod, Timer2::TimerMode_t::ONESHOT, [this](Timer2::TimerHandler_t handler) {
 		if(this->m_DebugTimer != handler) {
 			std::cerr << "Handler and m_DebugTimer not match" << std::endl;
 		}

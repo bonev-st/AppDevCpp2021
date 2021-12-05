@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include "utils/drawing/Color.hpp"
+#include "gr_engine/config/DebugCfg.hpp"
 
 bool WidgetContainer::init(const Dimention& dimension, const Point & pos) {
 	if(!m_Texture.create(dimension, Colors::FULL_TRANSPARENT, pos)){
@@ -35,11 +36,22 @@ bool WidgetContainer::remove(const Widget * widget) {
 	return true;
 }
 
+bool WidgetContainer::getVisible() const {
+	return m_Texture.getVisible();
+}
+
+void WidgetContainer::setVisible(bool val) {
+	m_Texture.setVisible(val);
+}
+
 void WidgetContainer::draw() {
+	if(!m_Texture.getVisible()) {
+		return;
+	}
 	if(!m_Texture.isInvalidate()) {
 		for(const auto e : m_Container) {
 			if(e->isInvalidate()) {
-				if(m_Texture.getDebug()) {
+				if(DebugCfg::m_Enable) {
 					if(!resetTimer()) {
 						std::cerr << "WidgetContainer::draw() resetTimer() failed" << std::endl;
 						return;
@@ -67,7 +79,7 @@ bool WidgetContainer::resetTimer() {
 	if(!m_DebugTimer.isRunning()) {
 		m_Texture.setColor(Colors::DEBUG_BACKGROUND);
 	}
-	if(!m_DebugTimer.start(DEBUG_TIMER_PERIOD, Timer2::TimerMode_t::ONESHOT, [this](Timer2::TimerHandler_t handler) {
+	if(!m_DebugTimer.start(DebugCfg::m_TimerPeiod, Timer2::TimerMode_t::ONESHOT, [this](Timer2::TimerHandler_t handler) {
 		if(this->m_DebugTimer != handler) {
 			std::cerr << "Handler and m_DebugTimer not match" << std::endl;
 		}
