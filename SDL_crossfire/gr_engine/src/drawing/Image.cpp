@@ -14,7 +14,7 @@
 
 bool Image::create(std::size_t image_id, const Point &pos, bool center) {
 	if(WidgetType_t::UNKNOWN != m_DrawParams.m_WidgetType) {
-		std::cerr << "Warning: Image::create() override image with ID " << image_id << std::endl;
+		std::cout << "Warning: Image::create() override image with ID " << image_id << std::endl;
 	}
 	m_DrawParams.m_WidgetType = WidgetType_t::IMAGE;
 	m_DrawParams.m_ResrId = image_id;
