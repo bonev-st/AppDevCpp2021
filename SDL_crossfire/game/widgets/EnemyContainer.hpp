@@ -30,13 +30,18 @@ public:
 	void tick();
 	void draw();
 	void reset();
+	void reset(Widget * widget);
+	std::size_t getType(Widget * widget) const;
 
 	std::vector<Widget *> get();
 	std::vector<Widget *> getBullets();
+	bool isKilled() const;
 
 private:
 	std::vector<std::size_t> m_ImgId;
+	std::vector<std::size_t> m_Life;
 	std::vector<Point> m_Pos;
+	uint32_t m_GridSize = 0;
 	double m_Speed = 0;
 	double m_BulletsSpeed = 0;
 	uint32_t m_ReladTime = 0;

@@ -52,6 +52,7 @@ private:
 
 	void newGame();
 	void newMission();
+	void restartMission();
 	void gameOver();
 
 	bool loadKeys(const GameConfig::KeyRes_t & cfg);
@@ -65,6 +66,9 @@ private:
 
 	// GameListener
 	void setPoints(std::uint32_t points) final;
+	void decLifes() final;
+	void restart() final;
+	void nextMission() final;
 };
 
 #endif /* GAME_GAME_HPP_ */

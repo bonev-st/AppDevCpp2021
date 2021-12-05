@@ -8,7 +8,7 @@
 #include "game/gr_layers/TopLevel.hpp"
 
 #include <iostream>
-#include <map>
+#include <set>
 
 #include "sdl_utils/InputEvent.hpp"
 
@@ -47,10 +47,12 @@ void TopLevel::reload() {
 	m_Ship.setShipSpeed(Rules::getShipSpeed());
 	m_Ship.reload(Rules::getShipBulled());
 	m_Ship.reset();
+	m_Ammunition.collision();
 	m_Enemies.setShipSpeed(Rules::getEnemySpeed());
 	m_Enemies.setBulledSpeed(Rules::getEnemyBulletSpeed());
 	m_Enemies.setReloadTime(Rules::getEnemyReloadTime());
 	m_Enemies.reset();
+	m_BonusCtrl.reset();
 	m_Bonuses.reset();
 }
 
@@ -121,22 +123,22 @@ bool TopLevel::initWidgets(const DisplayMode::Mode_t & display_mode, const GameC
 	}
 	// Init Enemies
 	{
-		std::map<size_t, size_t> enemies_img_id_map;
+		std::set<size_t> enemies_img_id_set;
 		for(const auto & [key, data]: cfg) {
 			if(GameConfig::IMG_ENEMY1_INDX == key) {
-				enemies_img_id_map[key] = data;
+				enemies_img_id_set.insert(data);
 			} else if(GameConfig::IMG_ENEMY2_INDX == key) {
-				enemies_img_id_map[key] = data;
+				enemies_img_id_set.insert(data);
 			} else if(GameConfig::IMG_ENEMY3_INDX == key) {
-				enemies_img_id_map[key] = data;
+				enemies_img_id_set.insert(data);
 			} else if(GameConfig::IMG_ENEMY4_INDX == key) {
-				enemies_img_id_map[key] = data;
+				enemies_img_id_set.insert(data);
 			}
 		}
 		std::vector<size_t> enemies_img_id;
-		enemies_img_id.reserve(enemies_img_id_map.size());
-		for(const auto & [key, data]: enemies_img_id_map) {
-			enemies_img_id.push_back(data);
+		enemies_img_id.reserve(enemies_img_id_set.size());
+		for(const auto e : enemies_img_id_set) {
+			enemies_img_id.push_back(e);
 		}
 		std::vector<Point> enemies_pos;
 		for(uint8_t i = static_cast<uint8_t>(EnemyId_t::ENEMY1); true; ++i) {
@@ -221,8 +223,6 @@ bool TopLevel::initWidgets(const DisplayMode::Mode_t & display_mode, const GameC
 }
 
 void TopLevel::onShipFire(const Point &pos, int32_t rem) {
-	static uint8_t id = 0;
-	static uint8_t count = 0;
 #ifdef DEBUG
 	std::cout << "Shoot start point X " << pos.m_X << " , Y " << pos.m_Y
 			  << ", remaining bullets " << rem << std::endl;
@@ -230,36 +230,34 @@ void TopLevel::onShipFire(const Point &pos, int32_t rem) {
 	if(0 > rem) {
 		return;
 	}
-	++count;
-	if(!m_Bonuses.getWidgets().empty() && (4 < count)) {
-		m_Bonuses.disable();
-		count = 0;
-	}
-	if((6 < count) && (static_cast<uint8_t>(BonusId_t::BONUS_NUMB) > id)) {
-		m_Bonuses.enable(static_cast<BonusId_t>(id));
-		count = 0;
-		++id;
-	}
-	if(Rules::getShipReloadBulled() == rem) {
+	if(m_AmmunitionCtrl(rem) && !m_Ammunition.getVisible()) {
 		if(!m_Ammunition.show(Geometry::getRotation180(pos, Layout::getArenaRectangle().getCenter()))) {
 			std::cerr << "Game::createImages() m_Ammunition.show() failed"<< std::endl;
 		}
 	}
-	// XXX: for test
-	// add points
-	if(!m_Listener) {
-		std::cerr << "Listener not initialized"<< std::endl;
-		return;
+	if(m_BonusCtrl.shoot()) {
+		if(m_Bonuses.getWidgets().empty()) {
+			m_Bonuses.enable(m_BonusCtrl.getIndx());
+		}
+	} else {
+		if(!m_Bonuses.getWidgets().empty()) {
+			m_Bonuses.disable();
+		}
 	}
-	uint32_t points = 100;
-	m_Listener->setPoints(points);
+	// XXX: for test
 	{
+		std::vector<Widget *> data;
+		data.push_back(m_Enemies.get().front());
+		data.push_back(m_Ship.getBullets().back());
+		onCB_Enemy(data);
+		/*
 		if(30 == rem) {
 			std::vector<Widget *> data;
 			data.push_back(&m_Ship);
 			data.push_back(m_Ship.getBullets().back());
 			onCB_Ship(data);
 		}
+		*/
 	}
 }
 
@@ -309,34 +307,25 @@ void TopLevel::onAnimation0(Widget * data) {
 	data->setVisible(false);
 }
 
-void TopLevel::onAnimation0_Ship(Widget * data) {
-	data->setVisible(false);
+void TopLevel::onAnimation0_Ship([[maybe_unused]]Widget * data) {
 	m_Listener->restart();
+}
+
+void TopLevel::onAnimation0_Enemy(Widget * data) {
+	data->setVisible(false);
+	m_Enemies.reset(data);
+	if(m_Enemies.isKilled()) {
+		m_Listener->nextMission();
+	}
 }
 
 void TopLevel::onCB_Ammun([[maybe_unused]]const std::vector<Widget *> &data) {
 	m_Ammunition.collision();
-	m_Ship.reload(Rules::getShipBulled());
+	m_Ship.reload(m_AmmunitionCtrl);
 }
 
 void TopLevel::onCB_Bonus([[maybe_unused]]const std::vector<Widget *> &data) {
-	uint32_t points = 0;
-	switch(m_Bonuses.getId()) {
-	case BonusId_t::BONUS1:
-		points = Rules::POINTS_BONUS1;
-		break;
-	case BonusId_t::BONUS2:
-		points = Rules::POINTS_BONUS2;
-		break;
-	case BonusId_t::BONUS3:
-		points = Rules::POINTS_BONUS3;
-		break;
-	case BonusId_t::BONUS4:
-		points = Rules::POINTS_BONUS4;
-		break;
-	default:
-		assert(0);
-	}
+	const auto points = m_BonusCtrl.take();
 	m_Bonuses.hide(points);
 	m_Listener->setPoints(points);
 }
@@ -360,9 +349,11 @@ void TopLevel::onCB_Enemy(const std::vector<Widget *> &data) {
 	ExplosionContainer::Callback_t cb;
 	assert(2 <= data.size());
 	auto it = data.begin();
-	if(!m_ExplosionContainer.show(*it, std::bind(&TopLevel::onAnimation0, this, std::placeholders::_1))) {
+	m_BonusCtrl.kill();
+	if(!m_ExplosionContainer.show(*it, std::bind(&TopLevel::onAnimation0_Enemy, this, std::placeholders::_1))) {
 		std::cerr << "ExplosionContainer show() failed"<< std::endl;
 	}
+	const auto type = m_Enemies.getType(*it);
 	m_Enemies.destroy(*it);
 	for(++it; data.end() != it; ++it) {
 		assert(*it);
@@ -373,7 +364,21 @@ void TopLevel::onCB_Enemy(const std::vector<Widget *> &data) {
 		std::cerr << "Listener not initialized"<< std::endl;
 		return;
 	}
-	uint32_t points = 10;
+	uint32_t points = 0;
+	switch(type) {
+	case 1:
+		points = Rules::POINTS_ENEMY1;
+		break;
+	case 2:
+		points = Rules::POINTS_ENEMY2;
+		break;
+	case 3:
+		points = Rules::POINTS_ENEMY3;
+		break;
+	case 4:
+		points = Rules::POINTS_ENEMY4;
+		break;
+	}
 	m_Listener->setPoints(points);
 }
 

@@ -15,3 +15,6 @@ void GameListener::decLifes() {
 
 void GameListener::restart() {
 }
+
+void GameListener::nextMission() {
+}

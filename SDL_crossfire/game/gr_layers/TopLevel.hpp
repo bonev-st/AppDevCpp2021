@@ -19,6 +19,8 @@
 #include "game/widgets/EnemyContainer.hpp"
 #include "game/gameplay/CollitionMgr.hpp"
 #include "game/gameplay/EnemyCtrl.hpp"
+#include "game/gameplay/BonusCtrl.hpp"
+#include "game/gameplay/AmmunitionCtrl.hpp"
 
 #include "game/config/GameConfig.hpp"
 
@@ -41,10 +43,12 @@ private:
 	GameListener * m_Listener = nullptr;
 	Ship m_Ship;
 	EnemyContainer m_Enemies;
-	Ammunition m_Ammunition;
-	Bonuses m_Bonuses;
-	ExplosionContainer m_ExplosionContainer;
 	EnemyCtrl m_EnemiesCtrl;
+	Ammunition m_Ammunition;
+	AmmunitionCtrl m_AmmunitionCtrl;
+	Bonuses m_Bonuses;
+	BonusCtrl m_BonusCtrl;
+	ExplosionContainer m_ExplosionContainer;
 	CollitionMgr m_CollitionMgr;
 #ifdef DEBUG
 	GridPoint m_GridPoint;
@@ -61,6 +65,7 @@ private:
 	void onCB_Ship2Ship(const std::vector<Widget *> &data);
 	void onAnimation0(Widget * data);
 	void onAnimation0_Ship(Widget * data);
+	void onAnimation0_Enemy(Widget * data);
 };
 
 #endif /* GAME_WIDGETS_TOPLEVEL_HPP_ */

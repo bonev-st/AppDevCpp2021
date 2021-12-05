@@ -109,7 +109,12 @@ void Game::newMission() {
 	m_L_Top.reload();
 }
 
+void Game::restartMission() {
+	m_L_Top.reload();
+}
+
 void Game::gameOver() {
+	newGame();
 }
 
 bool Game::initTimers() {
@@ -166,3 +171,20 @@ void Game::onMotion_Timeout(Timer2::TimerHandler_t id) {
 void Game::setPoints(std::uint32_t points) {
 	m_L2.setPoints(points);
 }
+
+void Game::decLifes() {
+	m_L2.decLife();
+}
+
+void Game::restart() {
+	if(m_L2.isAlife()) {
+		restartMission();
+	} else {
+		gameOver();
+	}
+}
+
+void Game::nextMission() {
+	newMission();
+}
+

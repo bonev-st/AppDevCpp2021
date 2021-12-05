@@ -39,10 +39,6 @@ int32_t Rules::getShipBulled() {
 	return INITIAL_BULLETS - DECREASE_BULLETS * m_Mission;
 }
 
-int32_t Rules::getShipReloadBulled() {
-	return RELOAD_BULLETS;
-}
-
 uint32_t Rules::getShipReloadTime() {
 	double rc = OWN_RELOAD_TIME;
 	rc /= Layout::getScaleFactor()*getSpeedIncrease();

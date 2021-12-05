@@ -16,6 +16,7 @@ public:
 	virtual void setPoints(std::uint32_t points);
 	virtual void decLifes();
 	virtual void restart();
+	virtual void nextMission();
 };
 
 #endif /* GAME_GAMELISTENER_HPP_ */

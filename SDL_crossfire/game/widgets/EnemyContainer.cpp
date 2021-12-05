@@ -22,6 +22,8 @@ bool EnemyContainer::init(const std::vector<std::size_t> & ship_img_id, double s
 		std::cerr << "Invalid relative points container" << std::endl;
 		return false;
 	}
+	m_Scale = scale_factor;
+	m_GridSize = grid_size;
 	m_ImgId = ship_img_id;
 	const auto img_id = m_ImgId[0];
 	m_Pos = pos;
@@ -30,11 +32,13 @@ bool EnemyContainer::init(const std::vector<std::size_t> & ship_img_id, double s
 	m_EnemyContainer.resize(m_Pos.size());
 	for(auto & e: m_EnemyContainer) {
 		e = std::make_shared<Ship>();
-		if(!e->init(img_id, scale_factor, *it_pos, grid_size)) {
+		if(!e->init(img_id, m_Scale, *it_pos, m_GridSize)) {
 			return false;
 		}
 		++it_pos;
 	}
+	m_Life.resize(m_Pos.size());
+	std::fill(m_Life.begin(), m_Life.end(), 1);
 	return true;
 }
 
@@ -95,9 +99,40 @@ void EnemyContainer::draw() {
 }
 
 void EnemyContainer::reset() {
-	for(auto & e: m_EnemyContainer) {
+	std::fill(m_Life.begin(), m_Life.end(), 1);
+	for(std::size_t indx = 0; m_EnemyContainer.size() > indx; ++indx) {
+		auto & e = m_EnemyContainer[indx];
+		if(!e->init(m_ImgId[0], m_Scale, m_Pos[indx], m_GridSize)) {
+			std::cerr << "Enemy ship init failed" << std::endl;
+		}
 		e->reset();
 	}
+}
+
+void EnemyContainer::reset(Widget * widget) {
+	for(std::size_t indx = 0; m_EnemyContainer.size() > indx; ++indx) {
+		auto & e = m_EnemyContainer[indx];
+		if(e.get() == widget) {
+			auto & life = m_Life[indx];
+			if(m_ImgId.size() > life) {
+				if(!e->init(m_ImgId[life], m_Scale, m_Pos[indx], m_GridSize)) {
+					std::cerr << "Enemy ship init failed" << std::endl;
+				}
+				e->reset();
+			}
+			++life;
+			return;
+		}
+	}
+}
+
+std::size_t EnemyContainer::getType(Widget * widget) const {
+	for(std::size_t indx = 0; m_EnemyContainer.size() > indx; ++indx) {
+		if(m_EnemyContainer[indx].get() == widget) {
+			return m_Life[indx];
+		}
+	}
+	return m_ImgId.size();
 }
 
 std::vector<Widget *> EnemyContainer::get() {
@@ -121,3 +156,16 @@ std::vector<Widget *> EnemyContainer::getBullets() {
 	}
 	return rc;
 }
+
+bool EnemyContainer::isKilled() const {
+	bool rc = true;
+	const auto max_life = m_ImgId.size();
+	for(const auto e : m_Life) {
+		if(max_life >= e) {
+			rc = false;
+			break;
+		}
+	}
+	return rc;
+}
+

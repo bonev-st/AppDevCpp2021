@@ -24,13 +24,17 @@ struct Rules {
 	static constexpr std::uint32_t POINTS_ENEMY3 = 40;
 	static constexpr std::uint32_t POINTS_ENEMY4 = 80;
 
+	static constexpr std::int32_t BONUS_SHOW = 6; //11;
+	static constexpr std::int32_t BONUS_HIDE = 6;
+
+	static constexpr std::int32_t RELOAD_BULLETS = 10;
+
 	static double getShipSpeed();
 	static double getShipBulletSpeed();
 	static double getEnemySpeed();
 	static double getEnemyBulletSpeed();
 
 	static int32_t getShipBulled();
-	static int32_t getShipReloadBulled();
 	static uint32_t getShipReloadTime();
 
 	static int32_t getEnemyBulled();
@@ -42,7 +46,6 @@ struct Rules {
 private:
 	static constexpr std::int32_t INITIAL_BULLETS = 35;
 	static constexpr std::int32_t MIN_BULLETS = 15;
-	static constexpr std::int32_t RELOAD_BULLETS = 10;
 	static constexpr std::int32_t DECREASE_BULLETS = 5;
 	static constexpr std::int32_t  ENEMY_MAX_BULLED = -1;
 	static const double ENEMY_SPEED;

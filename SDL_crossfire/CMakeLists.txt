@@ -50,6 +50,10 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CD_ClientIF.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/BulletsCtrl.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/BulletsCtrl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/BonusCtrl.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/BonusCtrl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/AmmunitionCtrl.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/AmmunitionCtrl.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollitionMgr.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollitionMgr.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/EnemyCtrl.hpp
