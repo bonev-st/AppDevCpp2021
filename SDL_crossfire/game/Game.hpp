@@ -19,13 +19,15 @@
 #include "game/gr_layers/TopLevel.hpp"
 #include "game/gr_layers/LevelDebug.hpp"
 
+#include "game/GameListener.hpp"
+
 class InputEvent;
 class InputEventIF;
 namespace DisplayMode {
 struct Mode_t;
 }
 
-class Game {
+class Game : public GameListener {
 public:
 	bool init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & display_mode);
 	bool events(const InputEvent & event, bool & exit);
@@ -60,6 +62,9 @@ private:
 	bool exitRequest() const;
 
 	void onMotion_Timeout(Timer2::TimerHandler_t handler);
+
+	// GameListener
+	void setPoints(std::uint32_t points) final;
 };
 
 #endif /* GAME_GAME_HPP_ */

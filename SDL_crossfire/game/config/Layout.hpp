@@ -30,11 +30,6 @@ Point getRel2AbsPosition(const Point& rel);
 const AbsCoordinates::ImgCfg_t * getImgData(std::size_t id);
 const AbsCoordinates::TextCfg_t * getTextData(std::size_t id);
 
-double getShipSpeed();
-double getShipBulletSpeed();
-double getEnemySpeed();
-double getEnemyBulletSpeed();
-
 uint32_t getGridSize();
 
 const Point & getShipRelPos();
@@ -44,15 +39,6 @@ const Point & getEnemyRelPos(std::size_t id);
 
 Rectangle getArenaRectangle();
 Rectangle getMotionArea();
-
-int32_t getShipMaxBulled();
-int32_t getShipReloadBulled();
-uint32_t getShipReloadTime();
-int32_t getEnemyMaxBulled();
-uint32_t getEnemyReloadTime();
-
-void firstMission();
-void nextMission();
 
 }
 

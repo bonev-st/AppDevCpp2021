@@ -14,12 +14,19 @@
 
 #include "utils/drawing/DisplayMode.hpp"
 
+#include "game/GameListener.hpp"
 #include "game/config/GameConfigDef.hpp"
+#include "game/config/Rules.hpp"
 
-bool TopLevel::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & display_mode) {
+bool TopLevel::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & display_mode, GameListener * listener) {
 	m_Keys = cfg.m_Keys;
+	m_Listener = listener;
 	if(!initWidgets(display_mode, cfg.m_Img)) {
 		std::cerr << "initWidgets() failed." << std::endl;
+		return false;
+	}
+	if(!m_EnemiesCtrl.init()) {
+		std::cerr << "m_EnemiesCtrl.init() failed." << std::endl;
 		return false;
 	}
 	if(!m_CollitionMgr.init(std::bind(&TopLevel::onCB_Ammun, this, std::placeholders::_1),
@@ -35,13 +42,13 @@ bool TopLevel::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t 
 }
 
 void TopLevel::reload() {
-	m_Ship.setBulletsSpeed(Layout::getShipBulletSpeed());
-	m_Ship.reloadTime(Layout::getShipReloadTime());
-	m_Ship.setShipSpeed(Layout::getShipSpeed());
-	m_Ship.reload(Layout::getShipMaxBulled());
-	m_Enemies.setShipSpeed(Layout::getEnemySpeed());
-	m_Enemies.setBulledSpeed(Layout::getEnemyBulletSpeed());
-	m_Enemies.setReloadTime(Layout::getEnemyReloadTime());
+	m_Ship.setBulletsSpeed(Rules::getShipBulletSpeed());
+	m_Ship.reloadTime(Rules::getShipReloadTime());
+	m_Ship.setShipSpeed(Rules::getShipSpeed());
+	m_Ship.reload(Rules::getShipBulled());
+	m_Enemies.setShipSpeed(Rules::getEnemySpeed());
+	m_Enemies.setBulledSpeed(Rules::getEnemyBulletSpeed());
+	m_Enemies.setReloadTime(Rules::getEnemyReloadTime());
 }
 
 void TopLevel::draw() {
@@ -60,7 +67,7 @@ bool TopLevel::processing() {
 	ammun.push_back(&m_Ammunition);
 	m_CollitionMgr.processing(m_Ship.getBullets(), m_Enemies.getBullets(),
 			m_Enemies.get(), m_Bonuses.getWidgets(), ammun);
-	//m_EnemiesCtrl.processing();
+	m_EnemiesCtrl.processing();
 	return true;
 }
 
@@ -230,11 +237,19 @@ void TopLevel::onShipFire(const Point &pos, int32_t rem) {
 		count = 0;
 		++id;
 	}
-	if(Layout::getShipReloadBulled() == rem) {
+	if(Rules::getShipReloadBulled() == rem) {
 		if(!m_Ammunition.show(Geometry::getRotation180(pos, Layout::getArenaRectangle().getCenter()))) {
 			std::cerr << "Game::createImages() m_Ammunition.show() failed"<< std::endl;
 		}
 	}
+	// XXX: for test
+	// add points
+	if(!m_Listener) {
+		std::cerr << "Listener not initialized"<< std::endl;
+		return;
+	}
+	uint32_t points = 100;
+	m_Listener->setPoints(points);
 }
 
 bool TopLevel::setKeyRequest(GameConfig::KeyMask_t mask) {
@@ -285,28 +300,29 @@ void TopLevel::onAnimation0(Widget * data) {
 
 void TopLevel::onCB_Ammun([[maybe_unused]]const std::vector<Widget *> &data) {
 	m_Ammunition.collision();
-	m_Ship.reload(Layout::getShipMaxBulled());
+	m_Ship.reload(Rules::getShipBulled());
 }
 
 void TopLevel::onCB_Bonus([[maybe_unused]]const std::vector<Widget *> &data) {
 	uint32_t points = 0;
 	switch(m_Bonuses.getId()) {
 	case BonusId_t::BONUS1:
-		points = 100;
+		points = Rules::POINTS_BONUS1;
 		break;
 	case BonusId_t::BONUS2:
-		points = 200;
+		points = Rules::POINTS_BONUS2;
 		break;
 	case BonusId_t::BONUS3:
-		points = 400;
+		points = Rules::POINTS_BONUS3;
 		break;
 	case BonusId_t::BONUS4:
-		points = 800;
+		points = Rules::POINTS_BONUS4;
 		break;
 	default:
 		assert(0);
 	}
 	m_Bonuses.hide(points);
+	m_Listener->setPoints(points);
 }
 
 void TopLevel::onCB_Ship(const std::vector<Widget *> &data) {
@@ -335,6 +351,13 @@ void TopLevel::onCB_Enemy(const std::vector<Widget *> &data) {
 		assert(*it);
 		(*it)->setVisible(false);
 	}
+	// add points
+	if(!m_Listener) {
+		std::cerr << "Listener not initialized"<< std::endl;
+		return;
+	}
+	uint32_t points = 10;
+	m_Listener->setPoints(points);
 }
 
 void TopLevel::onCB_Ship2Ship(const std::vector<Widget *> &data) {

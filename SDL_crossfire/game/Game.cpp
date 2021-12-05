@@ -22,13 +22,14 @@
 #include "common/CommonDefines.hpp"
 
 #include "game/config/Layout.hpp"
+#include "game/config/Rules.hpp"
 #include "game/config/GameConfigDef.hpp"
 
 const uint32_t Game::MOTION_PERIOD = 15;	// ms
 
 bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & display_mode) {
 	Layout::init(display_mode);
-	DebugCfg::m_Enable = true;
+	//DebugCfg::m_Enable = true;
 	if(!m_L1.init(cfg, display_mode)) {
 		std::cerr << "Level1 init failed." << std::endl;
 		return false;
@@ -41,7 +42,7 @@ bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & di
 		std::cerr << "Debug failed." << std::endl;
 		return false;
 	}
-	if(!m_L_Top.init(cfg, display_mode)) {
+	if(!m_L_Top.init(cfg, display_mode, this)) {
 		std::cerr << "Top level init failed." << std::endl;
 		return false;
 	}
@@ -98,12 +99,13 @@ bool Game::loadKeys(const GameConfig::KeyRes_t & cfg) {
 }
 
 void Game::newGame() {
-	Layout::firstMission();
+	Rules::firstMission();
+	m_L2.resetCounters();
 	m_L_Top.reload();
 }
 
 void Game::newMission() {
-	Layout::nextMission();
+	Rules::nextMission();
 	m_L_Top.reload();
 }
 
@@ -159,4 +161,8 @@ void Game::onMotion_Timeout(Timer2::TimerHandler_t id) {
 		return;
 	}
 	m_L_Top.tick();
+}
+
+void Game::setPoints(std::uint32_t points) {
+	m_L2.setPoints(points);
 }

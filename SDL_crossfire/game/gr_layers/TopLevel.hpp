@@ -18,14 +18,16 @@
 #include "game/widgets/ExplosionContainer.hpp"
 #include "game/widgets/EnemyContainer.hpp"
 #include "game/gameplay/CollitionMgr.hpp"
+#include "game/gameplay/EnemyCtrl.hpp"
 
 #include "game/config/GameConfig.hpp"
 
 class InputEvent;
+class GameListener;
 
 class TopLevel {
 public:
-	bool init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & display_mode);
+	bool init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & display_mode, GameListener * listener);
 	void draw();
 
 	bool processing();
@@ -36,12 +38,13 @@ public:
 
 private:
 	GameConfig::KeyRes_t m_Keys;
-
+	GameListener * m_Listener = nullptr;
 	Ship m_Ship;
 	EnemyContainer m_Enemies;
 	Ammunition m_Ammunition;
 	Bonuses m_Bonuses;
 	ExplosionContainer m_ExplosionContainer;
+	EnemyCtrl m_EnemiesCtrl;
 	CollitionMgr m_CollitionMgr;
 #ifdef DEBUG
 	GridPoint m_GridPoint;

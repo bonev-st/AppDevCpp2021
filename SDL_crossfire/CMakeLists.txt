@@ -39,6 +39,7 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/UnitAction.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/UnitAction.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/BulletAction.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/Rules.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/ProcessorIF.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollisionDetect.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollisionDetect.cpp
@@ -51,6 +52,12 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/BulletsCtrl.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollitionMgr.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollitionMgr.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/EnemyCtrl.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/EnemyCtrl.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/LifeCounter.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/LifeCounter.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/ScoreCouters.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/ScoreCouters.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfigDef.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfig.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/GameConfig.cpp
@@ -58,12 +65,16 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/ConfigData.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/Layout.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/Layout.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/Rules.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/config/Rules.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/AbsCoordinates.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/AbsCoordinatesIntr.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/AbsCoordinatesIntr.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/RelCoordinates.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/RelCoordinatesIntr.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/config/RelCoordinatesIntr.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/GameListener.hpp
+	${CMAKE_CURRENT_SOURCE_DIR}/game/GameListener.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/Game.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/config/AppConfig.hpp

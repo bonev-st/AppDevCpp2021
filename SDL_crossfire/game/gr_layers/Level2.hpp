@@ -11,6 +11,8 @@
 #include "gr_engine/widgets/WidgetContainer.hpp"
 #include "gr_engine/widgets/InitHelper.hpp"
 #include "game/config/GameConfig.hpp"
+#include "game/gameplay/LifeCounter.hpp"
+#include "game/gameplay/ScoreCouters.hpp"
 
 namespace DisplayMode {
 struct Mode_t;
@@ -22,17 +24,23 @@ public:
 
 	void draw();
 
-	bool setScore(uint32_t val);
-	bool setScoreMax(uint32_t val);
-	bool setShips(uint8_t val);
+	void resetCounters();
+	void setPoints(uint32_t points);
 
 private:
 	WidgetContainer m_Container;
 	InitHelper::TextData_t m_TextScore;
 	InitHelper::TextData_t m_TextHiScore;
 	InitHelper::TextData_t m_TextShips;
+	LifeCounter m_LifeCounter;
+	ScoreCouters m_ScoreCouters;
 
 	bool initTexts(const GameConfig::TextRes_t & cfg);
+
+	void setScore(uint32_t val);
+	void setHiScore(uint32_t val);
+	void setShips(uint32_t val);
+
 };
 
 #endif /* GAME_WIDGETS_LEVEL2_HPP_ */

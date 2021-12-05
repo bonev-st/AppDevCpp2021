@@ -31,6 +31,11 @@ bool Level2::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & 
 	m_Container.add(&m_TextScore.m_ScaleContainer);
 	m_Container.add(&m_TextHiScore.m_ScaleContainer);
 	m_Container.add(&m_TextShips.m_ScaleContainer);
+
+	m_LifeCounter.attach(std::bind(&Level2::setShips, this, std::placeholders::_1));
+	m_ScoreCouters.attachHiScore(std::bind(&Level2::setHiScore, this, std::placeholders::_1));
+	m_ScoreCouters.attachScore(std::bind(&Level2::setScore, this, std::placeholders::_1));
+
 	return true;
 }
 
@@ -38,34 +43,49 @@ void Level2::draw() {
 	m_Container.draw();
 }
 
-bool Level2::setScore(uint32_t val) {
+void Level2::resetCounters() {
+	m_ScoreCouters.reset();
+	m_LifeCounter.reset();
+}
+
+void Level2::setPoints(uint32_t points) {
+	m_LifeCounter.points(m_ScoreCouters.addPoints(points));
+}
+
+void Level2::setScore(uint32_t val) {
 	std::string text = Layout::getTextData(GameConfig::TEXT_SCORE_INDX)->m_Text;
 	std::string text_num = std::to_string(val);
 	auto src_size = text_num.size();
 	for(auto it = text.rbegin(); src_size && (text.rend() != it); ++it) {
 		*it = text_num[--src_size];
 	}
-	return m_TextScore.m_Text.setText(text);
+	if(!m_TextScore.m_Text.setText(text)) {
+		std::cerr << "Score setText() failed" << std::endl;
+	}
 }
 
-bool Level2::setScoreMax(uint32_t val) {
+void Level2::setHiScore(uint32_t val) {
 	std::string text = Layout::getTextData(GameConfig::TEXT_HI_SCORE_INDX)->m_Text;
 	std::string text_num = std::to_string(val);
 	auto src_size = text_num.size();
 	for(auto it = text.rbegin(); src_size && (text.rend() != it); ++it) {
 		*it = text_num[--src_size];
 	}
-	return m_TextHiScore.m_Text.setText(text);
+	if(!m_TextHiScore.m_Text.setText(text)) {
+		std::cerr << "Hi Score setText() failed" << std::endl;
+	}
 }
 
-bool Level2::setShips(uint8_t val) {
+void Level2::setShips(uint32_t val) {
 	std::string text = Layout::getTextData(GameConfig::TEXT_SHIPS_INDX)->m_Text;
 	std::string text_num = std::to_string(val);
 	auto src_size = text_num.size();
 	for(auto it = text.rbegin(); src_size && (text.rend() != it); ++it) {
 		*it = text_num[--src_size];
 	}
-	return m_TextShips.m_Text.setText(text);
+	if(!m_TextShips.m_Text.setText(text)) {
+		std::cerr << "Ships setText() failed" << std::endl;
+	}
 }
 
 bool Level2::initTexts(const GameConfig::TextRes_t & cfg) {
