@@ -43,12 +43,13 @@ bool Bonuses::init(std::size_t img_id, double scale, const Point * ena_pos, cons
 }
 
 void Bonuses::reset() {
+	m_ScalePointsText.stop();
 	for(auto & e : m_BonusContaner) {
 		auto & widget = e.m_Widget.m_Scaled;
 		widget.stop();
 		widget.setPositionCenter(e.m_Position.m_DisablePos);
+		widget.setVisible(true);
 	}
-	m_ScalePointsText.stop();
 }
 
 void Bonuses::enable(BonusId_t id) {

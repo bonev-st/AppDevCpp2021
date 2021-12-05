@@ -29,6 +29,7 @@ public:
 	void destroy(const Widget * widget);
 	void tick();
 	void draw();
+	void reset();
 
 	std::vector<Widget *> get();
 	std::vector<Widget *> getBullets();

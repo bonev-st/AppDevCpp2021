@@ -85,6 +85,7 @@ bool Ship::isDestroy() const {
 
 void Ship::reset() {
 	m_UnitAction.reset();
+	setVisible(true);
 }
 
 void Ship::setShipSpeed(double speed) {

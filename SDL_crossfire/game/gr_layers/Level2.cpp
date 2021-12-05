@@ -52,6 +52,16 @@ void Level2::setPoints(uint32_t points) {
 	m_LifeCounter.points(m_ScoreCouters.addPoints(points));
 }
 
+void Level2::decLife() {
+	if(m_LifeCounter) {
+		m_LifeCounter.get();
+	}
+}
+
+bool Level2::isAlife() const {
+	return 0 != m_LifeCounter;
+}
+
 void Level2::setScore(uint32_t val) {
 	std::string text = Layout::getTextData(GameConfig::TEXT_SCORE_INDX)->m_Text;
 	std::string text_num = std::to_string(val);

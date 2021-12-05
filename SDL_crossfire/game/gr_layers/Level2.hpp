@@ -26,6 +26,8 @@ public:
 
 	void resetCounters();
 	void setPoints(uint32_t points);
+	void decLife();
+	bool isAlife() const;
 
 private:
 	WidgetContainer m_Container;

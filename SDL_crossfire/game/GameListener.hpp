@@ -14,7 +14,8 @@ class GameListener {
 public:
 	virtual ~GameListener() = default;
 	virtual void setPoints(std::uint32_t points);
-
+	virtual void decLifes();
+	virtual void restart();
 };
 
 #endif /* GAME_GAMELISTENER_HPP_ */

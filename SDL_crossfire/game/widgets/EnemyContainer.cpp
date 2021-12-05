@@ -94,6 +94,12 @@ void EnemyContainer::draw() {
 	}
 }
 
+void EnemyContainer::reset() {
+	for(auto & e: m_EnemyContainer) {
+		e->reset();
+	}
+}
+
 std::vector<Widget *> EnemyContainer::get() {
 	std::vector<Widget *> rc;
 	rc.reserve(static_cast<std::size_t>(EnemyId_t::ENEMY_NUMB));

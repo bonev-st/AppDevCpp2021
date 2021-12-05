@@ -46,9 +46,12 @@ void TopLevel::reload() {
 	m_Ship.reloadTime(Rules::getShipReloadTime());
 	m_Ship.setShipSpeed(Rules::getShipSpeed());
 	m_Ship.reload(Rules::getShipBulled());
+	m_Ship.reset();
 	m_Enemies.setShipSpeed(Rules::getEnemySpeed());
 	m_Enemies.setBulledSpeed(Rules::getEnemyBulletSpeed());
 	m_Enemies.setReloadTime(Rules::getEnemyReloadTime());
+	m_Enemies.reset();
+	m_Bonuses.reset();
 }
 
 void TopLevel::draw() {
@@ -250,6 +253,14 @@ void TopLevel::onShipFire(const Point &pos, int32_t rem) {
 	}
 	uint32_t points = 100;
 	m_Listener->setPoints(points);
+	{
+		if(30 == rem) {
+			std::vector<Widget *> data;
+			data.push_back(&m_Ship);
+			data.push_back(m_Ship.getBullets().back());
+			onCB_Ship(data);
+		}
+	}
 }
 
 bool TopLevel::setKeyRequest(GameConfig::KeyMask_t mask) {
@@ -298,6 +309,11 @@ void TopLevel::onAnimation0(Widget * data) {
 	data->setVisible(false);
 }
 
+void TopLevel::onAnimation0_Ship(Widget * data) {
+	data->setVisible(false);
+	m_Listener->restart();
+}
+
 void TopLevel::onCB_Ammun([[maybe_unused]]const std::vector<Widget *> &data) {
 	m_Ammunition.collision();
 	m_Ship.reload(Rules::getShipBulled());
@@ -329,7 +345,7 @@ void TopLevel::onCB_Ship(const std::vector<Widget *> &data) {
 	ExplosionContainer::Callback_t cb;
 	assert(2 <= data.size());
 	auto it = data.begin();
-	if(!m_ExplosionContainer.show(*it, std::bind(&TopLevel::onAnimation0, this, std::placeholders::_1))) {
+	if(!m_ExplosionContainer.show(*it, std::bind(&TopLevel::onAnimation0_Ship, this, std::placeholders::_1))) {
 		std::cerr << "ExplosionContainer show() failed"<< std::endl;
 	}
 	m_Ship.destroy();
@@ -337,6 +353,7 @@ void TopLevel::onCB_Ship(const std::vector<Widget *> &data) {
 		assert(*it);
 		(*it)->setVisible(false);
 	}
+	m_Listener->decLifes();
 }
 
 void TopLevel::onCB_Enemy(const std::vector<Widget *> &data) {

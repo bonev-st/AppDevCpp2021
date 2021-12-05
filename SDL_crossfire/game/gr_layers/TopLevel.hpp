@@ -60,6 +60,7 @@ private:
 	void onCB_Enemy(const std::vector<Widget *> &data);
 	void onCB_Ship2Ship(const std::vector<Widget *> &data);
 	void onAnimation0(Widget * data);
+	void onAnimation0_Ship(Widget * data);
 };
 
 #endif /* GAME_WIDGETS_TOPLEVEL_HPP_ */

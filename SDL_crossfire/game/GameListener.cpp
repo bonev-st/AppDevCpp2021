@@ -9,3 +9,9 @@
 
 void GameListener::setPoints([[maybe_unused]]std::uint32_t points) {
 }
+
+void GameListener::decLifes() {
+}
+
+void GameListener::restart() {
+}
