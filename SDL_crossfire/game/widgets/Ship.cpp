@@ -86,6 +86,7 @@ bool Ship::isDestroy() const {
 void Ship::reset() {
 	m_UnitAction.reset();
 	setVisible(true);
+	setOpacity(FULL_OPACITY);
 }
 
 void Ship::setShipSpeed(double speed) {
@@ -98,4 +99,12 @@ void Ship::setBulletsSpeed(double speed) {
 
 std::vector<Widget *> Ship::getBullets() {
 	return m_BulletsCtrl.getWidgets();
+}
+
+std::vector<Widget *> Ship::get() {
+	std::vector<Widget *> rc;
+	if(!m_UnitAction.isDestroy() && getVisible()) {
+		rc.push_back(this);
+	}
+	return rc;
 }

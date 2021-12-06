@@ -44,51 +44,49 @@ bool CollitionMgr::init(Callback_t cb_ammu, Callback_t cb_bonus, Callback_t cb_s
 	return true;
 }
 
-void CollitionMgr::addUnits(Widget* ship, const std::vector<Widget*> & enemy) {
-	assert(ship);
-	m_Ship = ship;
-	m_Enemy = enemy;
-	m_Ship2BulletColl.setObj(ship);
-	m_BonusColl.setObj(ship);
-	m_AmmunitionColl.setObj(ship);
-}
-
-void CollitionMgr::processing(const std::vector<Widget*> & own_bullets,
+void CollitionMgr::processing(const std::vector<Widget*> & ship,
+		const std::vector<Widget*> & own_bullets,
 		const std::vector<Widget*> & enemy_bullets,
 		const std::vector<Widget*> & enemy,
 		const std::vector<Widget*> & bonuses,
 		const std::vector<Widget*> & ammunition) {
 	// check for collision between ship bullets and enemies
 	if(!own_bullets.empty()) {
-		for(auto e : m_Enemy) {
+		for(auto e : enemy) {
 			m_Enemy2BulletColl.setObj(e);
 			m_Enemy2BulletColl.processing(own_bullets);
 		}
 	}
 	// check for collision between enemies bullets and ship
-	m_Ship2ShipColl.setObj(m_Ship);
-	m_Ship2ShipColl.processing(enemy);
-	// check for collision between enemies and ship
-	if(!enemy_bullets.empty()) {
-		m_Ship2BulletColl.processing(m_Enemy);
+	if(!ship.empty()) {
+		auto e = ship.front();
+		m_Ship2ShipColl.setObj(e);
+		m_Ship2ShipColl.processing(enemy);
+		// check for collision between enemies and ship
+		if(!enemy_bullets.empty()) {
+			m_Ship2BulletColl.setObj(e);
+			m_Ship2BulletColl.processing(enemy);
+		}
+		// check for collision between ship and bonuses
+		if(!bonuses.empty()) {
+			m_BonusColl.setObj(e);
+			m_BonusColl.processing(bonuses);
+		}
+		// check for collision between ship and ammunitions
+		if(!ammunition.empty()) {
+			m_AmmunitionColl.setObj(e);
+			m_AmmunitionColl.processing(ammunition);
+		}
 	}
 	// check for collision between enemies and enemies
 	if(!enemy_bullets.empty()) {
-		const auto size = m_Enemy.size();
+		const auto size = enemy.size();
 		for(std::size_t i = 0; (size-1) > i; ++i) {
-			m_Ship2ShipColl.setObj(m_Enemy[i]);
-			std::vector<Widget*> others(&m_Enemy[i+1], &m_Enemy[size]);
+			m_Ship2ShipColl.setObj(enemy[i]);
+			std::vector<Widget*> others(&enemy[i+1], &enemy[size]);
 			for(std::size_t j = i+1; (enemy_bullets.size()-1) > j; ++j) {
 				m_Ship2ShipColl.processing(others);
 			}
 		}
-	}
-	// check for collision between ship and bonuses
-	if(!bonuses.empty()) {
-		m_BonusColl.processing(bonuses);
-	}
-	// check for collision between ship and ammunitions
-	if(!ammunition.empty()) {
-		m_AmmunitionColl.processing(ammunition);
 	}
 }

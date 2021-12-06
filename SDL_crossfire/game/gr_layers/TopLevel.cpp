@@ -37,7 +37,6 @@ bool TopLevel::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t 
 		std::cerr << "m_CollitionMgr.init() failed." << std::endl;
 		return false;
 	}
-	m_CollitionMgr.addUnits(&m_Ship, m_Enemies.get());
 	return true;
 }
 
@@ -54,6 +53,7 @@ void TopLevel::reload() {
 	m_Enemies.reset();
 	m_BonusCtrl.reset();
 	m_Bonuses.reset();
+	m_ExplosionContainer.reset();
 }
 
 void TopLevel::draw() {
@@ -68,10 +68,9 @@ void TopLevel::draw() {
 }
 
 bool TopLevel::processing() {
-	std::vector<Widget*> ammun;
-	ammun.push_back(&m_Ammunition);
-	m_CollitionMgr.processing(m_Ship.getBullets(), m_Enemies.getBullets(),
-			m_Enemies.get(), m_Bonuses.getWidgets(), ammun);
+	m_CollitionMgr.processing(m_Ship.get(), m_Ship.getBullets()
+			, m_Enemies.getBullets(), m_Enemies.get()
+			, m_Bonuses.getWidgets(), m_Ammunition.get());
 	m_EnemiesCtrl.processing(m_Enemies);
 	return true;
 }
@@ -148,7 +147,6 @@ bool TopLevel::initWidgets(const DisplayMode::Mode_t & display_mode, const GameC
 			}
 			enemies_pos.push_back(pos);
 		}
-
 #ifdef DEBUG
 		for(const auto e : enemies_img_id) {
 			std::cout << "Enemy Img ID " << e << std::endl;
@@ -388,8 +386,15 @@ void TopLevel::onCB_Ship2Ship(const std::vector<Widget *> &data) {
 	ExplosionContainer::Callback_t cb;
 	assert(2 <= data.size());
 	for(auto e : data) {
-		if(!m_ExplosionContainer.show(e, std::bind(&TopLevel::onAnimation0, this, std::placeholders::_1))) {
-			std::cerr << "ExplosionContainer show() failed"<< std::endl;
+		if(e == &m_Ship) {
+			if(!m_ExplosionContainer.show(e, std::bind(&TopLevel::onAnimation0_Ship, this, std::placeholders::_1))) {
+				std::cerr << "ExplosionContainer show() failed"<< std::endl;
+			}
+			m_Listener->decLifes();
+		} else {
+			if(!m_ExplosionContainer.show(e, std::bind(&TopLevel::onAnimation0_Enemy, this, std::placeholders::_1))) {
+				std::cerr << "ExplosionContainer show() failed"<< std::endl;
+			}
 		}
 		reinterpret_cast<Ship*>(e)->destroy();
 	}

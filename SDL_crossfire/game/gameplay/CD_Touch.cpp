@@ -11,8 +11,8 @@
 
 std::vector<Widget*> CD_Touch::operator ()(Widget* obj, const std::vector<Widget *> & others) const {
 	std::vector<Widget*> rc;
-	rc.reserve(2);
 	if(obj) {
+		rc.reserve(2);
 		for(const auto e : others) {
 			if(!e->getVisible()) {
 				continue;

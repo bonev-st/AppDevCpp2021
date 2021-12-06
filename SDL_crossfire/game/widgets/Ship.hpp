@@ -33,6 +33,7 @@ public:
 	void setShipSpeed(double speed);
 	void setBulletsSpeed(double speed);
 	std::vector<Widget *> getBullets();
+	std::vector<Widget *> get();
 
 private:
 	ActionBuffer m_ActionBuffer;

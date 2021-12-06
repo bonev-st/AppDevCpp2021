@@ -23,6 +23,7 @@ public:
 	bool init(std::size_t img_id, double scale);
 	bool show(Widget * src, const Callback_t & cb);
 	void draw();
+	void reset();
 
 private:
 	struct Data_t {

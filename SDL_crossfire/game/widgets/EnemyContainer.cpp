@@ -139,7 +139,7 @@ std::vector<Widget *> EnemyContainer::get() {
 	std::vector<Widget *> rc;
 	rc.reserve(static_cast<std::size_t>(EnemyId_t::ENEMY_NUMB));
 	for(auto & e: m_EnemyContainer) {
-		if(e->isDestroy()) {
+		if(e->isDestroy() || !e->getVisible()) {
 			continue;
 		}
 		rc.push_back(e.get());

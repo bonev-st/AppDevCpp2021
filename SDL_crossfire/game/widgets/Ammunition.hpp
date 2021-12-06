@@ -20,6 +20,7 @@ public:
 	bool init(std::size_t image_id, double scale_factor);
 	bool show(const Point &pos);
 	void collision() final;
+	std::vector<Widget *> get();
 
 private:
 	static constexpr double BLINKNIG_PERIOD = 500;

@@ -36,3 +36,12 @@ void Ammunition::collision() {
 	setVisible(false);
 	stop();
 }
+
+std::vector<Widget *> Ammunition::get() {
+	std::vector<Widget *> rc;
+	if(getVisible()) {
+		rc.push_back(this);
+	}
+	return rc;
+}
+

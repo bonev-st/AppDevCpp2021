@@ -19,18 +19,15 @@ class CollitionMgr {
 public:
 	bool init(Callback_t cb_ammu, Callback_t cb_bonus, Callback_t cb_ship,
 			Callback_t cb_enemy, Callback_t cb_ship_2_ship);
-	void addUnits(Widget* ship, const std::vector<Widget*> & enemy);
 
-	void processing(const std::vector<Widget*> & own_bullets,
+	void processing(const std::vector<Widget*> & ship,
+					const std::vector<Widget*> & own_bullets,
 					const std::vector<Widget*> & enemy_bullets,
 					const std::vector<Widget*> & enemy,
 					const std::vector<Widget*> & bonuses,
 					const std::vector<Widget*> & ammunition);
 
 private:
-	Widget* m_Ship;
-	std::vector<Widget*> m_Enemy;
-
 	CollisionDetect::Callback_t m_CB_AmmunitionColl;
 	CollisionDetect::Callback_t m_CB_BonusColl;
 	CollisionDetect::Callback_t m_CB_ShipColl;

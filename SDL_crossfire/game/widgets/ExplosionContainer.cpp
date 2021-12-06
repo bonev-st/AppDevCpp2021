@@ -46,6 +46,12 @@ void ExplosionContainer::draw() {
 	}
 }
 
+void ExplosionContainer::reset() {
+	for(const auto & e : m_Container) {
+		e->m_Img.stop();
+	}
+}
+
 void ExplosionContainer::onAnimationTick(std::size_t frame, void * param) {
 	std::shared_ptr<Data_t> * p_data = m_Container.get(reinterpret_cast<size_t>(param));
 	if(!p_data || !*p_data) {
