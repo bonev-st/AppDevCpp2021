@@ -72,7 +72,7 @@ bool TopLevel::processing() {
 	ammun.push_back(&m_Ammunition);
 	m_CollitionMgr.processing(m_Ship.getBullets(), m_Enemies.getBullets(),
 			m_Enemies.get(), m_Bonuses.getWidgets(), ammun);
-	m_EnemiesCtrl.processing();
+	m_EnemiesCtrl.processing(m_Enemies);
 	return true;
 }
 
@@ -244,6 +244,7 @@ void TopLevel::onShipFire(const Point &pos, int32_t rem) {
 			m_Bonuses.disable();
 		}
 	}
+#if 0
 	// XXX: for test
 	{
 		std::vector<Widget *> data;
@@ -259,6 +260,7 @@ void TopLevel::onShipFire(const Point &pos, int32_t rem) {
 		}
 		*/
 	}
+#endif
 }
 
 bool TopLevel::setKeyRequest(GameConfig::KeyMask_t mask) {

@@ -24,7 +24,7 @@ struct Rules {
 	static constexpr std::uint32_t POINTS_ENEMY3 = 40;
 	static constexpr std::uint32_t POINTS_ENEMY4 = 80;
 
-	static constexpr std::int32_t BONUS_SHOW = 6; //11;
+	static constexpr std::int32_t BONUS_SHOW = 11;
 	static constexpr std::int32_t BONUS_HIDE = 6;
 
 	static constexpr std::int32_t RELOAD_BULLETS = 10;

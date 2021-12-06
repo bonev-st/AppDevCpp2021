@@ -19,7 +19,6 @@ bool UnitAction::init(Widget *unit, const Point& pos, uint32_t grid_size) {
 	m_Unit = unit;
 	m_GridSize = grid_size;
 	m_RelPos = m_StartRelPos = pos;
-	setSpeed(0);
 	reset();
 	m_Unit->setPositionCenter(Layout::getRel2AbsPosition(m_StartRelPos));
 	return true;

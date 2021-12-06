@@ -74,7 +74,7 @@ void CollitionMgr::processing(const std::vector<Widget*> & own_bullets,
 	}
 	// check for collision between enemies and enemies
 	if(!enemy_bullets.empty()) {
-		const auto size = enemy_bullets.size();
+		const auto size = m_Enemy.size();
 		for(std::size_t i = 0; (size-1) > i; ++i) {
 			m_Ship2ShipColl.setObj(m_Enemy[i]);
 			std::vector<Widget*> others(&m_Enemy[i+1], &m_Enemy[size]);
