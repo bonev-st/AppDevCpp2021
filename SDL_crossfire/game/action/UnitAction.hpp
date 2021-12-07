@@ -24,6 +24,7 @@ public:
 	bool isDestroy() const;
 	Action_t getDirection() const;
 	Point getCrossPoint() const;
+	Point getNextPoint() const;
 	uint8_t getLineOfFire() const;
 
 private:

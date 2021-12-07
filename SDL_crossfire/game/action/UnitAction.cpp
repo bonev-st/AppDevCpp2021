@@ -102,6 +102,10 @@ Point UnitAction::getCrossPoint() const {
 	return m_CrossPoint;
 }
 
+Point UnitAction::getNextPoint() const {
+	return m_RelPos;
+}
+
 uint8_t UnitAction::getLineOfFire() const {
 	if(Action_t::NONE == m_CurrentDirection) {
 		// XXX: Action_t::NONE -> all direction line of fire
