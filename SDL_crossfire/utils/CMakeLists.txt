@@ -13,6 +13,7 @@ add_library(
 		${_INC_DIR}/Destroy.hpp
 		${_INC_DIR}/Singleton.hpp
 		${_INC_DIR}/RAII_Handler.hpp
+		${_INC_DIR}/RandomNumber.hpp
 		${_INC_DIR}/containers/FirstFreeContainer.hpp
 		${_INC_DIR}/containers/Variable.hpp
 		${_INC_DIR}/drawing/MainWindowCfg.hpp
@@ -33,6 +34,7 @@ add_library(
 		${_INC_DIR}/geometry/Geometry.hpp
 		${_INC_DIR}/Filter/ExpFilter.hpp
 	
+		${_SRC_DIR}/RandomNumber.cpp
 		${_SRC_DIR}/drawing/Point.cpp
 		${_SRC_DIR}/drawing/Rectangle.cpp
 		${_SRC_DIR}/drawing/Dimention.cpp
