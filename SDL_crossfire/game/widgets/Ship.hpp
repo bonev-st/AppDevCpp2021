@@ -35,6 +35,8 @@ public:
 	std::vector<Widget *> getBullets();
 	std::vector<Widget *> get();
 	Point getCrossPoint() const;
+	Point getNextPoint() const;
+	uint8_t getLineOfFire() const;
 
 private:
 	ActionBuffer m_ActionBuffer;

@@ -113,3 +113,10 @@ Point Ship::getCrossPoint() const {
 	return m_UnitAction.getCrossPoint();
 }
 
+Point Ship::getNextPoint() const {
+	return m_UnitAction.getCrossPoint();
+}
+
+uint8_t Ship::getLineOfFire() const {
+	return m_UnitAction.getLineOfFire();
+}
