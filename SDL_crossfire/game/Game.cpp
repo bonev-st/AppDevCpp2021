@@ -99,26 +99,32 @@ bool Game::loadKeys(const GameConfig::KeyRes_t & cfg) {
 }
 
 void Game::newGame() {
+	// TODO: Add animated text Mission 1
 	Rules::firstMission();
 	m_L2.resetCounters();
 	m_L_Top.reload();
 }
 
 void Game::newMission() {
+	// TODO: Add animated text Mission N and wait until all bullets disappear
 	Rules::nextMission();
 	m_L_Top.reload();
 }
 
 void Game::restartMission() {
+	// TODO: Add animated text Mission lost and wait until all bullets disappear
 	m_L_Top.reload();
 }
 
 void Game::gameOver() {
+	// TODO: Add animated text Game over, wait until all bullets disappear,
+	// select new game or exit
 	newGame();
 }
 
 bool Game::initTimers() {
-	if(!m_MotionTimer.start(MOTION_PERIOD, Timer2::TimerMode_t::RELOAD, std::bind(&Game::onMotion_Timeout, this, std::placeholders::_1))) {
+	if(!m_MotionTimer.start(MOTION_PERIOD, Timer2::TimerMode_t::RELOAD,
+			std::bind(&Game::onMotion_Timeout, this, std::placeholders::_1))) {
 		std::cerr << "startTimer() failed." << std::endl;
 		return false;
 	}
@@ -162,6 +168,7 @@ void Game::setKeyRequest(bool pressed, GameConfig::KeyMask_t key_mask) {
 }
 
 void Game::onMotion_Timeout(Timer2::TimerHandler_t id) {
+	// TODO: add check for game pause
 	if((m_MotionTimer != id) || !m_MotionTimer.isRunning()) {
 		return;
 	}

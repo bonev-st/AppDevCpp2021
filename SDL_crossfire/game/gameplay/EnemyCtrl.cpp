@@ -14,6 +14,7 @@
 #include "game/config/Layout.hpp"
 
 #include "game/widgets/Ship.hpp"
+//TODO: rewrite entire class
 
 bool EnemyCtrl::init() {
 	m_X_OUT = Layout::getEnemyRelPos(static_cast<std::size_t>(EnemyId_t::ENEMY_NUMB)-1).m_X;
