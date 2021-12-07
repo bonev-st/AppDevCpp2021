@@ -34,6 +34,7 @@ public:
 	void setBulletsSpeed(double speed);
 	std::vector<Widget *> getBullets();
 	std::vector<Widget *> get();
+	Point getCrossPoint() const;
 
 private:
 	ActionBuffer m_ActionBuffer;

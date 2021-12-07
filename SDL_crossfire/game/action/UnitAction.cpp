@@ -99,7 +99,7 @@ Action_t UnitAction::getDirection() const {
 }
 
 Point UnitAction::getCrossPoint() const {
-	return m_RelPos;
+	return m_CrossPoint;
 }
 
 uint8_t UnitAction::getLineOfFire() const {

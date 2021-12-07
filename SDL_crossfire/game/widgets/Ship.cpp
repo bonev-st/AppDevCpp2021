@@ -108,3 +108,8 @@ std::vector<Widget *> Ship::get() {
 	}
 	return rc;
 }
+
+Point Ship::getCrossPoint() const {
+	return m_UnitAction.getCrossPoint();
+}
+
