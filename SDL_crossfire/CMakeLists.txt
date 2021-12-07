@@ -39,7 +39,6 @@ add_executable(
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/UnitAction.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/UnitAction.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/action/BulletAction.hpp
-	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/Rules.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/ProcessorIF.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollisionDetect.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/game/gameplay/CollisionDetect.cpp

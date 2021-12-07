@@ -151,3 +151,24 @@ uint8_t Action::toLineOfFireMask(Action_t action) {
 	}
 	return rc;
 }
+
+Action_t Action::OppositeDir(Action_t dir) {
+	Action_t rc = Action_t::NONE;
+	switch(dir) {
+	case Action_t::MOVE_UP:
+		rc = Action_t::MOVE_DOWN;
+		break;
+	case Action_t::MOVE_DOWN:
+		rc = Action_t::MOVE_UP;
+		break;
+	case Action_t::MOVE_LEFT:
+		rc = Action_t::MOVE_RIGHT;
+		break;
+	case Action_t::MOVE_RIGHT:
+		rc = Action_t::MOVE_LEFT;
+		break;
+	default:
+		break;
+	}
+	return rc;
+}

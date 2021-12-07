@@ -9,24 +9,31 @@
 #define GAME_GAMEPLAY_ENEMYCTRL_HPP_
 
 #include <vector>
+#include "utils/RandomNumber.hpp"
 
+class Widget;
 class EnemyContainer;
+class Point;
+enum class Action_t : uint8_t;
 
 class EnemyCtrl {
 public:
 	bool init();
 	void reset();
-	void processing(EnemyContainer & enemies);
+	void processing(const std::vector<Widget *> & enemies, const std::vector<Widget *> & target,
+			const std::vector<std::vector<Widget *>> & ship2ship);
 
 private:
-	enum class State_t {
-		IDLE = 0,
-		REFUGE,
-		BATTLEFIELD,
-		KILLED
-	};
+	int32_t m_X_OUT = 0;
+	RandomNumber m_RandomNumber;
 
-	std::vector<State_t> m_State;
+	bool resolveShip2ShipCollision(const std::vector<std::vector<Widget *>> & ship2ship);
+	Action_t getMove(bool h_move, const Point & target) const;
+	Action_t getMoveOut(const Point & pos, bool back) const;
+	Action_t getFire(const Point & target) const;
+	Action_t maskFireAction(Action_t fire, const Point & pos) const;
+	bool isActive(Widget * enemy) const;
+	std::size_t getEnemiesOnFields(const std::vector<Widget *> & enemies) const;
 };
 
 #endif /* GAME_GAMEPLAY_ENEMYCTRL_HPP_ */

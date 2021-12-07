@@ -28,6 +28,7 @@ public:
 	uint8_t getLineOfFire() const;
 
 private:
+	bool m_CrossPointCross = false;
 	bool m_Destroy = false;
 	Widget* m_Unit = nullptr;
 	double m_Speed = 0;

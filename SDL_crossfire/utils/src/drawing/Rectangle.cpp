@@ -37,9 +37,9 @@ bool Rectangle::operator != (const Rectangle& other) const {
 }
 bool Rectangle::isInside(const Point & pos) const {
 	return ( m_Pos.m_X <= pos.m_X)
-		&& ( getRigth().m_X > pos.m_X)
+		&& ( getRigth().m_X >= pos.m_X)
 		&& ( m_Pos.m_Y <= pos.m_Y)
-		&& (getBottom().m_Y > pos.m_Y);
+		&& (getBottom().m_Y >= pos.m_Y);
 }
 
 bool Rectangle::isInside(const Rectangle & rec) const {

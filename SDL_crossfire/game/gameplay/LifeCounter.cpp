@@ -7,8 +7,7 @@
 
 #include "game/gameplay/LifeCounter.hpp"
 
-#include "game/gameplay/Rules.hpp"
-
+#include "game/config/Rules.hpp"
 
 void LifeCounter::reset() {
 	m_Value = Rules::INITIAL_LIFES;

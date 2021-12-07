@@ -50,6 +50,8 @@ private:
 	BonusCtrl m_BonusCtrl;
 	ExplosionContainer m_ExplosionContainer;
 	CollitionMgr m_CollitionMgr;
+	std::vector<std::vector<Widget *>> m_EnemyShip2Ship;
+
 #ifdef DEBUG
 	GridPoint m_GridPoint;
 #endif
@@ -63,6 +65,7 @@ private:
 	void onCB_Ship(const std::vector<Widget *> &data);
 	void onCB_Enemy(const std::vector<Widget *> &data);
 	void onCB_Ship2Ship(const std::vector<Widget *> &data);
+	void onCB_EnemyShip2Ship(const std::vector<Widget *> &data);
 	void onAnimation0(Widget * data);
 	void onAnimation0_Ship(Widget * data);
 	void onAnimation0_Enemy(Widget * data);

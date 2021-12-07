@@ -38,7 +38,7 @@ bool isMoveAction(const Action_t a);
 bool isFireAction(const Action_t a);
 uint8_t toNeighborhoodMask(Action_t action);
 uint8_t toLineOfFireMask(Action_t action);
-
+Action_t OppositeDir(Action_t dir);
 }
 
 #endif /* GAME_ACTION_ACTION_HPP_ */

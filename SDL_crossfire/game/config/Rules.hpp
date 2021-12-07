@@ -29,6 +29,15 @@ struct Rules {
 
 	static constexpr std::int32_t RELOAD_BULLETS = 10;
 
+	static constexpr std::uint32_t PROB_MIN = 1;
+	static constexpr std::uint32_t PROB_MAX = 1800;
+	static constexpr std::uint32_t PROB_50 = PROB_MAX/2;
+	static constexpr std::uint32_t PROB_ACTION = PROB_MAX/13;
+	static constexpr std::uint32_t PROB_FIRE = PROB_MAX - PROB_ACTION;
+	static constexpr std::uint32_t PROB_OUT = PROB_MAX - (PROB_MAX/10);
+
+	static constexpr std::size_t MAX_ACTIVE_ENIMIES = 6;
+
 	static double getShipSpeed();
 	static double getShipBulletSpeed();
 	static double getEnemySpeed();
@@ -53,7 +62,7 @@ private:
 	static const double SHIP_SPEED;
 	static const double SHIP_BULLET_SPEED;
 	static constexpr uint32_t OWN_RELOAD_TIME = 800;
-	static constexpr uint32_t ENEMY_RELOAD_TIME = OWN_RELOAD_TIME/3;
+	static constexpr uint32_t ENEMY_RELOAD_TIME = OWN_RELOAD_TIME*3;
 
 	static uint32_t m_Mission;
 

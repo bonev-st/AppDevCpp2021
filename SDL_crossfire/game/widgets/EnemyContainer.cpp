@@ -30,12 +30,14 @@ bool EnemyContainer::init(const std::vector<std::size_t> & ship_img_id, double s
 	auto it_pos =  m_Pos.begin();
 
 	m_EnemyContainer.resize(m_Pos.size());
+	std::size_t ship_id = 1;
 	for(auto & e: m_EnemyContainer) {
 		e = std::make_shared<Ship>();
-		if(!e->init(img_id, m_Scale, *it_pos, m_GridSize)) {
+		if(!e->init(img_id, m_Scale, *it_pos, m_GridSize, ship_id)) {
 			return false;
 		}
 		++it_pos;
+		++ship_id;
 	}
 	m_Life.resize(m_Pos.size());
 	std::fill(m_Life.begin(), m_Life.end(), 1);
@@ -102,7 +104,7 @@ void EnemyContainer::reset() {
 	std::fill(m_Life.begin(), m_Life.end(), 1);
 	for(std::size_t indx = 0; m_EnemyContainer.size() > indx; ++indx) {
 		auto & e = m_EnemyContainer[indx];
-		if(!e->init(m_ImgId[0], m_Scale, m_Pos[indx], m_GridSize)) {
+		if(!e->init(m_ImgId[0], m_Scale, m_Pos[indx], m_GridSize, indx+1)) {
 			std::cerr << "Enemy ship init failed" << std::endl;
 		}
 		e->reset();
@@ -115,7 +117,7 @@ void EnemyContainer::reset(Widget * widget) {
 		if(e.get() == widget) {
 			auto & life = m_Life[indx];
 			if(m_ImgId.size() > life) {
-				if(!e->init(m_ImgId[life], m_Scale, m_Pos[indx], m_GridSize)) {
+				if(!e->init(m_ImgId[life], m_Scale, m_Pos[indx], m_GridSize, indx + 1)) {
 					std::cerr << "Enemy ship init failed" << std::endl;
 				}
 				e->reset();

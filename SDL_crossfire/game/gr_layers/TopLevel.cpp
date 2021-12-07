@@ -33,7 +33,9 @@ bool TopLevel::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t 
 							std::bind(&TopLevel::onCB_Bonus, this, std::placeholders::_1),
 							std::bind(&TopLevel::onCB_Ship, this, std::placeholders::_1),
 							std::bind(&TopLevel::onCB_Enemy, this, std::placeholders::_1),
-							std::bind(&TopLevel::onCB_Ship2Ship, this, std::placeholders::_1))) {
+							std::bind(&TopLevel::onCB_Ship2Ship, this, std::placeholders::_1),
+							std::bind(&TopLevel::onCB_EnemyShip2Ship, this, std::placeholders::_1)
+							)) {
 		std::cerr << "m_CollitionMgr.init() failed." << std::endl;
 		return false;
 	}
@@ -68,10 +70,13 @@ void TopLevel::draw() {
 }
 
 bool TopLevel::processing() {
-	m_CollitionMgr.processing(m_Ship.get(), m_Ship.getBullets()
-			, m_Enemies.getBullets(), m_Enemies.get()
+	const auto enemies = m_Enemies.get();
+	const auto ship = m_Ship.get();
+	m_EnemyShip2Ship.clear();
+	m_CollitionMgr.processing(ship, m_Ship.getBullets()
+			, m_Enemies.getBullets(), enemies
 			, m_Bonuses.getWidgets(), m_Ammunition.get());
-	m_EnemiesCtrl.processing(m_Enemies);
+	m_EnemiesCtrl.processing(enemies, ship, m_EnemyShip2Ship);
 	return true;
 }
 
@@ -398,4 +403,8 @@ void TopLevel::onCB_Ship2Ship(const std::vector<Widget *> &data) {
 		}
 		reinterpret_cast<Ship*>(e)->destroy();
 	}
+}
+
+void TopLevel::onCB_EnemyShip2Ship(const std::vector<Widget *> &data) {
+	m_EnemyShip2Ship.push_back(data);
 }

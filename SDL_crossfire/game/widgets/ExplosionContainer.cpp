@@ -48,7 +48,7 @@ void ExplosionContainer::draw() {
 
 void ExplosionContainer::reset() {
 	for(const auto & e : m_Container) {
-		e->m_Img.stop();
+		m_Container.release(e);
 	}
 }
 

@@ -18,7 +18,7 @@ class CollitionMgr {
 	using Callback_t = CollisionDetect::Callback_t;
 public:
 	bool init(Callback_t cb_ammu, Callback_t cb_bonus, Callback_t cb_ship,
-			Callback_t cb_enemy, Callback_t cb_ship_2_ship);
+			Callback_t cb_enemy, Callback_t cb_ship_2_ship, Callback_t cb_enemies_ship_2_ship);
 
 	void processing(const std::vector<Widget*> & ship,
 					const std::vector<Widget*> & own_bullets,
@@ -28,12 +28,6 @@ public:
 					const std::vector<Widget*> & ammunition);
 
 private:
-	CollisionDetect::Callback_t m_CB_AmmunitionColl;
-	CollisionDetect::Callback_t m_CB_BonusColl;
-	CollisionDetect::Callback_t m_CB_ShipColl;
-	CollisionDetect::Callback_t m_CB_EnemyColl;
-	CollisionDetect::Callback_t m_CB_Ship2Ship;
-
 	CD_Through m_ProcThrough;
 	CD_Touch m_ProcTouch;
 
@@ -42,6 +36,7 @@ private:
 	CollisionDetect m_Ship2ShipColl;
 	CollisionDetect m_Ship2BulletColl;
 	CollisionDetect m_Enemy2BulletColl;
+	CollisionDetect m_EnemyShip2ShipColl;
 };
 
 #endif /* GAME_GAMEPLAY_COLLITIONMGR_HPP_ */

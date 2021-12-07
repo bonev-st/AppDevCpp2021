@@ -18,7 +18,7 @@
 
 class Ship : public ScaleTexture {
 public:
-	bool init(std::size_t ship_img_id, double scale_factor, const Point& pos, uint32_t grid_size);
+	bool init(std::size_t ship_img_id, double scale_factor, const Point& pos, uint32_t grid_size, std::size_t id = 0);
 	bool init_bullet(std::size_t bullet_img_id, double scale_factor, const Rectangle & field);
 	bool event(const Action_t type);
 	void tick();
@@ -37,12 +37,15 @@ public:
 	Point getCrossPoint() const;
 	Point getNextPoint() const;
 	uint8_t getLineOfFire() const;
+	std::size_t getId() const;
+	Action_t getDirection() const;
 
 private:
 	ActionBuffer m_ActionBuffer;
 	UnitAction m_UnitAction;
 	SpriteAnimation<Image> m_Image;
 	BulletsCtrl m_BulletsCtrl;
+	std::size_t m_Id = 0;
 
 	using ScaleTexture::init;
 };

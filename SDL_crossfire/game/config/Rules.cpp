@@ -10,9 +10,9 @@
 #include "game/config/Layout.hpp"
 
 const double Rules::ENEMY_SPEED = 0.3;
-const double Rules::ENEMY_BULLET_SPEED = ENEMY_SPEED * 4.0;
+const double Rules::ENEMY_BULLET_SPEED = ENEMY_SPEED * 5.0;
 const double Rules::SHIP_SPEED = ENEMY_SPEED*2.0;
-const double Rules::SHIP_BULLET_SPEED = SHIP_SPEED * 4.0;
+const double Rules::SHIP_BULLET_SPEED = SHIP_SPEED * 5.0;
 
 uint32_t Rules::m_Mission = 0;
 
@@ -41,7 +41,7 @@ int32_t Rules::getShipBulled() {
 
 uint32_t Rules::getShipReloadTime() {
 	double rc = OWN_RELOAD_TIME;
-	rc /= Layout::getScaleFactor()*getSpeedIncrease();
+	rc *= getSpeedIncrease();
 	return static_cast<uint32_t>(rc);
 }
 
@@ -51,7 +51,7 @@ int32_t Rules::getEnemyBulled() {
 
 uint32_t Rules::getEnemyReloadTime() {
 	double rc = ENEMY_RELOAD_TIME;
-	rc /= Layout::getScaleFactor()*getSpeedIncrease();
+	rc *= getSpeedIncrease();
 	return static_cast<uint32_t>(rc);
 }
 
@@ -64,7 +64,11 @@ void Rules::nextMission() {
 }
 
 double Rules::getSpeedIncrease() {
-	return 1.0 + 0.05 * m_Mission;
+	double rc = 1.0 - 0.05 * m_Mission;
+	if(0.1 > rc) {
+		return 0.1;
+	}
+	return rc;
 }
 
 

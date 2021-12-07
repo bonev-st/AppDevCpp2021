@@ -9,7 +9,7 @@
 
 #include <iostream>
 
-bool Ship::init(std::size_t ship_img_id, double scale_factor, const Point& pos, uint32_t grid_size) {
+bool Ship::init(std::size_t ship_img_id, double scale_factor, const Point& pos, uint32_t grid_size, std::size_t id) {
 	if(!m_Image.create(ship_img_id, Point(), true)) {
 		std::cerr << "Ship::init().create() failed"<< std::endl;
 		return false;
@@ -22,6 +22,7 @@ bool Ship::init(std::size_t ship_img_id, double scale_factor, const Point& pos, 
 		std::cerr << "Ship::init().m_UnitAction.init() failed"<< std::endl;
 		return false;
 	}
+	m_Id = id;
 	m_ActionBuffer.clear();
 	return true;
 }
@@ -114,9 +115,17 @@ Point Ship::getCrossPoint() const {
 }
 
 Point Ship::getNextPoint() const {
-	return m_UnitAction.getCrossPoint();
+	return m_UnitAction.getNextPoint();
 }
 
 uint8_t Ship::getLineOfFire() const {
 	return m_UnitAction.getLineOfFire();
+}
+
+std::size_t Ship::getId() const {
+	return m_Id;
+}
+
+Action_t Ship::getDirection() const {
+	return m_UnitAction.getDirection();
 }

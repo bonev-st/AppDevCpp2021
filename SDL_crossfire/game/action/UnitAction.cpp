@@ -47,7 +47,7 @@ bool UnitAction::tick(Action_t pending_action) {
 		// stop state
 		return false;
 	}
-	m_CrossPoint = Points::UNDEFINED;
+	m_CrossPointCross = false;
 	Point move_delta = Points::ZERO;
 	if(Action_t::NONE == m_CurrentDirection) {
 		// change from stop to motion
@@ -111,7 +111,7 @@ uint8_t UnitAction::getLineOfFire() const {
 		// XXX: Action_t::NONE -> all direction line of fire
 		return Action::toLineOfFireMask(Action_t::NONE);
 	}
-	if(Points::UNDEFINED != m_CrossPoint) {
+	if(m_CrossPointCross) {
 		uint8_t rc = 0;
 		if(!(m_CrossPoint.m_X & 1)) {
 			rc = rc | Action::toLineOfFireMask(Action_t::MOVE_UP);
@@ -128,6 +128,7 @@ void UnitAction::stop() {
 	m_PathToNext = 0;
 	m_CurrentDirection = Action_t::NONE;
 	m_CrossPoint = m_RelPos;
+	m_CrossPointCross = true;
 }
 
 void UnitAction::stop_to_start(const Action_t &action, Point& rel_pos) {
@@ -141,6 +142,7 @@ void UnitAction::forward(Point& rel_pos) {
 	rel_pos = prepareMoveAction(m_CurrentDirection);
 	if(0 >= m_PathToNext) {
 		m_CrossPoint = m_RelPos;
+		m_CrossPointCross = true;
 		if(isMoveAllowed(m_CurrentDirection)) {
 			m_RelPos += rel_pos;
 			m_PathToNext += m_GridSize;
@@ -158,6 +160,7 @@ void UnitAction::reverse(const Action_t &action, Point& rel_pos) {
 		m_RelPos += rel_pos;
 		if(0 >= m_PathToNext) {
 			m_CrossPoint = m_RelPos;
+			m_CrossPointCross = true;
 			if(isMoveAllowed(m_CurrentDirection)) {
 				m_RelPos += rel_pos;
 				m_PathToNext += m_GridSize;
@@ -174,6 +177,7 @@ void UnitAction::turn(Action_t &action, Point& rel_pos) {
 	rel_pos = prepareMoveAction(m_CurrentDirection);
 	if(0 >= m_PathToNext) {
 		m_CrossPoint = m_RelPos;
+		m_CrossPointCross = true;
 		if(isMoveAllowed(action)) {
 			const auto path_tmp = m_PathToNext;
 			m_CurrentDirection = action;

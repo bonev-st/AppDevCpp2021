@@ -13,7 +13,7 @@
 #include "game/config/Layout.hpp"
 
 bool CollitionMgr::init(Callback_t cb_ammu, Callback_t cb_bonus, Callback_t cb_ship,
-		Callback_t cb_enemy, Callback_t cb_ship_2_ship) {
+		Callback_t cb_enemy, Callback_t cb_ship_2_ship, Callback_t cb_enemies_ship_2_ship) {
 	const auto rec = Rectangle(Points::ZERO
 			, static_cast<int32_t>(5 * Layout::getScaleFactor())
 			, static_cast<int32_t>(5 * Layout::getScaleFactor()));
@@ -41,6 +41,10 @@ bool CollitionMgr::init(Callback_t cb_ammu, Callback_t cb_bonus, Callback_t cb_s
 		std::cerr << "m_Ship2ShipColl.init() failed" << std::endl;
 		return false;
 	}
+	if(!m_EnemyShip2ShipColl.init(cb_enemies_ship_2_ship, &m_ProcTouch)) {
+		std::cerr << "m_EnemyShip2ShipColl.init() failed" << std::endl;
+		return false;
+	}
 	return true;
 }
 
@@ -57,16 +61,23 @@ void CollitionMgr::processing(const std::vector<Widget*> & ship,
 			m_Enemy2BulletColl.processing(own_bullets);
 		}
 	}
-	// check for collision between enemies bullets and ship
 	if(!ship.empty()) {
 		auto e = ship.front();
+#if 1
+		// check for collision between enemies and ship
 		m_Ship2ShipColl.setObj(e);
 		m_Ship2ShipColl.processing(enemy);
-		// check for collision between enemies and ship
+#endif
+#if 1
+		// check for collision between enemies bullets and ship
 		if(!enemy_bullets.empty()) {
 			m_Ship2BulletColl.setObj(e);
-			m_Ship2BulletColl.processing(enemy);
+			m_Ship2BulletColl.processing(enemy_bullets);
 		}
+#else
+		if(!enemy_bullets.empty()) {
+		}
+#endif
 		// check for collision between ship and bonuses
 		if(!bonuses.empty()) {
 			m_BonusColl.setObj(e);
@@ -79,14 +90,12 @@ void CollitionMgr::processing(const std::vector<Widget*> & ship,
 		}
 	}
 	// check for collision between enemies and enemies
-	if(!enemy_bullets.empty()) {
+	if(!enemy.empty()) {
 		const auto size = enemy.size();
 		for(std::size_t i = 0; (size-1) > i; ++i) {
-			m_Ship2ShipColl.setObj(enemy[i]);
+			m_EnemyShip2ShipColl.setObj(enemy[i]);
 			std::vector<Widget*> others(&enemy[i+1], &enemy[size]);
-			for(std::size_t j = i+1; (enemy_bullets.size()-1) > j; ++j) {
-				m_Ship2ShipColl.processing(others);
-			}
+			m_EnemyShip2ShipColl.processing(others);
 		}
 	}
 }
