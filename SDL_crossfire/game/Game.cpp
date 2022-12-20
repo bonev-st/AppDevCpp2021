@@ -63,7 +63,8 @@ bool Game::init(const GameConfig::Config_t & cfg, const DisplayMode::Mode_t & di
 	return true;
 }
 
-bool Game::events(const InputEvent & event, bool & exit) {
+bool Game::events(const InputEvent& event, bool& exit) {
+	exit = false;
 	if(m_L_Top.events(event)) {
 		return true;
 	}
