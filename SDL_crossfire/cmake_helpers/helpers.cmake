@@ -14,6 +14,7 @@ set_target_properties(
 endfunction()
 
 function(enable_target_warnings target)
+if (!MSVC)
     target_compile_options(
         ${target}
         PRIVATE
@@ -37,4 +38,5 @@ function(enable_target_warnings target)
           -Wduplicated-branches
           -Wnull-dereference
     )
+endif()
 endfunction()

@@ -35,7 +35,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)
 
 #message("CMAKE_MODULE_PATH : ${CMAKE_MODULE_PATH}") 
 
-set_target_cpp_standard(${PROJECT_NAME} 17)
+set_target_cpp_standard(${PROJECT_NAME} 20)
 
 enable_target_warnings(${PROJECT_NAME})
 

@@ -9,6 +9,7 @@
 #define GAME_CONFIG_RULES_HPP_
 
 #include <cstdint>
+#include <cstdlib>
 
 struct Rules {
 	static constexpr std::uint32_t INITIAL_LIFES = 3;

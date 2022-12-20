@@ -9,6 +9,7 @@
 #define GR_ENGINE_INC_GR_ENGINE_MANAGERS_BASEMGR_HPP_
 
 #include <cstdint>
+#include <cstdlib>
 #include "utils/NoCopy.hpp"
 
 enum ManagersId_t : std::uint32_t {

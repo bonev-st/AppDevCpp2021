@@ -94,7 +94,7 @@ void CollitionMgr::processing(const std::vector<Widget*> & ship,
 		const auto size = enemy.size();
 		for(std::size_t i = 0; (size-1) > i; ++i) {
 			m_EnemyShip2ShipColl.setObj(enemy[i]);
-			std::vector<Widget*> others(&enemy[i+1], &enemy[size]);
+			std::vector<Widget*> others(enemy.begin() + i + 1, enemy.end());
 			m_EnemyShip2ShipColl.processing(others);
 		}
 	}

@@ -10,8 +10,8 @@
 
 #include <cstdint>
 
-class Point;
-class Dimention;
+struct Point;
+struct Dimention;
 
 namespace Geometry {
 

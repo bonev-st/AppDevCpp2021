@@ -22,7 +22,7 @@
 #include "game/GameListener.hpp"
 
 class InputEvent;
-class InputEventIF;
+struct InputEventIF;
 namespace DisplayMode {
 struct Mode_t;
 }

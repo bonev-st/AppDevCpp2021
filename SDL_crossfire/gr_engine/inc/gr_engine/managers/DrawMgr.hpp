@@ -21,7 +21,7 @@ struct Mode_t;
 
 struct DrawParams_t;
 class ResMgr;
-class SDL_Renderer;
+struct SDL_Renderer;
 class Renderer;
 
 class DrawMgr : public BaseMgr {

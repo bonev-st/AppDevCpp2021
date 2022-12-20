@@ -16,7 +16,7 @@ namespace DisplayMode {
 struct Mode_t;
 }
 
-class Dimention;
+struct Dimention;
 
 namespace Layout {
 

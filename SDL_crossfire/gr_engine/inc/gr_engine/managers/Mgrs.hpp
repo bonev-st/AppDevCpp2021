@@ -8,6 +8,8 @@
 #ifndef GR_ENGINE_INC_GR_ENGINE_MANAGERS_MGRS_HPP_
 #define GR_ENGINE_INC_GR_ENGINE_MANAGERS_MGRS_HPP_
 
+#include <array>
+
 #include "gr_engine/config/ResourcesConfig.hpp"
 #include "gr_engine/managers/BaseMgr.hpp"
 #include "sdl_utils/Renderer.hpp"

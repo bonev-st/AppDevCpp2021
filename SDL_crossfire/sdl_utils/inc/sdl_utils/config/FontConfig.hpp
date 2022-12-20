@@ -8,6 +8,7 @@
 #ifndef CONFIG_FONTCONFIG_HPP_
 #define CONFIG_FONTCONFIG_HPP_
 
+#include <string>
 #include <cstdint>
 #include <unordered_map>
 

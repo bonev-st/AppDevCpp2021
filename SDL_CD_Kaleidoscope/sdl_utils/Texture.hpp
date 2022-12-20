@@ -11,7 +11,7 @@
 #include <string>
 
 struct SDL_Surface;
-class Rectangle;
+struct Rectangle;
 
 namespace Texture {
 

@@ -14,8 +14,8 @@
 #include "gr_engine/timer/Timer2Client.hpp"
 #include "game/widgets/Bullets.hpp"
 
-class Point;
-class Rectangle;
+struct Point;
+struct Rectangle;
 enum class Action_t : uint8_t;
 
 class BulletsCtrl {

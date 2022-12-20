@@ -10,7 +10,7 @@
 
 #include <string>
 
-class Rectangle;
+struct Rectangle;
 struct SDL_Rect;
 
 namespace SDLHelper {

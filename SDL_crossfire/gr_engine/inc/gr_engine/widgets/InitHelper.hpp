@@ -11,8 +11,8 @@
 #include <cstdint>
 #include <string>
 
-class Point;
-class Color;
+struct Point;
+struct Color;
 
 #include "gr_engine/drawing/Image.hpp"
 #include "gr_engine/drawing/Text.hpp"

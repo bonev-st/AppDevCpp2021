@@ -12,7 +12,7 @@
 #include "gr_engine/input/InputState.hpp"
 #include "utils/inputs/InputEventIF.hpp"
 
-struct InputEvent;
+class InputEvent;
 
 class ButtonBase : public Image, public InputEventIF {
 public:

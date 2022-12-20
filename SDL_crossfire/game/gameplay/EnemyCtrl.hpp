@@ -13,7 +13,7 @@
 
 class Widget;
 class EnemyContainer;
-class Point;
+struct Point;
 enum class Action_t : uint8_t;
 
 class EnemyCtrl {

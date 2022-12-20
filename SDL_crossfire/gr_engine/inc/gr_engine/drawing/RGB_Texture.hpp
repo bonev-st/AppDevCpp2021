@@ -12,7 +12,7 @@
 
 #include "gr_engine/drawing/Widget.hpp"
 
-class Color;
+struct Color;
 struct SDL_Texture;
 
 class RGB_Texture : public Widget {

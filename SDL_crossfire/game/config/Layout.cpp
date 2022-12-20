@@ -140,11 +140,11 @@ const Point & Layout::getShipRelPos() {
 }
 
 const Point * Layout::getBonusRelPosDis() {
-	return RelCoordinates::BonusPosDis.begin();
+	return RelCoordinates::BonusPosDis.data();
 }
 
 const Point * Layout::getBonusRelPosEna() {
-	return RelCoordinates::BonusPosEna.begin();
+	return RelCoordinates::BonusPosEna.data();
 }
 
 const Point & Layout::getEnemyRelPos(std::size_t id) {

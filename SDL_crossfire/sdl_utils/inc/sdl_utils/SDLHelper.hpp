@@ -10,9 +10,9 @@
 
 #include <string>
 
-class Rectangle;
+struct Rectangle;
 struct SDL_Rect;
-class Point;
+struct Point;
 struct SDL_Point;
 
 namespace SDLHelper {

@@ -35,7 +35,7 @@ struct Point {
 
 	Point & move (int32_t x, int32_t y);
 
-	static constexpr int32_t UNDEF_VAL = 1e6;
+	static constexpr int32_t UNDEF_VAL = 1000000;
 };
 
 #endif /* UTILS_DRAWING_POINT_HPP_ */

@@ -11,6 +11,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include <vector>
+#include <string>
 
 #include "utils/drawing/Rectangle.hpp"
 
