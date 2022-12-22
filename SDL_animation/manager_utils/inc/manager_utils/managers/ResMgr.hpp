@@ -13,11 +13,11 @@
 
 #include "manager_utils/managers/BaseMgr.hpp"
 
-class SDL_Renderer;
+struct SDL_Renderer;
 namespace ResMgrConfig {
 struct Config_t;
 }
-class DrawParams_t;
+struct DrawParams_t;
 
 class ResMgr : public BaseMgr {
 public:

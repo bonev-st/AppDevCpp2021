@@ -17,7 +17,7 @@
 
 struct SDL_Renderer;
 struct SDL_Texture;
-class Rectangle;
+struct Rectangle;
 
 class Renderer : private NoCopy {
 public:

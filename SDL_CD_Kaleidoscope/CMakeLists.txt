@@ -36,7 +36,11 @@ set(CMAKE_MODULE_PATH
 
 #message("CMAKE_MODULE_PATH : ${CMAKE_MODULE_PATH}") 
 
+if (MSVC)
 set_target_cpp_standard(${PROJECT_NAME} 20)
+else()
+set_target_cpp_standard(${PROJECT_NAME} 17)
+endif()
 
 enable_target_warnings(${PROJECT_NAME})
 

@@ -8,6 +8,8 @@
 #ifndef MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_MGRS_HPP_
 #define MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_MGRS_HPP_
 
+#include <array>
+
 #include "sdl_utils/Renderer.hpp"
 
 #include "utils/inputs/InputEventIF.hpp"

@@ -8,7 +8,7 @@
 #include "Rectangle.hpp"
 
 const Rectangle Rectangle::ZERO(0, 0, 0, 0);
-const Rectangle Rectangle::UNDEFINED(1e6, 1e6, 1e6, 1e6);
+const Rectangle Rectangle::UNDEFINED(1000000, 1000000, 1000000, 1000000);
 
 Rectangle::Rectangle(std::int32_t x, std::int32_t y, std::int32_t w, std::int32_t h) :
 	m_Pos(x,y)

@@ -9,6 +9,7 @@
 #define COMMON_COMMONDEFINES_HPP_
 
 #include <cstdint>
+#include <cstddef>
 
 namespace ResurcesId {
 

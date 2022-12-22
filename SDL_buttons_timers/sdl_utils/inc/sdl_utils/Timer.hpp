@@ -11,7 +11,7 @@
 #include <cstdint>
 
 namespace Timer2 {
-class TimerCfg_t;
+struct TimerCfg_t;
 }
 
 struct SDL_UserEvent;

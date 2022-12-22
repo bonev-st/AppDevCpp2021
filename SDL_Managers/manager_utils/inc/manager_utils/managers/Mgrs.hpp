@@ -9,6 +9,7 @@
 #define MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_MGRS_HPP_
 
 #include <memory>
+#include <array>
 
 #include "manager_utils/config/ResourcesConfig.hpp"
 #include "manager_utils/managers/BaseMgr.hpp"

@@ -8,7 +8,7 @@
 #include "utils/drawing/Point.hpp"
 
 const Point Point::ZERO = Point(0, 0);
-const Point Point::UNDEFINED  = Point(1e6, 1e6);
+const Point Point::UNDEFINED  = Point(1000000, 1000000);
 
 Point::Point(std::int32_t x, std::int32_t y) :
 	m_X(x)

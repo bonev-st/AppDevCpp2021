@@ -9,6 +9,7 @@
 #define CONFIG_RESOURCESCONFIG_HPP_
 
 #include <unordered_map>
+#include <string>
 
 #include "common/CommonDefines.hpp"
 

@@ -11,7 +11,7 @@
 #include "sdl_utils/containers/ImageContainer.hpp"
 #include "sdl_utils/containers/TextContainer.hpp"
 
-class SDL_Renderer;
+struct SDL_Renderer;
 
 class ResourceManager {
 public:

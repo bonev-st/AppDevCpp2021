@@ -8,7 +8,7 @@
 #ifndef UTILS_INC_UTILS_GEOMETRY_POINTR_HPP_
 #define UTILS_INC_UTILS_GEOMETRY_POINTR_HPP_
 
-class Point;
+struct Point;
 
 namespace Geometry {
 

@@ -9,6 +9,7 @@
 #define CONFIG_IMGCONFIG_HPP_
 
 #include <cstdint>
+#include <string>
 #include <unordered_map>
 
 #include "utils/drawing/Dimention.hpp"

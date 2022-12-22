@@ -8,12 +8,12 @@
 #ifndef UTILS_INC_UTILS_GEOMETRY_GEOMETRY_HPP_
 #define UTILS_INC_UTILS_GEOMETRY_GEOMETRY_HPP_
 
-class Point;
-class Dimention;
+struct Point;
+struct Dimention;
 
 namespace Geometry {
 
-class PointR;
+struct PointR;
 
 Point getPosToCenter(const Point & pos, const Dimention & dimention);
 double getDistance(PointR start, PointR end);

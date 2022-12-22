@@ -9,6 +9,7 @@
 #define MANAGER_UTILS_INC_MANAGER_UTILS_MANAGERS_BASEMGR_HPP_
 
 #include <cstdint>
+#include <cstddef>
 #include "utils/NoCopy.hpp"
 
 enum ManagersId_t : std::uint32_t {

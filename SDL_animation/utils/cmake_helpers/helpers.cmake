@@ -20,6 +20,7 @@ if (!MSVC)
         PRIVATE
           -Wall
           -Wextra
+          -Werror
           -Wundef
           -Wuninitialized
           -Wreorder

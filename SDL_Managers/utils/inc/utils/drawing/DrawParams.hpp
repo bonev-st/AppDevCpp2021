@@ -9,6 +9,7 @@
 #define UTILS_DRAWING_DRAWPARAMS_HPP_
 
 #include <cstdint>
+#include <cstddef>
 #include "utils/drawing/Rectangle.hpp"
 
 inline constexpr std::size_t INVALID_RESR_ID = -1;

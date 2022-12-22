@@ -15,9 +15,14 @@ set(CMAKE_MODULE_PATH
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/find_modules
 )
 
-#message("CMAKE_MODULE_PATH : ${CMAKE_MODULE_PATH}") 
+file(COPY resources DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 
+#message("CMAKE_MODULE_PATH : ${CMAKE_MODULE_PATH}") 
+if (MSVC)
 set_target_cpp_standard(${PROJECT_NAME} 20)
+else()
+set_target_cpp_standard(${PROJECT_NAME} 17)
+endif()
 
 enable_target_warnings(${PROJECT_NAME})
 
@@ -55,3 +60,4 @@ target_link_libraries(
             ${SDL2_TTF_LIBRARY}
             ${SDL2_MIXER_LIBRARY}
 )
+

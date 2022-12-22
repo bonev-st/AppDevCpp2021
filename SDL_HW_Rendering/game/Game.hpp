@@ -15,7 +15,7 @@
 #include "game/GameConfig.hpp"
 
 class InputEvent;
-class SDL_Renderer;
+struct SDL_Renderer;
 
 class Game {
 public:

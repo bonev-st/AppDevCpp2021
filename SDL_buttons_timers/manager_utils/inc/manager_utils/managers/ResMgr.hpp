@@ -15,7 +15,7 @@
 #include "manager_utils/managers/BaseMgr.hpp"
 #include "sdl_utils/containers/ImageContainer.hpp"
 
-class SDL_Renderer;
+struct SDL_Renderer;
 
 namespace ResMgrConfig {
 struct Config_t;
@@ -27,8 +27,8 @@ namespace DiplayMode {
 struct Mode_t;
 }
 
-class DrawParams_t;
-class Color;
+struct DrawParams_t;
+struct Color;
 class TextContainer;
 
 class ResMgr : public BaseMgr {

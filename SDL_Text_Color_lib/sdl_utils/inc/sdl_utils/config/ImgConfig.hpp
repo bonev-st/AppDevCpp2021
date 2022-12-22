@@ -10,6 +10,7 @@
 
 #include <cstdint>
 #include <unordered_map>
+#include <string>
 
 #include "utils/drawing/Dimention.hpp"
 

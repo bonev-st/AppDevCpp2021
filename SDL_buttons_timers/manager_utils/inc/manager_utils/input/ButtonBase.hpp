@@ -12,7 +12,7 @@
 #include "manager_utils/drawing/Image.hpp"
 #include "manager_utils/input/InputState.hpp"
 
-struct InputEvent;
+class InputEvent;
 
 class ButtonBase : public Image, public InputEventIF {
 public:

@@ -16,7 +16,7 @@
 #include "utils/drawing/DrawParams.hpp"
 
 class InputEvent;
-class Rectangle;
+struct Rectangle;
 
 class Game {
 public:

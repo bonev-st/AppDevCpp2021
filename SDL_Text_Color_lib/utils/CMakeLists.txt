@@ -31,7 +31,11 @@ add_library(
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake_helpers/helpers.cmake)
 
+if (MSVC)
 set_target_cpp_standard(${PROJECT_NAME} 20)
+else()
+set_target_cpp_standard(${PROJECT_NAME} 17)
+endif()
 enable_target_warnings(${PROJECT_NAME})
 
 target_include_directories(

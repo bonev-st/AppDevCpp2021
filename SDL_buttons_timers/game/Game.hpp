@@ -27,7 +27,7 @@
 #include "widgets/FPS.hpp"
 
 class InputEvent;
-class InputEventIF;
+struct InputEventIF;
 
 class Game {
 public:

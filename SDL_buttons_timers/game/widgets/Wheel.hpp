@@ -17,7 +17,7 @@
 #include "game/widgets/RotateAnimation.hpp"
 
 class InputEvent;
-class Point;
+struct Point;
 
 class Wheel : public InputEventIF {
 public:
