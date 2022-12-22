@@ -8,18 +8,19 @@
 #ifndef GAME_GAMECONFIG_HPP_
 #define GAME_GAMECONFIG_HPP_
 
+#include <cstdint>
 #include <unordered_map>
 
 namespace Keyboard {
-enum Key : uint32_t;
+enum Key : std::uint32_t;
 }
 
 namespace GameConfig {
 
 enum KeyMask_t : std::uint32_t;
-enum ImgIndx_t : uint32_t;
-enum ImgIndx_t : uint32_t;
-enum TextIndx_t : uint32_t;
+enum ImgIndx_t : std::uint32_t;
+enum ImgIndx_t : std::uint32_t;
+enum TextIndx_t : std::uint32_t;
 
 using Key = Keyboard::Key;
 using KeyRes_t = std::unordered_map<Key, KeyMask_t>;

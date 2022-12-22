@@ -9,6 +9,7 @@
 #define UTILS_INC_UTILS_TIMER_TIMER2DEF_HPP_
 
 #include <functional>
+#include <cstdint>
 
 namespace Timer2 {
 
@@ -17,7 +18,7 @@ static constexpr TimerHandler_t INVALID_TIMER_HANDLER = -1;
 
 using TimerCB_t = std::function<void(const TimerHandler_t &)>;
 
-enum class TimerMode_t : uint8_t {
+enum class TimerMode_t : std::uint8_t {
 	ONESHOT,
 	RELOAD,
 	INVALID
